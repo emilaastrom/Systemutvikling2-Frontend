@@ -2,7 +2,17 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+OK, git clone prosjektet
+cd inn i prosjektmappen
+
+skriv "npm i" i terminalen
+dette gjør at du innstallerer alle pakkene i packages.json.
+kommandoen "npm install" fungerer også
+
+kjør så serveren med kommandoen "npm run dev"
+
 First, run the development server:
+
 
 ```bash
 npm run dev
