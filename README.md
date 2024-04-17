@@ -13,6 +13,13 @@ kjør så serveren med kommandoen "npm run dev"
 
 First, run the development server:
 
+EXTENTIONS
+
+prettier
+Auto Rename Tag
+Better Comments
+Tailwind CSS IntelliSense
+ES7+ React/Redux/React-Native snippetss
 
 ```bash
 npm run dev
