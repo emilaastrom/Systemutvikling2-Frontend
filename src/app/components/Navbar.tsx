@@ -12,24 +12,11 @@ const Navbar = () => {
   return (
     <div>
       {/* Desktop Navbar */}
-      <div className="translate-3d hidden md:flex h-screen w-48 flex-col gap-4 bg-white text-black p-5 border-r-2 border-black">
-        <h2 className="text-2xl font-semibold text-center pb-4 pt-4">
-          {" "}
-          Sparesti
-        </h2>
-        <a href="#home" className="p-3 border-2 border-black rounded-xl">
-          🏠 Hjem
-        </a>
-        <a href="#about" className="p-3 border-2 border-black rounded-xl">
-          {" "}
-          💭 Om
-        </a>
-        <a href="#savings" className="p-3 border-2 border-black rounded-xl">
-          💰 Sparing
-        </a>
-        <a href="#share" className="p-3 border-2 border-black rounded-xl">
-          👤 Konto
-        </a>
+      <div className="fixed left-0 top-1/2 z-50 hidden md:flex transform -translate-y-1/2 h-auto w-auto flex-col gap-4 bg-white bg-opacity-40 text-black p-5 border-r-2 border-slate-200">
+        <NavbarButton to="/home">🏠 Hjem</NavbarButton>
+        <NavbarButton to="/about">💭 Om</NavbarButton>
+        <NavbarButton to="/savings">💰 Sparing</NavbarButton>
+        <NavbarButton to="/share">👤 Konto</NavbarButton>
       </div>
 
       {/* Mobile Navbar */}
