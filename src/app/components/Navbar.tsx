@@ -13,11 +13,11 @@ const Navbar = () => {
   return (
     <div>
       {/* Desktop Navbar */}
-      <div className="fixed left-5 text-2xl rounded-xl w-auto text-left h-auto m-2 p-2 bg-white bg-opacity-100 ">
+      <div className="fixed left-5 text-2xl rounded-xl w-auto text-left h-auto m-2 p-2 bg-white text-black bg-opacity-100 ">
         <h2 className="text-xl">🔥 3</h2>
         <div className="text-xs">STREAK</div>
       </div>
-      <div className="fixed right-5 text-2xl text-center w-auto text-left text-base h-auto m-2 p-2 rounded-xl bg-white bg-opacity-100">
+      <div className="fixed right-5 text-2xl text-center w-auto text-black text-left text-base h-auto m-2 p-2 rounded-xl bg-white bg-opacity-100">
         <span className="text-xl">💸</span>
         <span className="text-xl">300</span>
         <span className="text-xs"> kr</span>
