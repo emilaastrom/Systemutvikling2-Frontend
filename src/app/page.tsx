@@ -11,7 +11,7 @@ export default function Home() {
   const [showConfetti, setShowConfetti] = useState(false);
 
   return (
-    <main className="bg-white w-full h-screen flex overflow-hidden">
+    <main className="bg-white w-full md:pl-20 sm:pl-2 h-auto flex overflowY-scroll">
       {showConfetti && (
         <Confetti
           width={window.innerWidth}
@@ -21,8 +21,7 @@ export default function Home() {
         />
       )}
 
-      <Navbar />
-      <div className="flex-1 flex flex-col  items-center">
+      <div className="flex-1 flex flex-col items-center pt-48">
         <div className="w-4/5 mt-12 p-5">
           <ProgressBar
             goal={1000}
