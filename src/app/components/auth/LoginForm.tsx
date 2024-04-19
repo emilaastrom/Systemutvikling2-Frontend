@@ -27,7 +27,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center">
+    <form onSubmit={handleSubmit} className="flex flex-col ">
       <h1 className="text-md underline font-bold mb-2 text-black">Login</h1>
       {errorMessage && (
         <motion.div

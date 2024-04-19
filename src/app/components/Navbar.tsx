@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import NavbarButton from "./NavbarButton";
 import { Alumni_Sans_Collegiate_One } from "next/font/google";
-
+import NavbarButton from "./Navbarbutton";
 const Navbar = () => {
   const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -25,10 +24,10 @@ const Navbar = () => {
       </div>
 
       <div className="fixed left-0 top-1/2 z-50 hidden md:flex transform -translate-y-1/2 h-auto w-auto flex-col gap-4 bg-white bg-opacity-40 text-black p-5 border-r-2 border-slate-200">
-        <NavbarButton to="/home">🏠 Hjem</NavbarButton>
-        <NavbarButton to="/about">💭 Om</NavbarButton>
+        <NavbarButton to="/">🏠 Hjem</NavbarButton>
+        <NavbarButton to="/login">💭 Test Login</NavbarButton>
         <NavbarButton to="/savings">💰 Sparing</NavbarButton>
-        <NavbarButton to="/share">👤 Konto</NavbarButton>
+        <NavbarButton to="/profile">👤 Konto</NavbarButton>
       </div>
 
       {/* Mobile Navbar */}

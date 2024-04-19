@@ -16,6 +16,7 @@ type CircleProps = {
   delay: number;
 };
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
+import Image from "next/image";
 
 const Login = () => {
   const [circleProps, setCircleProps] = useState<CircleProps[]>([]);
@@ -35,7 +36,7 @@ const Login = () => {
     setCircleProps(circles);
   }, []);
 
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
 
   const changeToggle = () => {
     setToggle(!toggle);
@@ -43,7 +44,7 @@ const Login = () => {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center h-screen bg-white"
+      className="flex flex-col  items-center justify-center h-screen bg-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -80,9 +81,18 @@ const Login = () => {
       </motion.div>
 
       <div className="z-10">
-        <h1 className="text-3xl font-mono mb-12 text-black  text-center ">
-          Sparesti
-        </h1>
+        <div className="">
+          <Image
+            src="/logo.png"
+            width={200}
+            height={200}
+            alt="logo "
+            className="mx-auto"
+          />
+          <h1 className="text-3xl font-mono mb-12 text-black  text-center ">
+            Sparesti
+          </h1>
+        </div>
         <div className="flex justify-around w-full max-w-4xl">
           <button
             onClick={() => changeToggle()}
