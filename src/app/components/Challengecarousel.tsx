@@ -1,4 +1,5 @@
 import Challengecard from './Challengecard';
+import ChallengecardAddButton from './ChallengecardAddButton';
 
 const Challengecarousel = () => {
   // Define an array of challenge data
@@ -16,7 +17,7 @@ const Challengecarousel = () => {
   ];
 
   return (
-    <div className="flex self-start w-screen overflow-x-scroll overflow-y-hidden sm:pr-48">
+    <div className="flex self-start w-screen overflow-x-scroll overflow-y-hidden">
       {/* Map over the challenges array to render Challengecard components */}
       {challenges.map((challenge, index) => (
         <div key={index} className="flex-none">
@@ -28,7 +29,11 @@ const Challengecarousel = () => {
             days={challenge.days}
           />
         </div>
-      ))}
+      ))
+      }
+      <div className='h-100 m-4'>
+      <ChallengecardAddButton />
+      </div>
     </div>
   );
 };
