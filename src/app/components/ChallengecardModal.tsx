@@ -4,25 +4,48 @@ import ChallengecardModalButton from './ChallengecardModalButton';
 type ChallengecardModalProps = {
     onClose: () => void;
     challengeText: string;
+    challengeStartDate: Date;
+    challengeEndDate: Date;
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText }) => {
-    const [currentMonth, setCurrentMonth] = useState<number>(1); // January
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate }) => {
+    const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth()+1); // January
     const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
     
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
     };
 
-    const generateDates = (month: number, year: number) => {
-        const startDate = new Date(year, month - 1, 1).getDay(); // Start day of the month
-        const endDate = new Date(year, month, 0).getDate(); // Last day of the month
-        const dates = Array.from({ length: startDate === 0 ? 6 : startDate - 1 }, () => 0); // Fill with empty dates for start
-        for (let i = 1; i <= endDate; i++) {
-            dates.push(i);
+    const generateDates = (month: number, year: number, startDate: Date, endDate: Date) => {
+        const startDay = new Date(year, month - 1, 1);
+        const endDay = new Date(year, month, 0);
+        const startOffset = startDay.getDay(); // Start day of the month
+        const endOffset = endDay.getDay(); // End day of the month
+    
+        const dates = [];
+    
+        for (let i = 1; i <= endDay.getDate(); i++) {
+            const currentDate = new Date(year, month - 1, i);
+    
+            if (currentDate >= startDate && currentDate <= endDate) {
+                dates.push({ date: i, enabled: true });
+            } else {
+                dates.push({ date: i, enabled: false });
+            }
         }
+    
+        // Fill with empty dates for start and end offsets
+        for (let i = 0; i < startOffset; i++) {
+            dates.unshift({ date: 0, enabled: false });
+        }
+    
+        for (let i = endOffset; i < 6; i++) {
+            dates.push({ date: 0, enabled: false });
+        }
+    
         return dates;
     };
+    
 
     const changeMonth = (increment: number) => {
         let newMonth = currentMonth + increment;
@@ -48,40 +71,55 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
                     {challengeText}
                 </div>
                 <div className="flex justify-between m-4 font-semibold">
-                    <button onClick={() => changeMonth(-1)}>Prev</button>
+                    <button 
+                        onClick={() => changeMonth(-1)} 
+                        disabled={currentMonth === challengeStartDate.getMonth()+1}
+                        className={currentMonth === challengeStartDate.getMonth()+1 ? "opacity-50 cursor-not-allowed" : ""}
+                    >
+                        Prev
+                    </button>
                     <div>
                         {`${new Date(currentYear, currentMonth - 1).toLocaleString('default', { month: 'long' })} ${currentYear}`}
                     </div>
-                    <button onClick={() => changeMonth(1)}>Next</button>
+                    <button 
+                        onClick={() => changeMonth(1)} 
+                        disabled={currentMonth === challengeEndDate.getMonth()+1}
+                        className={currentMonth ===  challengeEndDate.getMonth()+1 ? "opacity-50 cursor-not-allowed" : ""}
+                    >
+                        Next
+                    </button>
                 </div>
                 <div className="flex justify-center">
-                    <div className="grid grid-cols-7 md:text-base text-sm p-4 sm:gap-0" style={{ maxWidth: 'max-content' }}>
+                    <div className="grid grid-cols-7 bg-gray-100 shadow-md rounded-lg md:text-base text-sm p-4 sm:gap-0" style={{ maxWidth: 'max-content' }}>
                         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
                             <div key={day} className="flex-none sm:p-0 text-center">
                                 {day}
                             </div>
                         ))}
-                        {generateDates(currentMonth, currentYear).map((date, index) => (
+                        {generateDates(currentMonth, currentYear, challengeStartDate, challengeEndDate).map((day, index) => (
                             <div key={index} className="flex-none sm:p-0 text-center">
-                                {date ? (
-                                    <ChallengecardModalButton 
-                                        text={`${date}.`}
-                                    />
-                                ) : (
-                                    <div className="opacity-0">{date}</div>
-                                )}
+                                <div className={day.enabled ? "" : "opacity-10 cursor-not-allowed pointer-events-none"}>
+                                    {day.date ? (
+                                        <ChallengecardModalButton 
+                                            text={`${day.date}.`}
+                                        />
+                                    ) : (
+                                        <div className="opacity-0">{day.date}</div>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className="w-full flex justify-center">
-                    <div className="border-2 border-red-400 text-red-400 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
+                    <div className="border-2 bg-white border-red-600 text-red-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
                         Forlat utfordring
                     </div>
                 </div>
             </div>
         </div>
     );
+    
 };
 
 export default ChallengecardModal;
