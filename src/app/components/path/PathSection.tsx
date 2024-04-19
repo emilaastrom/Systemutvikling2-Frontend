@@ -7,6 +7,7 @@ export default function PathSection() {
     const sectionRef = useRef<HTMLElement | null>(null);
     const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
     const [position, setPosition] = useState(0);
+    const [lastY, setLastY] = useState(0);
 
     useEffect(() => {
         const section = sectionRef.current;
@@ -55,25 +56,21 @@ export default function PathSection() {
     useEffect(() => {
         const section = sectionRef.current;
 
-        let startY: number;
-
         const handleTouchStart = (event: TouchEvent) => {
-            startY = event.touches[0].clientY;
+            setLastY(event.touches[0].clientY);
         };
 
         const handleTouchMove = (event: TouchEvent) => {
-            if (!event.cancelable) {
-                return;
-            }
-            event.preventDefault();
-            let newPosition = startY - event.touches[0].clientY;
+            if (event.cancelable) event.preventDefault();
+            const deltaY = lastY - event.touches[0].clientY;
+            let newPosition = position + deltaY;
             setPosition(newPosition);
-            startY = event.touches[0].clientY;
+            setLastY(event.touches[0].clientY);
         };
 
         if (section) {
-            section.addEventListener('touchstart', handleTouchStart);
-            section.addEventListener('touchmove', handleTouchMove);
+            section.addEventListener('touchstart', handleTouchStart, { passive: false });
+            section.addEventListener('touchmove', handleTouchMove, { passive: false });
         }
 
         return () => {
@@ -82,7 +79,7 @@ export default function PathSection() {
                 section.removeEventListener('touchmove', handleTouchMove);
             }
         };
-    }, [sectionRef]);
+    }, [sectionRef, position, lastY]);
 
     return (
         <section className="w-full h-full" ref={sectionRef} style={{ backgroundColor: "#9cc458" }}>
