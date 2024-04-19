@@ -14,12 +14,13 @@ const Navbar = () => {
     <div>
       {/* Desktop Navbar */}
 
-      <div className="fixed left-0 top-1/2 z-10 hidden md:flex transform -translate-y-1/2 h-auto w-auto flex-col gap-4 bg-white bg-opacity-40 text-black p-5 border-r-2 border-slate-200">
+      <div className="fixed left-0 top-1/2 z-10 hidden md:flex transform -translate-y-1/2 h-70 w-auto flex-col gap-4 text-black p-5 border-r-2 border-slate-200">
         <NavbarButton to="/">🏠 Hjem</NavbarButton>
         <NavbarButton to="/about">💭 Om</NavbarButton>
         <NavbarButton to="/savings">💰 Sparing</NavbarButton>
         <NavbarButton to="/profile">👤 Konto</NavbarButton>
       </div>
+
 
       {/* Mobile Navbar */}
 
