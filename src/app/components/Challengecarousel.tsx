@@ -5,7 +5,7 @@ const Challengecarousel = () => {
   // Define an array of challenge data
   const challenges = [
     { name: 'Drikk kun 4 kopper kaffe på sit kafeen denne uka eller noe sånt', current: 1, max: 4, days:2, startDate: new Date(2024, 1, 25), endDate: new Date(2024, 2, 3) },
-    { name: 'Challenge 2', current: 2, max: 10, days:2, startDate: new Date(2024, 1, 3), endDate: new Date(2024, 1, 25)  },
+    { name: 'Challenge 2', current: 2, max: 10, days:2, startDate: new Date(2024, 0, 5), endDate: new Date(2025, 5, 25)  },
     { name: 'Challenge 3', current: 7, max: 10, days:2, startDate: new Date(2024, 6, 15), endDate: new Date(2024, 6, 22)  },
     { name: 'Challenge 4', current: 4, max: 10, days:2, startDate: new Date(2024, 0, 25), endDate: new Date(2024, 2, 3)  },
     { name: 'Challenge 5', current: 5, max: 10, days:2, startDate: new Date(2024, 1, 25), endDate: new Date(2024, 2, 3)  },

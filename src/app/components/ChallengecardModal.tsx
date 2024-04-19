@@ -9,7 +9,7 @@ type ChallengecardModalProps = {
 };
 
 const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate }) => {
-    const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth()+1); // January
+    const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth()+1); 
     const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
     
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -73,8 +73,8 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
                 <div className="flex justify-between m-4 font-semibold">
                     <button 
                         onClick={() => changeMonth(-1)} 
-                        disabled={currentMonth === challengeStartDate.getMonth()+1}
-                        className={currentMonth === challengeStartDate.getMonth()+1 ? "opacity-50 cursor-not-allowed" : ""}
+                        disabled={currentYear === challengeStartDate.getFullYear() && currentMonth === challengeStartDate.getMonth()+1}
+                        className={currentYear === challengeStartDate.getFullYear() && currentMonth === challengeStartDate.getMonth()+1 ? "opacity-50 cursor-not-allowed" : ""}
                     >
                         Prev
                     </button>
@@ -83,14 +83,15 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
                     </div>
                     <button 
                         onClick={() => changeMonth(1)} 
-                        disabled={currentMonth === challengeEndDate.getMonth()+1}
-                        className={currentMonth ===  challengeEndDate.getMonth()+1 ? "opacity-50 cursor-not-allowed" : ""}
+                        disabled={currentYear === challengeEndDate.getFullYear() && currentMonth === challengeEndDate.getMonth()+1}
+                        className={currentYear === challengeEndDate.getFullYear() && currentMonth === challengeEndDate.getMonth()+1 ? "opacity-50 cursor-not-allowed" : ""}
                     >
                         Next
                     </button>
+
                 </div>
                 <div className="flex justify-center">
-                    <div className="grid grid-cols-7 bg-gray-100 shadow-md rounded-lg md:text-base text-sm p-4 sm:gap-0" style={{ maxWidth: 'max-content' }}>
+                    <div className="grid grid-cols-7 bg-gray-100 shadow-md rounded-lg md:text-base text-sm p-4 sm:gap-0 h-96" style={{ maxWidth: 'max-content' }}>
                         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
                             <div key={day} className="flex-none sm:p-0 text-center">
                                 {day}
