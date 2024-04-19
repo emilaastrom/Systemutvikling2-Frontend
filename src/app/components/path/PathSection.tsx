@@ -6,8 +6,11 @@ import { Dimensions } from "@/util/types/dimensions";
 export default function PathSection() {
     const sectionRef = useRef<HTMLElement | null>(null);
     const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
-    const [position, setPosition] = useState(0);
+    const position = useRef(0);
+    const velocity = useRef(0);
     const [lastY, setLastY] = useState(0);
+    const [lastTime, setLastTime] = useState(0);
+    const [animationFrameId, setAnimationFrameId] = useState(0);
 
     useEffect(() => {
         const section = sectionRef.current;
@@ -38,8 +41,13 @@ export default function PathSection() {
 
         const handleWheel = (event: WheelEvent) => {
             event.preventDefault();
-            let newPosition = position + event.deltaY;
-            setPosition(newPosition);
+            const currentTime = event.timeStamp;
+            const deltaY = event.deltaY;
+
+            velocity.current = deltaY / (currentTime - lastTime) * 12;
+            position.current += deltaY;
+
+            setLastTime(currentTime);
         };
 
         if (section) {
@@ -51,35 +59,63 @@ export default function PathSection() {
                 section.removeEventListener('wheel', handleWheel);
             }
         };
-    }, [sectionRef, position]);
+    }, [sectionRef, lastTime]);
 
     useEffect(() => {
         const section = sectionRef.current;
 
         const handleTouchStart = (event: TouchEvent) => {
             setLastY(event.touches[0].clientY);
+            setLastTime(event.timeStamp);
         };
 
         const handleTouchMove = (event: TouchEvent) => {
             if (event.cancelable) event.preventDefault();
-            const deltaY = lastY - event.touches[0].clientY;
-            let newPosition = position + deltaY;
-            setPosition(newPosition);
-            setLastY(event.touches[0].clientY);
+            const currentY = event.touches[0].clientY;
+            const currentTime = event.timeStamp;
+
+            const deltaY = lastY - currentY;
+            velocity.current = deltaY / (currentTime - lastTime) * 12;
+            position.current += deltaY;
+
+            setLastY(currentY);
+            setLastTime(currentTime);
+        };
+
+        const handleTouchEnd = () => {
+            const friction = 0.95;
+            const threshold = 0.01;
+
+            const applyMomentum = () => {
+                position.current += velocity.current;
+
+                velocity.current *= friction;
+
+                if (Math.abs(velocity.current) > threshold) {
+                    setAnimationFrameId(requestAnimationFrame(applyMomentum));
+                }
+            };
+
+            setAnimationFrameId(requestAnimationFrame(applyMomentum));
         };
 
         if (section) {
             section.addEventListener('touchstart', handleTouchStart, { passive: false });
             section.addEventListener('touchmove', handleTouchMove, { passive: false });
+            section.addEventListener('touchend', handleTouchEnd, { passive: false });
         }
 
         return () => {
             if (section) {
                 section.removeEventListener('touchstart', handleTouchStart);
                 section.removeEventListener('touchmove', handleTouchMove);
+                section.removeEventListener('touchend', handleTouchEnd);
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
             }
         };
-    }, [sectionRef, position, lastY]);
+    }, [sectionRef, velocity, lastY, lastTime, animationFrameId]);
 
     return (
         <section className="w-full h-full" ref={sectionRef} style={{ backgroundColor: "#9cc458" }}>
