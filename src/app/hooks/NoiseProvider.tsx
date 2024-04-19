@@ -1,12 +1,12 @@
 import React, {useCallback, ReactNode, useRef, MutableRefObject, useState, useEffect} from "react";
 import alea from "alea";
 import { createNoise2D, NoiseFunction2D } from "simplex-noise";
-import { Dimensions } from "@/util/types/dimensions";
+import { Vector } from "@/util/types/vector";
 
 interface NoiseProviderProps {
     children: ReactNode;
     seed: string;
-    dimensions: Dimensions;
+    dimensions: Vector;
     position: MutableRefObject<number>;
     amplitude: number;
     period: number;
@@ -65,8 +65,8 @@ const NoiseProvider: React.FC<NoiseProviderProps> = (
     ) => amplitude * func(period * (x + phaseShift), 0) + verticalShift;
 
     const pathFunction = useCallback((x: number) => {
-        return waveFunction(noise.current, x, amplitude, period, positionState, dimensions.width / 2);
-    }, [noise, amplitude, period, positionState, dimensions.width]);
+        return waveFunction(noise.current, x, amplitude, period, positionState, dimensions.x / 2);
+    }, [noise, amplitude, period, positionState, dimensions.x]);
 
     return (
         <NoiseContext.Provider value={{ noise, createNoise, pathFunction }}>

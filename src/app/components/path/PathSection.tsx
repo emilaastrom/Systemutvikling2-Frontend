@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Vector } from "@/util/types/vector";
 import NoiseProvider from "@/app/hooks/NoiseProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
-import { Dimensions } from "@/util/types/dimensions";
+import CheckpointContainer from "@/app/components/path/CheckpointContainer";
 
 export default function PathSection() {
     const sectionRef = useRef<HTMLElement | null>(null);
-    const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
+    const [dimensions, setDimensions] = useState<Vector>({ x: 0, y: 0 });
     const position = useRef(0);
     const velocity = useRef(0);
     const [lastY, setLastY] = useState(0);
@@ -20,8 +21,8 @@ export default function PathSection() {
                 return;
             }
             setDimensions({
-                width: entries[0].contentRect.width,
-                height: entries[0].contentRect.height,
+                x: entries[0].contentRect.width,
+                y: entries[0].contentRect.height,
             });
         });
 
@@ -118,7 +119,7 @@ export default function PathSection() {
     }, [sectionRef, velocity, lastY, lastTime, animationFrameId]);
 
     return (
-        <section className="w-full h-full" ref={sectionRef} style={{ backgroundColor: "#9cc458" }}>
+        <section className="w-full h-full overflow-hidden relative" ref={sectionRef} style={{ backgroundColor: "#9cc458" }}>
             <NoiseProvider
                 seed={"seed"}
                 dimensions={dimensions}
@@ -131,6 +132,10 @@ export default function PathSection() {
                     color={"#C3995C"}
                     stepLength={5}
                     maxOffset={40}
+                />
+                <CheckpointContainer
+                    dimensions={dimensions}
+                    position={position}
                 />
             </NoiseProvider>
         </section>
