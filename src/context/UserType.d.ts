@@ -20,4 +20,5 @@ export type AuthContextType = {
     email: string,
     phone: string
   ) => Promise<void>;
+  verifyEmail: (code: string) => Promise<void>;
 };

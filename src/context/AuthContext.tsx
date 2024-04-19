@@ -76,6 +76,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const verifyEmail = async (code: string) => {
+    const response = await fetch(
+      `http://localhost:8080/api/v1/auth/verify?token=${code}`,
+      {
+        method: "GET",
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      setAuth({ token: data.token });
+    } else {
+      throw new Error("Verification failed.");
+    }
+  };
+
   // Load the user and token from local storage
   useEffect(() => {
     const tokenString = localStorage.getItem("token");
@@ -88,7 +104,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...auth, login, logout, register }}>
+    <AuthContext.Provider
+      value={{ ...auth, login, logout, register, verifyEmail }}
+    >
       {children}
     </AuthContext.Provider>
   );
