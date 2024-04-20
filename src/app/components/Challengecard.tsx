@@ -5,14 +5,12 @@ const Challengecard = ({
     challenge,
     current,
     max,
-    days,
     startDate,
     endDate
 }: {
     challenge: string;
     current: number;
     max: number;
-    days: number;
     startDate: Date;
     endDate: Date;
 }) => {
@@ -24,6 +22,14 @@ const Challengecard = ({
     const handleCardClick = () => {
         setIsModalOpen(true);
     };
+    const calculateDaysLeft = (endDate: Date) => {
+        const today = new Date();
+        const diffTime = endDate.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
+
+    const days = calculateDaysLeft(endDate);
 
     return (
         <>
