@@ -7,7 +7,7 @@ interface NoiseProviderProps {
     children: ReactNode;
     seed: string;
     dimensions: Vector;
-    position: MutableRefObject<number>;
+    position: number;
     amplitude: number;
     period: number;
 }
@@ -44,12 +44,6 @@ const NoiseProvider: React.FC<NoiseProviderProps> = (
     const prng = alea(seed);
     let noise = useRef(createNoise2D(prng));
 
-    const [positionState, setPositionState] = useState(position.current);
-
-    useEffect(() => {
-        setPositionState(position.current);
-    }, [position.current]);
-
     const createNoise = useCallback((seed: string) => {
         const prng = alea(seed);
         noise.current = createNoise2D(prng);
@@ -65,8 +59,8 @@ const NoiseProvider: React.FC<NoiseProviderProps> = (
     ) => amplitude * func(period * (x + phaseShift), 0) + verticalShift;
 
     const pathFunction = useCallback((x: number) => {
-        return waveFunction(noise.current, x, amplitude, period, positionState, dimensions.x / 2);
-    }, [noise, amplitude, period, positionState, dimensions.x]);
+        return waveFunction(noise.current, x, amplitude, period, position, dimensions.x / 2);
+    }, [noise, amplitude, period, position, dimensions.x]);
 
     return (
         <NoiseContext.Provider value={{ noise, createNoise, pathFunction }}>

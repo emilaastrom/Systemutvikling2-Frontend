@@ -1,10 +1,10 @@
-import React, {MutableRefObject, useContext} from "react";
+import React, { useContext, useState } from "react";
 import Checkpoint from "@/app/components/path/Checkpoint";
 import { NoiseContext } from "@/app/hooks/NoiseProvider";
 import {Vector} from "@/util/types/vector";
 
 
-export default function CheckpointContainer({dimensions, position}: {dimensions: Vector, position: MutableRefObject<number> }) {
+export default function CheckpointContainer({dimensions, position}: {dimensions: Vector, position: number }) {
     const completedChallenges = [
         {
             id: 1,
@@ -29,16 +29,73 @@ export default function CheckpointContainer({dimensions, position}: {dimensions:
         {
             id: 6,
             passed: true
-        }
+        },
+        {
+            id: 7,
+            passed: true
+        },
+        {
+            id: 8,
+            passed: true
+        },
+        {
+            id: 9,
+            passed: false
+        },
+        {
+            id: 10,
+            passed: true
+        },
+        {
+            id: 11,
+            passed: true
+        },
+        {
+            id: 12,
+            passed: true
+        },
+        {
+            id: 13,
+            passed: true
+        },
+        {
+            id: 14,
+            passed: false
+        },
+        {
+            id: 15,
+            passed: false
+        },
+        {
+            id: 16,
+            passed: true
+        },
+        {
+            id: 17,
+            passed: false
+        },
+        {
+            id: 18,
+            passed: true
+        },
+        {
+            id: 19,
+            passed: true
+        },
+        {
+            id: 20,
+            passed: true
+        },
         ];
 
     const { pathFunction } = useContext(NoiseContext);
+    const [size, setSize] = useState(40);
     const yIncrement = 80;
 
     const getCheckpointCoords = (index: number) => {
-        const y = yIncrement * index - position.current;
+        const y = -yIncrement * index - position + dimensions.y;
         const x = pathFunction(y);
-        return { x: x, y: y }
+        return { x: x - (size / 2), y: y - (size / 2)}
     }
 
     return (
@@ -48,7 +105,7 @@ export default function CheckpointContainer({dimensions, position}: {dimensions:
                     key={challenge.id}
                     passed={challenge.passed}
                     coords={getCheckpointCoords(index)}
-                    size={40}
+                    size={size}
                 />
             ))}
         </div>
