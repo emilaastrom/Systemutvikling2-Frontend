@@ -24,7 +24,7 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
             <div className='text-3xl'>
             {goal}
             </div>
-            <div className='relative h-48 flex mt-2 justify-center items-center'>
+            <div className='relative h-48 flex justify-center items-center'>
                 <div className="absolute">
                     {/* Gris transparent image */}
                     <Image 
