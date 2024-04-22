@@ -9,7 +9,7 @@ export default function PathSection() {
   const positionRef = useRef(0);
   const velocityRef = useRef(0);
 
-  const [dimensions, setDimensions] = useState<Vector>({ x: window.innerWidth, y: window.innerHeight });
+  const [dimensions, setDimensions] = useState<Vector>({ x: 0, y: 0 });
   const [position, setPosition] = useState(0)
 
   const [lastY, setLastY] = useState(0);
@@ -145,9 +145,9 @@ export default function PathSection() {
           dimensions={dimensions}
           color={"#C3995C"}
           stepLength={5}
-          maxOffset={40}
+          width={50}
         />
-        <CheckpointContainer dimensions={dimensions} position={position} />
+        <CheckpointContainer />
       </NoiseProvider>
     </section>
   );

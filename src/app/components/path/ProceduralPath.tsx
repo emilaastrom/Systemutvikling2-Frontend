@@ -8,25 +8,27 @@ export default function ProceduralPath(
         dimensions,
         color,
         stepLength,
-        maxOffset,
+        width,
     }: {
         dimensions: Vector;
         color: string;
         stepLength: number;
-        maxOffset: number;
+        width: number;
     }) {
 
-    const { pathFunction } = useContext(NoiseContext);
+    const { bounds, pathFunction, worldToScreen } = useContext(NoiseContext);
     const [pathData, setPathData] = useState("");
 
     const generatePathData = useCallback(() => {
-        const y0 = dimensions.y + maxOffset / 2;
-        let pathData = `M ${pathFunction(y0)},${y0} `;
-        for (let y = y0 - stepLength; y >= -maxOffset / 2; y -= stepLength) {
-            pathData += `L ${pathFunction(y)},${y} `;
+        const t0 = bounds.x;
+        const p0 = worldToScreen(pathFunction(t0));
+        let pathData = `M ${p0.x},${p0.y} `;
+        for (let t = t0 - (width / 2); t < bounds.y + (width / 2); t += stepLength) {
+            const p = worldToScreen(pathFunction(t));
+            pathData += `L ${p.x},${p.y} `;
         }
         return pathData;
-    }, [dimensions, pathFunction, maxOffset, stepLength]);
+    }, [bounds, pathFunction, worldToScreen, stepLength, width]);
 
     useEffect(() => {
         setPathData(generatePathData());
@@ -38,7 +40,7 @@ export default function ProceduralPath(
                 d={pathData}
                 fill={"none"}
                 stroke={color}
-                strokeWidth={50}
+                strokeWidth={width}
                 strokeLinecap={"round"}
             />
         </motion.svg>

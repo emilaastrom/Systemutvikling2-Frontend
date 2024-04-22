@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import Checkpoint from "@/app/components/path/Checkpoint";
 import { NoiseContext } from "@/app/hooks/NoiseProvider";
 import {Vector} from "@/util/types/vector";
 
 
-export default function CheckpointContainer({dimensions, position}: {dimensions: Vector, position: number }) {
+export default function CheckpointContainer() {
     const completedChallenges = [
         {
             id: 1,
@@ -88,26 +88,38 @@ export default function CheckpointContainer({dimensions, position}: {dimensions:
         },
         ];
 
-    const { pathFunction } = useContext(NoiseContext);
+    const { bounds, pathFunction, worldToScreen } = useContext(NoiseContext);
     const [size, setSize] = useState(40);
     const yIncrement = 80;
 
     const getCheckpointCoords = (index: number) => {
-        const y = -yIncrement * index - position + dimensions.y;
-        const x = pathFunction(y);
-        return { x: x - (size / 2), y: y - (size / 2)}
+        const t = index * yIncrement;
+        const worldPos = pathFunction(t);
+
+        if (worldPos.y + size > bounds.x && worldPos.y - size < bounds.y) {
+            const screenPos = worldToScreen(worldPos);
+            return { x: screenPos.x - (size / 2), y: screenPos.y - (size / 2)};
+        }
+        else {
+            return null;
+        }
     }
 
     return (
         <div>
-            {completedChallenges.map((challenge, index) => (
-                <Checkpoint
-                    key={challenge.id}
-                    passed={challenge.passed}
-                    coords={getCheckpointCoords(index)}
-                    size={size}
-                />
-            ))}
+            {completedChallenges
+                .map((challenge, index) => {
+                    const coords = getCheckpointCoords(index);
+                    if (coords) {
+                        return <Checkpoint
+                            key={challenge.id}
+                            passed={challenge.passed}
+                            coords={coords}
+                            size={size}
+                        />
+                    }
+                })
+            }
         </div>
     );
 }
