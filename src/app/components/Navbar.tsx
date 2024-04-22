@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Alumni_Sans_Collegiate_One } from "next/font/google";
 import NavbarButton from "./Navbarbutton";
+import { Alumni_Sans_Collegiate_One } from "next/font/google";
 const Navbar = () => {
   const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -12,23 +12,14 @@ const Navbar = () => {
   return (
     <div>
       {/* Desktop Navbar */}
-      <div className="fixed left-5 text-2xl rounded-xl w-auto text-left h-auto m-2 p-2 bg-white text-black bg-opacity-100 ">
-        <h2 className="text-xl">🔥 3</h2>
-        <div className="text-xs">STREAK</div>
-      </div>
-      <div className="fixed right-5 text-2xl text-center w-auto text-black text-left text-base h-auto m-2 p-2 rounded-xl bg-white bg-opacity-100">
-        <span className="text-xl">💸</span>
-        <span className="text-xl">300</span>
-        <span className="text-xs"> kr</span>
-        <h2 className="text-xs">OPPSPART</h2>
-      </div>
 
-      <div className="fixed left-0 top-1/2 z-50 hidden md:flex transform -translate-y-1/2 h-auto w-auto flex-col gap-4 bg-white bg-opacity-40 text-black p-5 border-r-2 border-slate-200">
+      <div className="fixed left-0 top-1/2 z-10 hidden md:flex transform -translate-y-1/2 h-70 w-auto flex-col gap-4 text-black p-5 border-r-2 border-slate-200">
         <NavbarButton to="/">🏠 Hjem</NavbarButton>
         <NavbarButton to="/login">💭 Test Login</NavbarButton>
         <NavbarButton to="/savings">💰 Sparing</NavbarButton>
         <NavbarButton to="/profile">👤 Konto</NavbarButton>
       </div>
+
 
       {/* Mobile Navbar */}
 
@@ -41,10 +32,10 @@ const Navbar = () => {
         animate="visible"
         variants={navbarVariants}
       >
-        <NavbarButton to="/home">🏠</NavbarButton>
+        <NavbarButton to="/">🏠</NavbarButton>
         <NavbarButton to="/about">💭</NavbarButton>
         <NavbarButton to="/savings">💰</NavbarButton>
-        <NavbarButton to="/share">👤</NavbarButton>
+        <NavbarButton to="/profile">👤</NavbarButton>
       </motion.div>
     </div>
   );

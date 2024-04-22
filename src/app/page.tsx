@@ -8,23 +8,10 @@ import Confetti from "react-confetti";
 import Challengecarousel from "./components/Challengecarousel";
 
 export default function Home() {
-  const [progress, setProgress] = useState(230);
-
-  const [showConfetti, setShowConfetti] = useState(false);
-
   return (
-    <main className="bg-white w-screen h-screen">
-      {showConfetti && (
-        <Confetti
-          width={window.innerWidth}
-          gravity={0.4}
-          initialVelocityY={40}
-          height={window.innerHeight}
-        />
-      )}
-
-      <div className="flex-1 flex flex-col items-center pt-12 h-screen">
-        <div className="">
+    <main className="bg-white w-full h-screen flex">
+      <div className="flex-1 flex flex-col items-center mt-12 flex-grow ">
+        <div>
           <Challengecarousel />
         </div>
         <PathSection />
