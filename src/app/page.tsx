@@ -24,6 +24,8 @@ export default function Home() {
       )}
 
       <div className="flex-1 flex flex-col items-center pt-12">
+        <Challengecarousel />
+
         <div className="w-2/5 mt-12 p-5">
           <ProgressBar
             goal={1000}
@@ -39,7 +41,6 @@ export default function Home() {
         >
           Add 100
         </button>
-        <Challengecarousel />
       </div>
     </main>
   );
