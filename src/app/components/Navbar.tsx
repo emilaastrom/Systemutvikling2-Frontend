@@ -36,7 +36,7 @@ const Navbar = () => {
         className="flex md:hidden m-3 justify-around items-center fixed inset-x-0 bottom-0 bg-opacity-80 
 			bg-slate-200 backdrop-blur-5px transform-gpu
 			border-black p-3 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]
-			z-20"
+			z-10"
         initial="hidden"
         animate="visible"
         variants={navbarVariants}
