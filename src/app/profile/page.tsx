@@ -1,6 +1,8 @@
 "use client";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import VolumeSlider from "../components/settings/VolumeSlider";
+import DarkModeToggle from "../components/settings/DarkModeToggle";
 
 interface SidebarItemProps {
   title: string;
@@ -38,6 +40,16 @@ const Home: React.FC = () => {
   const [content, setContent] = useState<string>("Konto");
   const username: string = "epost@mail.com";
   const realName: string = "Ola Nordmann";
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  useEffect(() => {
+    const names = realName.split(" ");
+    if (names.length > 0) {
+      setFirstName(names[0]); // Set the first name
+      setLastName(names.slice(1).join(" ")); // Join the rest as the last name
+    }
+  }, []);
 
   const renderContent = () => {
     switch (content) {
@@ -92,12 +104,56 @@ const Home: React.FC = () => {
         );
       case "Innstillinger":
         return (
-          <div>
-            <input
-              type="text"
-              placeholder="instilling"
-              className="border-2 rounded-lg p-1 border-green-400 m-10"
-            />
+          <div className="ml-8 m-8 h-auto">
+            <div id="nameBox" className="mb-6 w-2/3 md:w-1/3">
+              <div className="mb-4">
+                <label
+                  htmlFor="first-name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Fornavn:
+                </label>
+                <input
+                  type="text"
+                  id="first-name"
+                  placeholder={firstName}
+                  className="mt-1 border-2 rounded-lg px-4 py-2 border-green-400 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  style={{ textAlign: "left" }}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="last-name"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Etternavn:
+                </label>
+                <input
+                  type="text"
+                  id="last-name"
+                  placeholder={lastName}
+                  className="mt-1 border-2 rounded-lg px-4 py-2 border-green-400 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  style={{ textAlign: "left" }}
+                />
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <VolumeSlider />
+            </div>
+
+            <div id="darkModeToggle">
+              <DarkModeToggle />
+            </div>
+
+            <div className="flex items-center space-x-4 pt-4">
+              <button className="bg-green-500 hover:bg-green-600 text-white rounded-lg p-2 border-green-600">
+                Lagre
+              </button>
+              <button className="bg-gray-300 hover:bg-gray-400 text-black rounded-lg p-2 border-gray-400">
+                Avbryt
+              </button>
+            </div>
           </div>
         );
       default:
@@ -106,8 +162,8 @@ const Home: React.FC = () => {
   };
 
   return (
-    <main className="bg-green-100 w-screen h-screen">
-      <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-4 h-auto py-20 md:px-40 px-4">
+    <main className="bg-green-100 w-screen h-fit pb-32 md:pb-0 md:h-screen flex flex-col">
+      <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 h-auto pt-20 md:px-48 px-4 w-screen">
         {/* Profile section */}
         <div className="flex justify-start items-center bg-white bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">
           <Image
@@ -149,12 +205,11 @@ const Home: React.FC = () => {
               isActive={content === "Innstillinger"}
             />
           </div>
-
           <LogoutButton />
         </div>
 
         {/* Main content */}
-        <div className="bg-white bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-96 rounded-lg shadow-lg overflow-y-auto">
+        <div className="bg-white bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-fit rounded-lg shadow-lg overflow-y-auto">
           {renderContent()}
         </div>
       </div>
