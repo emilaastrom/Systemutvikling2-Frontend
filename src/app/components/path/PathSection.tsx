@@ -52,38 +52,6 @@ export default function PathSection() {
         };
     }, [sectionRef, position]);
 
-    useEffect(() => {
-        const section = sectionRef.current;
-
-        let startY: number;
-
-        const handleTouchStart = (event: TouchEvent) => {
-            startY = event.touches[0].clientY;
-        };
-
-        const handleTouchMove = (event: TouchEvent) => {
-            if (!event.cancelable) {
-                return;
-            }
-            event.preventDefault();
-            let newPosition = startY - event.touches[0].clientY;
-            setPosition(newPosition);
-            startY = event.touches[0].clientY;
-        };
-
-        if (section) {
-            section.addEventListener('touchstart', handleTouchStart);
-            section.addEventListener('touchmove', handleTouchMove);
-        }
-
-        return () => {
-            if (section) {
-                section.removeEventListener('touchstart', handleTouchStart);
-                section.removeEventListener('touchmove', handleTouchMove);
-            }
-        };
-    }, [sectionRef]);
-
     return (
         <section className="w-full h-full" ref={sectionRef} style={{ backgroundColor: "#9cc458" }}>
             <NoiseProvider
