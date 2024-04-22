@@ -1,5 +1,5 @@
 "use client";
-
+import PathSection from "@/app/components/path/PathSection";
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
