@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import { useState } from "react";
 import ProgressBar from "./components/Progressbar";
 import Confetti from "react-confetti";
+import Challengecarousel from "./components/Challengecarousel";
 
 export default function Home() {
   const [progress, setProgress] = useState(230);
@@ -38,6 +39,7 @@ export default function Home() {
         >
           Add 100
         </button>
+        <Challengecarousel />
       </div>
     </main>
   );
