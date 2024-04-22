@@ -1,0 +1,76 @@
+import React, { useState } from "react";
+
+const VolumeControl = () => {
+  // Initialize the state with `useState`
+  const [volumeValue, setVolumeValue] = useState(50);
+
+  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Update the state with the new volume value from the slider
+    const newValue = parseInt(event.target.value); // Convert the value to a number
+    if (event.target.value === "" || isNaN(newValue)) {
+      setVolumeValue(0); // Set volume to 0 if input is empty or not a number
+    } else if (newValue >= 0 && newValue <= 100 && !isNaN(newValue)) {
+      // Ensure the value is a number within the range 0-100
+      setVolumeValue(newValue);
+    }
+  };
+
+  return (
+    <div>
+      <p>
+        Volum på lydeffekter:
+        <input
+          type="text"
+          value={volumeValue}
+          onChange={handleSliderChange}
+          className="ml-1 py-0 w-12 px-2 border-2 rounded-lg border-green-400 shadow-sm"
+          placeholder="Sett volum (0-100)"
+        />
+        %
+        <div className="md:w-1/3 w-2/3 pr-8 py-2">
+          <style>
+            {`
+        #volume-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 25px; /* Width of the handle */
+          height: 25px; /* Height of the handle */
+          background: #ffffff; /* Blue background */
+          border: 2px solid #4ADE80; /* White border */
+          cursor: pointer;
+          border-radius: 50%; /* Circular shape */
+        }
+        #volume-slider::-moz-range-thumb {
+          width: 25px;
+          height: 25px;
+          background: #ffffff;
+          border: 2px solid #4ADE80;
+          cursor: pointer;
+          border-radius: 50%;
+        }
+        #volume-slider::-ms-thumb {
+          width: 25px;
+          height: 25px;
+          background: #ffffff;
+          border: 2px solid #4ADE80;
+          cursor: pointer;
+          border-radius: 50%;
+        }
+      `}
+          </style>
+          <input
+            type="range"
+            id="volume-slider"
+            className="appearance-none w-full h-3 bg-gray-300 rounded-md mt-2"
+            min="0"
+            max="100"
+            value={volumeValue}
+            onChange={handleSliderChange}
+          />
+        </div>
+      </p>
+    </div>
+  );
+};
+
+export default VolumeControl;
