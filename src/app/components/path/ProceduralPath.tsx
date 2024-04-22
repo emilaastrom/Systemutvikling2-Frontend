@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { Dimensions } from "@/util/types/dimensions";
+import { Vector } from "@/util/types/vector";
 import { NoiseContext } from "@/app/hooks/NoiseProvider";
 
 export default function ProceduralPath(
@@ -10,7 +10,7 @@ export default function ProceduralPath(
         stepLength,
         maxOffset,
     }: {
-        dimensions: Dimensions;
+        dimensions: Vector;
         color: string;
         stepLength: number;
         maxOffset: number;
@@ -20,7 +20,7 @@ export default function ProceduralPath(
     const [pathData, setPathData] = useState("");
 
     const generatePathData = useCallback(() => {
-        const y0 = dimensions.height + maxOffset / 2;
+        const y0 = dimensions.y + maxOffset / 2;
         let pathData = `M ${pathFunction(y0)},${y0} `;
         for (let y = y0 - stepLength; y >= -maxOffset / 2; y -= stepLength) {
             pathData += `L ${pathFunction(y)},${y} `;
@@ -33,12 +33,13 @@ export default function ProceduralPath(
     }, [generatePathData]);
 
     return (
-        <motion.svg viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}>
+        <motion.svg viewBox={`0 0 ${dimensions.x} ${dimensions.y}`}>
             <motion.path
                 d={pathData}
                 fill={"none"}
                 stroke={color}
                 strokeWidth={50}
+                strokeLinecap={"round"}
             />
         </motion.svg>
     );

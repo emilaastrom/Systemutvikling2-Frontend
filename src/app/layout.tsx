@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import CustomHeader from "./components/Header";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,15 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <body>
-        <CustomHeader />
-        <div className="flex">
-          <Navbar />
-          <div> {children}</div>
-        </div>
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <body>
+          <CustomHeader />
+          <div>
+            <Navbar />
+            <div> {children}</div>
+          </div>
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

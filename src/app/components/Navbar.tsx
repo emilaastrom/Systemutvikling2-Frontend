@@ -3,7 +3,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import NavbarButton from "./Navbarbutton";
 import { Alumni_Sans_Collegiate_One } from "next/font/google";
-
 const Navbar = () => {
   const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -16,7 +15,7 @@ const Navbar = () => {
 
       <div className="fixed left-0 top-1/2 z-10 hidden md:flex transform -translate-y-1/2 h-70 w-auto flex-col gap-4 text-black p-5 border-r-2 border-slate-200">
         <NavbarButton to="/">🏠 Hjem</NavbarButton>
-        <NavbarButton to="/about">💭 Om</NavbarButton>
+        <NavbarButton to="/login">💭 Test Login</NavbarButton>
         <NavbarButton to="/savings">💰 Sparing</NavbarButton>
         <NavbarButton to="/profile">👤 Konto</NavbarButton>
       </div>
