@@ -23,24 +23,11 @@ export default function Home() {
         />
       )}
 
-      <div className="flex-1 flex flex-col items-center pt-12">
-        <Challengecarousel />
-
-        <div className="w-2/5 mt-12 p-5">
-          <ProgressBar
-            goal={1000}
-            progress={progress}
-            goalName={"Trip to norway"}
-            milestones={[100, 500, 800]}
-            setShowConfetti={setShowConfetti}
-          />
+      <div className="flex-1 flex flex-col items-center pt-12 h-screen">
+        <div className="">
+          <Challengecarousel />
         </div>
-        <button
-          className="bg-black p-4 mt-10 rounded-xl hover:bg-red-300 "
-          onClick={() => setProgress(progress + 100)}
-        >
-          Add 100
-        </button>
+        <PathSection />
       </div>
     </main>
   );
