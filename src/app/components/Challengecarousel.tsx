@@ -2,7 +2,6 @@ import Challengecard from './Challengecard';
 import ChallengecardAddButton from './ChallengecardAddButton';
 
 const Challengecarousel = () => {
-  // Define an array of challenge data
   const challenges = [
     { name: 'Drikk kun 4 kopper kaffe på sit kafeen denne uka eller noe sånt', current: 1, max: 4, startDate: new Date(2024, 5, 25), endDate: new Date(2024, 6, 3) },
     { name: 'Challenge 2', current: 2, max: 10, startDate: new Date(2024, 4, 5), endDate: new Date(2024, 5, 1)  },
@@ -17,10 +16,8 @@ const Challengecarousel = () => {
   ];
   return (
     <div className="flex self-start w-screen overflow-x-scroll overflow-y-hidden">
-      {/* Map over the challenges array to render Challengecard components */}
       {challenges.map((challenge, index) => (
         <div key={index} className="flex-none">
-          {/* Use Challengecard component with challenge data */}
           <Challengecard 
             challenge={challenge.name}
             current={challenge.current}

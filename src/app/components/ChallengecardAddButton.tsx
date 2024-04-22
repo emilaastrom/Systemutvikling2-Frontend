@@ -27,7 +27,6 @@ const ChallengecardAddButton = () => {
                 </div>
             </div>
 
-            {/* Conditionally render ChallengecardModal */}
             {isModalOpen && <ChallengecardAddModal onClose={handleCloseModal} />}
         </>
     );

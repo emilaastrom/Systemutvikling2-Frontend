@@ -1,5 +1,4 @@
 import React from 'react';
-import ChallengecardModalButton from './ChallengecardModalButton';
 
 type ChallengecardModalProps = {
     onClose: () => void;
@@ -32,7 +31,6 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
 
     return (
         <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
-            {/* Modal content */}
             <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto">
                 <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center flex flex-col justify-center items-center font-semibold overflow-auto">
                     Ny utfordring?

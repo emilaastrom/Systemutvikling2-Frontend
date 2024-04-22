@@ -19,8 +19,8 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
     const generateDates = (month: number, year: number, startDate: Date, endDate: Date) => {
         const startDay = new Date(year, month - 1, 1);
         const endDay = new Date(year, month, 0);
-        const startOffset = startDay.getDay(); // Start day of the month
-        const endOffset = endDay.getDay(); // End day of the month
+        const startOffset = startDay.getDay(); 
+        const endOffset = endDay.getDay(); 
     
         const dates = [];
     
@@ -34,7 +34,6 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
             }
         }
     
-        // Fill with empty dates for start and end offsets
         for (let i = 0; i < startOffset; i++) {
             dates.unshift({ date: 0, enabled: false });
         }
@@ -65,7 +64,6 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
 
     return (
         <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
-            {/* Modal content */}
             <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto">
                 <div className="bg-green-200 p-4 rounded-t-lg w-full max-h-1/4 text-center flex flex-col justify-center items-center font-semibold overflow-auto">
                     {challengeText}
