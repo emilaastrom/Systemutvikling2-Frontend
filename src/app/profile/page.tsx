@@ -181,7 +181,7 @@ const Home: React.FC = () => {
             width={100}
             height={100}
             alt="Picture"
-            className="md:ml-10 ml-5 rounded-full border-2 border-green-200"
+            className="md:ml-10 ml-5 rounded-full border-2 border-green-200 dark:border-slate-700"
           ></Image>
           <div id="userInfo" className="flex-grow md:ml-10 ml-5">
             <h2 className="text-xl font-bold whitespace-nowrap">{realName}</h2>
@@ -198,7 +198,7 @@ const Home: React.FC = () => {
 
         {/* Left sidebar */}
         <div className="md:col-span-1 col-span-3 row-span-1 grid grid-cols-1 gap- dark:shadow-xl">
-          <div className="bg-white dark:bg-slate-500 bg-opacity-80 md:col-span-1 col-span-3 w-full md:row-span-3 rounded-lg shadow-lg flex flex-col justify-center items-center">
+          <div className="bg-white px-1 dark:bg-slate-500 bg-opacity-80 md:col-span-1 col-span-3 w-full md:row-span-3 rounded-lg shadow-lg flex flex-col justify-center items-center">
             <SidebarItem
               title="Konto"
               onClick={() => setContent("Konto")}

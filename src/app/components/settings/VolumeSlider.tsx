@@ -35,8 +35,8 @@ const VolumeControl = () => {
           appearance: none;
           width: 25px; /* Width of the handle */
           height: 25px; /* Height of the handle */
-          background: #ffffff; /* Blue background */
-          border: 2px solid #4ADE80; /* White border */
+          background: #ffffff;
+          border: 2px solid #5F8575;
           cursor: pointer;
           border-radius: 50%; /* Circular shape */
         }
@@ -44,7 +44,7 @@ const VolumeControl = () => {
           width: 25px;
           height: 25px;
           background: #ffffff;
-          border: 2px solid #4ADE80;
+          border: 2px solid #5F8575;
           cursor: pointer;
           border-radius: 50%;
         }
@@ -52,7 +52,7 @@ const VolumeControl = () => {
           width: 25px;
           height: 25px;
           background: #ffffff;
-          border: 2px solid #4ADE80;
+          border: 2px solid #5F8575;
           cursor: pointer;
           border-radius: 50%;
         }
@@ -65,6 +65,7 @@ const VolumeControl = () => {
             min="0"
             max="100"
             value={volumeValue}
+            step={5}
             onChange={handleSliderChange}
           />
         </div>
