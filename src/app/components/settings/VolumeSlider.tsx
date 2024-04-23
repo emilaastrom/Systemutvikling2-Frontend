@@ -10,7 +10,7 @@ const VolumeControl = () => {
     if (event.target.value === "" || isNaN(newValue)) {
       setVolumeValue(0); // Set volume to 0 if input is empty or not a number
     } else if (newValue >= 0 && newValue <= 100 && !isNaN(newValue)) {
-      // Ensure the value is a number within the range 0-100
+      // Ensure the value is a number within the range 0-100 before updating state
       setVolumeValue(newValue);
     }
   };
@@ -23,7 +23,7 @@ const VolumeControl = () => {
           type="text"
           value={volumeValue}
           onChange={handleSliderChange}
-          className="ml-1 py-0 w-12 px-2 border-2 rounded-lg border-green-400 dark:border-slate-500 dark:text-black shadow-sm text-center"
+          className="ml-1 w-12 border-2 rounded-lg border-green-400 dark:bg-slate-200 dark:border-slate-500 dark:text-black shadow-sm text-center"
           placeholder="Sett volum (0-100)"
         />
         %
@@ -61,7 +61,7 @@ const VolumeControl = () => {
           <input
             type="range"
             id="volume-slider"
-            className="appearance-none w-full h-3 bg-gray-300 dark:bg-gray-700 rounded-md mt-2"
+            className="appearance-none w-full h-3 bg-gray-300 dark:bg-gray-700 rounded-md"
             min="0"
             max="100"
             value={volumeValue}

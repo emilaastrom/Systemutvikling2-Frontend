@@ -17,7 +17,9 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
   return (
     <div
       className={`h-10 text-black my-1 dark:text-white dark:bg-slate-500 dark:hover:bg-white dark:hover:text-black flex w-full justify-center rounded-lg items-center hover:bg-green-100 hover:cursor-pointer ${
-        isActive ? "bg-green-200 hover:bg-green-200 dark:bg-slate-300 dark:text-black" : ""
+        isActive
+          ? "bg-green-200 hover:bg-green-200 dark:bg-slate-300 dark:text-black"
+          : ""
       }`}
       onClick={onClick}
     >
@@ -79,6 +81,14 @@ const Home: React.FC = () => {
       case "Badges":
         return (
           <div className="flex justify-start gap-4 m-5">
+            {/* TODO: Add proper badges with descriptions*/}
+            <Image
+              src="/logo.png"
+              height={100}
+              width={100}
+              alt="badge"
+              className="rounded-full border-2"
+            ></Image>
             <Image
               src="/logo.png"
               height={100}
@@ -104,7 +114,7 @@ const Home: React.FC = () => {
         );
       case "Innstillinger":
         return (
-          <div className="ml-8 m-8 h-auto dark:bg-slate-600">
+          <div className="ml-8 m-8 h-fill dark:bg-slate-600">
             <div id="nameBox" className="mb-6 w-2/3 md:w-1/3">
               <div className="mb-4">
                 <label
@@ -138,7 +148,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="mb-6">
+            <div className="">
               <VolumeSlider />
             </div>
 
@@ -147,10 +157,10 @@ const Home: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-4 pt-4">
-              <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 text-white rounded-lg p-2 border-green-600">
+              <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 text-white rounded-lg p-2 border-green-600 w-1/3">
                 Lagre
               </button>
-              <button className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:text-white text-black rounded-lg p-2 border-gray-400">
+              <button className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:text-white text-black rounded-lg p-2 border-gray-400 w-1/3">
                 Avbryt
               </button>
             </div>
@@ -162,7 +172,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <main className="bg-green-100 dark:bg-slate-700 w-screen h-fit pb-32 md:pb-0 md:h-screen flex flex-col">
+    <main className="bg-green-100 dark:bg-slate-700 w-screen pb-32 md:pb-0 md:h-screen flex flex-col">
       <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 h-auto pt-20 md:px-48 px-4 w-screen">
         {/* Profile section */}
         <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">

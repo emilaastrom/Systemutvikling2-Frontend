@@ -43,30 +43,7 @@ const DarkModeToggle = () => {
 
   return (
     <div className="flex items-center mt-4">
-      {/* Mørk modus: */}
-      {/* <label htmlFor="dark-mode-toggle" className="ml-2 switch relative">
-        <input
-          id="dark-mode-toggle"
-          type="checkbox"
-          checked={darkMode}
-          onChange={handleModeChange}
-          className="sr-only"
-        />
-        <span className="block bg-gray-500 dark:bg-gray-200 w-10 h-6 rounded-full shadow-inner"></span>
-        <span
-          className={`dot absolute left-1 top-1 bg-white dark:bg-slate-700 w-4 h-4 rounded-full transition-transform duration-300 ease-in-out ${
-            darkMode ? "translate-x-4" : ""
-          }`}
-        ></span>
-      </label>
-      <button
-        onClick={handleSystemPreference}
-        className="ml-4 py-2 px-4 h-10 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
-      >
-        Følg systeminstilling
-      </button> */}
-
-      <ul className="items-center w-2/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+      <ul className="items-center w-2/3 text-sm font-medium border-green-400 text-gray-900 bg-white border rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
           <label className="flex items-center ps-3 w-full cursor-pointer">
             <input
