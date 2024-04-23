@@ -1,34 +1,118 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 
 const DarkModeToggle = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  // Initial check for dark mode preference
+  const [darkMode, setDarkMode] = useState(() => {
+    const storedTheme = localStorage.getItem("theme");
+    return (
+      storedTheme === "dark" ||
+      (!storedTheme &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    );
+  });
 
+  // Effect to apply theme
   useEffect(() => {
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   }, [darkMode]);
 
+  // Toggle dark mode state
+  const handleModeChange = (mode: string) => {
+    if (mode === "dark") {
+      localStorage.setItem("theme", "dark");
+      setDarkMode(true);
+    } else if (mode === "light") {
+      localStorage.setItem("theme", "light");
+      setDarkMode(false);
+    } else {
+      localStorage.removeItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      setDarkMode(prefersDark);
+      document.documentElement.classList.toggle("dark", prefersDark);
+    }
+  };
+
+
   return (
-    <div className="py-2">
-      <label htmlFor="dark-mode-toggle" className="flex items-center cursor-pointer">
-        <div className="mr-2 text-gray-700 font-medium">
-        Mørk modus: 
-        </div>
-        <div className="relative">
-          <input 
-            id="dark-mode-toggle" 
-            type="checkbox" 
-            className="sr-only" 
-            checked={darkMode} 
-            onChange={(e) => setDarkMode(e.target.checked)}
-          />
-          <div className="block bg-gray-100 border-2 border-gray-200 w-14 h-8 rounded-full"></div>
-          <div className={`dot absolute left-1 top-1 bg-white border-green-500 border-2 w-6 h-6 rounded-full transition-transform ${darkMode ? 'transform translate-x-6' : ''}`}></div>
-        </div>
+    <div className="flex items-center mt-4">
+      {/* Mørk modus: */}
+      {/* <label htmlFor="dark-mode-toggle" className="ml-2 switch relative">
+        <input
+          id="dark-mode-toggle"
+          type="checkbox"
+          checked={darkMode}
+          onChange={handleModeChange}
+          className="sr-only"
+        />
+        <span className="block bg-gray-500 dark:bg-gray-200 w-10 h-6 rounded-full shadow-inner"></span>
+        <span
+          className={`dot absolute left-1 top-1 bg-white dark:bg-slate-700 w-4 h-4 rounded-full transition-transform duration-300 ease-in-out ${
+            darkMode ? "translate-x-4" : ""
+          }`}
+        ></span>
       </label>
+      <button
+        onClick={handleSystemPreference}
+        className="ml-4 py-2 px-4 h-10 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
+      >
+        Følg systeminstilling
+      </button> */}
+
+      <ul className="items-center w-2/3 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+          <label className="flex items-center ps-3 w-full cursor-pointer">
+            <input
+              id="horizontal-list-radio-license"
+              type="radio"
+              value="light"
+              name="list-radio"
+              onChange={() => handleModeChange("light")}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+            />
+            <span className="ms-2 py-3 text-sm font-medium text-gray-900 dark:text-gray-300 ">
+              Lys modus
+            </span>
+          </label>
+        </li>
+        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+          <label className="flex items-center ps-3 w-full cursor-pointer">
+            <input
+              id="horizontal-list-radio-id"
+              type="radio"
+              value="dark"
+              name="list-radio"
+              onChange={() => handleModeChange("dark")}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+            />
+            <span className="ms-2 py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Mørk modus
+            </span>
+          </label>
+        </li>
+        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+          <label className="flex items-center ps-3 w-full cursor-pointer">
+            <input
+              id="horizontal-list-radio-military"
+              type="radio"
+              value="auto"
+              name="list-radio"
+              onChange={() => handleModeChange("auto")}
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+            />
+            <span className="ms-2 py-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Auto/system
+            </span>
+          </label>
+        </li>
+      </ul>
     </div>
   );
 };

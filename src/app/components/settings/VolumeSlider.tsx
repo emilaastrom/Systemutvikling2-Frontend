@@ -17,13 +17,13 @@ const VolumeControl = () => {
 
   return (
     <div>
-      <p>
+      <p className="dark:text-white">
         Volum på lydeffekter:
         <input
           type="text"
           value={volumeValue}
           onChange={handleSliderChange}
-          className="ml-1 py-0 w-12 px-2 border-2 rounded-lg border-green-400 shadow-sm"
+          className="ml-1 py-0 w-12 px-2 border-2 rounded-lg border-green-400 dark:border-slate-500 dark:text-black shadow-sm text-center"
           placeholder="Sett volum (0-100)"
         />
         %
@@ -61,7 +61,7 @@ const VolumeControl = () => {
           <input
             type="range"
             id="volume-slider"
-            className="appearance-none w-full h-3 bg-gray-300 rounded-md mt-2"
+            className="appearance-none w-full h-3 bg-gray-300 dark:bg-gray-700 rounded-md mt-2"
             min="0"
             max="100"
             value={volumeValue}
