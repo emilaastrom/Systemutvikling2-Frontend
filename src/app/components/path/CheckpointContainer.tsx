@@ -1,11 +1,11 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useCallback } from "react";
 import Checkpoint from "@/app/components/path/Checkpoint";
-import { NoiseContext } from "@/app/hooks/NoiseProvider";
-import {Vector} from "@/util/types/vector";
+import { PathContext } from "@/app/hooks/PathProvider";
+import { Vector } from "@/util/types/vector";
 
 
 export default function CheckpointContainer() {
-    const completedChallenges = [
+    const completedChallenges = useMemo(() => [
         {
             id: 1,
             passed: true
@@ -86,22 +86,37 @@ export default function CheckpointContainer() {
             id: 20,
             passed: true
         },
-        ];
+    ], []);
 
-    const { bounds, pathFunction, worldToScreen } = useContext(NoiseContext);
+    const { bounds, pathFunction, worldToScreen } = useContext(PathContext);
     const [size, setSize] = useState(40);
-    const yIncrement = 80;
 
-    const getCheckpointCoords = (index: number) => {
-        const t = index * yIncrement;
-        const worldPos = pathFunction(t);
+    const calculateWorldPositions = useCallback((challenges: Array<any>) => {
+        const positions: Vector[] = [];
+        const numCheckpoints = challenges.length;
+        const stepSize = 80;
 
-        if (worldPos.y + size > bounds.x && worldPos.y - size < bounds.y) {
-            const screenPos = worldToScreen(worldPos);
-            return { x: screenPos.x - (size / 2), y: screenPos.y - (size / 2)};
+        for (let i = 0; i < numCheckpoints; i++) {
+            const t = i * stepSize;
+            positions.push({ x: pathFunction(t), y: t });
+        }
+
+        return challenges.map((_, index) => positions[index]);
+    }, [pathFunction]);
+
+    const worldPositions = useMemo(() => calculateWorldPositions(completedChallenges), [completedChallenges, calculateWorldPositions]);
+
+    const getScreenPos = useCallback((worldPos: Vector) => {
+        const screenPos = worldToScreen(worldPos);
+        return { x: screenPos.x - (size / 2), y: screenPos.y - (size / 2)};
+    }, [worldToScreen, size]);
+
+    const canRender = (worldPos: Vector | null) => {
+        if (worldPos) {
+            return worldPos.y + size > bounds.x && worldPos.y - size < bounds.y;
         }
         else {
-            return null;
+            return false;
         }
     }
 
@@ -109,12 +124,12 @@ export default function CheckpointContainer() {
         <div>
             {completedChallenges
                 .map((challenge, index) => {
-                    const coords = getCheckpointCoords(index);
-                    if (coords) {
+                    const worldPos = worldPositions[index];
+                    if (canRender(worldPos)) {
                         return <Checkpoint
                             key={challenge.id}
                             passed={challenge.passed}
-                            coords={coords}
+                            coords={getScreenPos(worldPos)}
                             size={size}
                         />
                     }

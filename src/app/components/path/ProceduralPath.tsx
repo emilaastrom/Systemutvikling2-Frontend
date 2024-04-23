@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Vector } from "@/util/types/vector";
-import { NoiseContext } from "@/app/hooks/NoiseProvider";
+import { PathContext } from "@/app/hooks/PathProvider";
 
 export default function ProceduralPath(
     {
@@ -16,15 +16,15 @@ export default function ProceduralPath(
         width: number;
     }) {
 
-    const { bounds, pathFunction, worldToScreen } = useContext(NoiseContext);
+    const { bounds, pathFunction, worldToScreen } = useContext(PathContext);
     const [pathData, setPathData] = useState("");
 
     const generatePathData = useCallback(() => {
         const t0 = bounds.x;
-        const p0 = worldToScreen(pathFunction(t0));
+        const p0 = worldToScreen({x: pathFunction(t0), y: t0});
         let pathData = `M ${p0.x},${p0.y} `;
         for (let t = t0 - (width / 2); t < bounds.y + (width / 2); t += stepLength) {
-            const p = worldToScreen(pathFunction(t));
+            const p = worldToScreen({x: pathFunction(t), y: t});
             pathData += `L ${p.x},${p.y} `;
         }
         return pathData;

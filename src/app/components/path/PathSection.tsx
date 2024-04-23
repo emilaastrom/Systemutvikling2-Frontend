@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Vector } from "@/util/types/vector";
-import NoiseProvider from "@/app/hooks/NoiseProvider";
+import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
 import CheckpointContainer from "@/app/components/path/CheckpointContainer";
 
@@ -134,7 +134,7 @@ export default function PathSection() {
       ref={sectionRef}
       style={{ backgroundColor: "#9cc458" }}
     >
-      <NoiseProvider
+      <PathProvider
         seed={"seed"}
         dimensions={dimensions}
         position={position}
@@ -148,7 +148,7 @@ export default function PathSection() {
           width={50}
         />
         <CheckpointContainer />
-      </NoiseProvider>
+      </PathProvider>
     </section>
   );
 }

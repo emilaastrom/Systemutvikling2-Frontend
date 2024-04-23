@@ -3,7 +3,7 @@ import alea from "alea";
 import { createNoise2D, NoiseFunction2D } from "simplex-noise";
 import { Vector } from "@/util/types/vector";
 
-interface NoiseProviderProps {
+interface PathProviderProps {
     children: ReactNode;
     seed: string;
     dimensions: Vector;
@@ -12,21 +12,13 @@ interface NoiseProviderProps {
     period: number;
 }
 
-interface NoiseContextType {
-    noise: React.MutableRefObject<NoiseFunction2D>;
-    createNoise: (seed: string) => void;
-    pathFunction: (x: number) => Vector;
-    worldToScreen: (worldPos: Vector) => Vector;
+interface PathContextType {
     bounds: Vector;
+    worldToScreen: (worldPos: Vector) => Vector;
+    pathFunction: (x: number) => number;
 }
 
-export const NoiseContext = React.createContext<NoiseContextType>({
-    noise: {
-        current: () => 0
-    },
-    createNoise: () => {
-        console.warn('createNoise was called without being initialized');
-    },
+export const PathContext = React.createContext<PathContextType>({
     bounds: { x: 0, y: 0 },
     worldToScreen: () => {
         console.warn('worldToScreen was called without being initialized');
@@ -34,11 +26,11 @@ export const NoiseContext = React.createContext<NoiseContextType>({
     },
     pathFunction: () => {
         console.warn('pathFunction was called without being initialized');
-        return { x: 0, y: 0 };
+        return 0;
     },
 });
 
-const NoiseProvider: React.FC<NoiseProviderProps> = (
+const PathProvider: React.FC<PathProviderProps> = (
     {
         children,
         seed,
@@ -51,10 +43,10 @@ const NoiseProvider: React.FC<NoiseProviderProps> = (
     const prng = alea(seed);
     let noise = useRef(createNoise2D(prng));
 
-    const createNoise = useCallback((seed: string) => {
+    const createNoise = (seed: string) => {
         const prng = alea(seed);
         noise.current = createNoise2D(prng);
-    }, []);
+    };
 
     const [bounds, setBounds] = useState<Vector>({ x: 0, y: 0 });
     useEffect(() => {
@@ -79,14 +71,14 @@ const NoiseProvider: React.FC<NoiseProviderProps> = (
     ) => amplitude * func(period * (t + phaseShift), 0) + verticalShift;
 
     const pathFunction = useCallback((t: number) => {
-        return { x: waveFunction(noise.current, t, amplitude, period, 0, 0), y: t };
-    }, [noise, amplitude, period]);
+        return waveFunction(noise.current, t, amplitude, period, 0, 0);
+    }, [amplitude, period]);
 
     return (
-        <NoiseContext.Provider value={{ noise, createNoise, pathFunction, worldToScreen, bounds }}>
+        <PathContext.Provider value={{ bounds, worldToScreen, pathFunction, }}>
             {children}
-        </NoiseContext.Provider>
+        </PathContext.Provider>
     );
 };
 
-export default NoiseProvider;
+export default PathProvider;
