@@ -1,7 +1,7 @@
 import { Vector } from "@/util/types/vector";
 
 export default function Checkpoint({ passed, coords, size }: { passed: boolean; coords: Vector, size: number}) {
-    const bgColor = passed ? "#0F0" : "#F00";
+    const bgColor = passed ? "#0F0" : "#f3f6f4";
 
     return (
         <button

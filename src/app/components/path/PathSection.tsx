@@ -132,7 +132,7 @@ export default function PathSection() {
     <section
       className="w-full h-full overflow-hidden relative"
       ref={sectionRef}
-      style={{ backgroundColor: "#9cc458" }}
+      
     >
       <PathProvider
         seed={"seed"}
@@ -143,7 +143,7 @@ export default function PathSection() {
       >
         <ProceduralPath
           dimensions={dimensions}
-          color={"#C3995C"}
+          color={"#9a9a9a"}
           stepLength={5}
           width={50}
         />

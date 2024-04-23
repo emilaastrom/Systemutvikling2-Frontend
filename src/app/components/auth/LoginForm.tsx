@@ -18,7 +18,7 @@ const LoginForm = () => {
     setErrorMessage("");
     try {
       await login(username, password);
-      router.push("/");
+      router.push("/firsttime");
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid username or password.");
