@@ -9,9 +9,19 @@ type Info = {
   path: string;
 };
 
+const authInfo: Info = {
+  port: 8080,
+  path: "/auth",
+};
+
 const goalInfo: Info = {
   port: 8081,
   path: "/goal",
+};
+
+const bankInfo: Info = {
+  port: 8082,
+  path: "/bank",
 };
 
 const userInfo: Info = {
@@ -25,7 +35,7 @@ const challengeInfo: Info = {
 };
 
 function getAuthToken() {
-  return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjNTYyZDRhMC05NGYwLTQ1MzItYmY1NC00NTI2OTVmYjRlY2EiLCJpYXQiOjE3MTM4NTM3MTIsImV4cCI6MTcxMzg4OTcxMn0.PGKexR6YN7o9pFqQiyvXjEElFNOwNzw4nJPU6FVhxyg";
+  return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4NDcxMDFkYS0xMDBmLTQ2MTYtYTIxNy02MDM2YTZhZDIzMTIiLCJpYXQiOjE3MTM4NzYzMzUsImV4cCI6MTcxMzkxMjMzNX0.Q5f44k_KcgJgO3XvzVV3BFBSJHL-GKNP2031p2JUBs0";
   // const { token } = useAuth();
   // return token;
 }
@@ -70,6 +80,8 @@ function apiHandler(service, method, url, data = null) {
 const goalService = createAxiosService(goalInfo);
 const userService = createAxiosService(userInfo);
 const challengeService = createAxiosService(challengeInfo);
+const bankService = createAxiosService(bankInfo);
+const authService = createAxiosService(authInfo);
 
 function GetActiveGoal(): Promise<Goal> {
   return apiHandler(goalService, "get", "/getActiveGoal");
@@ -113,6 +125,57 @@ function GenerateNewChallenges() {
   return apiHandler(challengeService, "post", "/generateNewChallenges");
 }
 
+function CreateConsent(): Promise<string> {
+  return apiHandler(bankService, "post", "/createConsent");
+}
+
+function GetConsent(): string {
+  return apiHandler(bankService, "get", "/getConsent");
+}
+
+function DeleteConsent(): string {
+  return apiHandler(bankService, "delete", "/deleteConsent");
+}
+
+function GetConsentStatus(): string {
+  return apiHandler(bankService, "post", "/getConsentStatus");
+}
+
+function GetAccountInfo(): string {
+  return apiHandler(bankService, "get", "/getAccountInfo");
+}
+
+function GetBalance(): string {
+  return apiHandler(bankService, "get", "/getBalance");
+}
+
+function GetTransactionList(): string {
+  return apiHandler(bankService, "get", "/getTransactionList");
+}
+
+function CreateTransfer(): string {
+  return apiHandler(bankService, "post", "/createTransfer");
+}
+
+function CreatePeriodicTransfer(): string {
+  return apiHandler(bankService, "post", "/createPeriodicTransfer");
+}
+
+function Login(data: LoginRequest): Promise<AuthResponse> {
+  return apiHandler(authService, "post", "/login", data);
+}
+
+function Register(data: RegisterRequest): MessageResponse {
+  return apiHandler(authService, "post", "/register", data);
+}
+
+function Verify(): AuthResponse {
+  return apiHandler(authService, "get", "/verify");
+}
+
+function ValidateToken(data: string): boolean {
+  return apiHandler(authService, "post", "/validateToken", data);
+}
 export {
   GetActiveGoal,
   SetGoal,
@@ -124,4 +187,17 @@ export {
   GetAllByTimeLimitAsc,
   UpdateChallenge,
   GenerateNewChallenges,
+  CreateConsent,
+  GetConsent,
+  DeleteConsent,
+  GetConsentStatus,
+  GetAccountInfo,
+  GetBalance,
+  GetTransactionList,
+  CreateTransfer,
+  CreatePeriodicTransfer,
+  Login,
+  Register,
+  Verify,
+  ValidateToken,
 };
