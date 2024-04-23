@@ -75,9 +75,9 @@ const Challengecarousel = () => {
     },
   ];
   return (
-    <div className="flex self-start w-screen text-black overflow-x-scroll overflow-y-hidden">
+    <div className="flex md:flex-col z-10 md:fixed md:right-1.5 md:top-5 md:h-screen py-6 self-start md:w-auto w-screen text-black overflow-x-scroll md:overflow-y-scroll">
       {challenges.map((challenge, index) => (
-        <div key={index} className="flex-none">
+        <div key={index} className="flex-none md:relative md:block">
           <Challengecard
             challenge={challenge.name}
             current={challenge.current}

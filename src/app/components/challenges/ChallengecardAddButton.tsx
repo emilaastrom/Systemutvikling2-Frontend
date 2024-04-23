@@ -16,7 +16,7 @@ const ChallengecardAddButton = () => {
         <>
             <div className="flex h-full justify-center items-center">
                 <div 
-                    className="w-60 my-4 h-full border border-gray-300 rounded-lg overflow-hidden shadow-md bg-fuchsia-100 cursor-pointer hover:bg-fuchsia-200" 
+                    className="w-60 my-4 h-full border border-gray-300 rounded-lg overflow-hidden shadow-md bg-[#EDDFEF] cursor-pointer hover:bg-fuchsia-200" 
                     onClick={handleAddClick}
                 >
                     <div className="h-full p-2 flex flex-col justify-center items-center">

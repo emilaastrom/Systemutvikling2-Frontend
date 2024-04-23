@@ -124,7 +124,7 @@ export default function PathSection() {
 
   return (
     <section
-      className="w-full h-full overflow-hidden relative"
+      className="w-full h-full bg-[#8CD867] overflow-hidden relative"
       ref={sectionRef}
       
     >
@@ -137,7 +137,7 @@ export default function PathSection() {
       >
         <ProceduralPath
           dimensions={dimensions}
-          color={"#9a9a9a"}
+          color={"#916953"}
           stepLength={5}
           maxOffset={40}
         />
