@@ -172,7 +172,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <main className="bg-green-100 dark:bg-slate-700 w-screen pb-32 md:pb-0 md:h-screen flex flex-col">
+    <main className=" dark:bg-slate-700 w-screen pb-32 md:pb-0 md:h-screen flex flex-col">
       <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 h-auto pt-20 md:px-48 px-4 w-screen">
         {/* Profile section */}
         <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">

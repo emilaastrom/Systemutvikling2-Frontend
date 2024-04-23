@@ -20,22 +20,44 @@ const Navbar = () => {
         <NavbarButton to="/profile">👤 Konto</NavbarButton>
       </div>
 
-
       {/* Mobile Navbar */}
 
       <motion.div
-        className="flex md:hidden m-3 justify-around items-center fixed inset-x-0 bottom-0 bg-opacity-80 
-			bg-slate-200 backdrop-blur-5px transform-gpu
+        className="flex md:hidden m-3 justify-around items-center fixed inset-x-0 bottom-0 bg-opacity-80 pb-2
+			bg-slate-200 dark:bg-slate-500 dark:text-white backdrop-blur-5px transform-gpu
 			border-black p-3 rounded-2xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]
 			z-10"
         initial="hidden"
         animate="visible"
         variants={navbarVariants}
       >
-        <NavbarButton to="/">🏠</NavbarButton>
-        <NavbarButton to="/about">💭</NavbarButton>
-        <NavbarButton to="/savings">💰</NavbarButton>
-        <NavbarButton to="/profile">👤</NavbarButton>
+        <div className="flex flex-col items-center">
+          <div className="flex">
+            <NavbarButton to="/">🏠</NavbarButton>
+          </div>
+          <span className="flex justify-center text-xs ">HJEM</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="flex">
+            <NavbarButton to="/about">💭</NavbarButton>
+          </div>
+          <span className="flex justify-center text-xs ">OM</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="flex">
+            <NavbarButton to="/savings">💰</NavbarButton>
+          </div>
+          <span className="flex justify-center text-xs ">SPARING</span>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="flex">
+            <NavbarButton to="/profile">👤</NavbarButton>
+          </div>
+          <span className="flex justify-center text-xs ">KONTO</span>
+        </div>
       </motion.div>
     </div>
   );
