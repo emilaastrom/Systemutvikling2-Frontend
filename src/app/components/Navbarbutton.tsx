@@ -22,14 +22,15 @@ const NavbarButton = ({ to, children, ariaLabel }: NavbarButtonProps) => {
   return (
     <a
       href={to}
-      className="text-left py-2 px-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]
+      className="flex md:flex-row md:min-w-32 flex-col py-2 px-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]
         bg-white bg-opacity-99 border-solid border-gray-200 
-        hover:border-mantis-300 hover:text-black hover:scale-105 hover:bg-color-mantis-100
+        hover:border-slate-400 hover:text-black hover:scale-110
         transition-all duration-300 ease-in-out border-2
+        dark:bg-slate-800 dark:border-slate-300 dark:text-white dark:hover:border-mantis-300
         "
       aria-label={finalAriaLabel}
     >
-      <span>{children}</span>
+      <div className="flex flex-col items-center md:flex-row">{children}</div>
     </a>
   );
 };
