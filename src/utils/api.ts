@@ -19,6 +19,11 @@ const userInfo: Info = {
   path: "/user",
 };
 
+const challengeInfo: Info = {
+  port: 8084,
+  path: "/challenge",
+};
+
 function getAuthToken() {
   return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjNTYyZDRhMC05NGYwLTQ1MzItYmY1NC00NTI2OTVmYjRlY2EiLCJpYXQiOjE3MTM4NTM3MTIsImV4cCI6MTcxMzg4OTcxMn0.PGKexR6YN7o9pFqQiyvXjEElFNOwNzw4nJPU6FVhxyg";
   // const { token } = useAuth();
@@ -64,6 +69,7 @@ function apiHandler(service, method, url, data = null) {
 
 const goalService = createAxiosService(goalInfo);
 const userService = createAxiosService(userInfo);
+const challengeService = createAxiosService(challengeInfo);
 
 function GetActiveGoal(): Promise<Goal> {
   return apiHandler(goalService, "get", "/getActiveGoal");
@@ -91,4 +97,31 @@ function UpdateUser(data: User): Promise<User> {
   return apiHandler(userService, "put", "/updateUser", data);
 }
 
-export { GetActiveGoal, SetGoal, IncreaseProgress, GetAllGoals, GetUser, UpdateUser };
+function GetAllByTimeLimitAsc(): Promise<Challenge> {
+  return apiHandler(challengeService, "get", "/getAllByTimeLimitAsc");
+}
+
+function GetAllByTimeLimitDsc(): Promise<Challenge> {
+  return apiHandler(challengeService, "get", "/getAllByTimeLimitDsc");
+}
+
+function UpdateChallenge(data: Challenge) {
+  return apiHandler(challengeService, "patch", "/updateChallenge");
+}
+
+function GenerateNewChallenges() {
+  return apiHandler(challengeService, "post", "/generateNewChallenges");
+}
+
+export {
+  GetActiveGoal,
+  SetGoal,
+  IncreaseProgress,
+  GetAllGoals,
+  GetUser,
+  UpdateUser,
+  GetAllByTimeLimitDsc,
+  GetAllByTimeLimitAsc,
+  UpdateChallenge,
+  GenerateNewChallenges,
+};
