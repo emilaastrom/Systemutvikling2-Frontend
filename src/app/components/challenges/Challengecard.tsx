@@ -35,7 +35,7 @@ const Challengecard = ({
         <>
             {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} />}
             <div className="flex justify-end" onClick={handleCardClick}>
-                <div className="w-60 m-4 border-gray-300 rounded-lg overflow-hidden shadow-md text-black bg-white cursor-pointer hover:bg-green-200">
+                <div className="w-60 m-4 border-2 border-gray-300 rounded-lg overflow-hidden shadow-md text-black bg-white cursor-pointer hover:bg-gray-200">
                     <div className="p-2">
                         <div className="h-24 p-2 flex flex-col justify-center items-center">
                             <h2 className="overflow-hidden break-words text-center">{challenge}</h2>
