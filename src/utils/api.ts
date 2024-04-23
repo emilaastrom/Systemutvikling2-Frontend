@@ -83,4 +83,12 @@ function GetAllGoals(): Promise<Goal[]> {
   return apiHandler(goalService, "get", "/getAllGoals");
 }
 
-export { GetActiveGoal, SetGoal, IncreaseProgress, GetAllGoals };
+function GetUser(): Promise<User> {
+  return apiHandler(userService, "get", "/getUser");
+}
+
+function UpdateUser(data: User): Promise<User> {
+  return apiHandler(userService, "put", "/updateUser", data);
+}
+
+export { GetActiveGoal, SetGoal, IncreaseProgress, GetAllGoals, GetUser, UpdateUser };
