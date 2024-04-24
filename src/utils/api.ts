@@ -25,8 +25,8 @@ function getAuthToken() {
 }
 
 const token = getAuthToken();
-
-const createAxiosService = (info, timeout = 1000) => {
+//TODO Remove any
+const createAxiosService = (info: any, timeout = 1000) => {
   const service = axios.create({
     baseURL: `${host}:${info.port}${api}${info.path}`,
     headers: {
@@ -42,13 +42,13 @@ const createAxiosService = (info, timeout = 1000) => {
       }
       return config;
     },
-    (error) => Promise.reject(error)
+    (error: any) => Promise.reject(error)
   );
 
   return service;
 };
 
-function ApiHandler(service, method, url, data = null) {
+function ApiHandler(service: any, method: any, url: String, data = null) {
   const config = data ? [service + url, data] : [service + url];
   return gatewayService[method](...config)
     .then((response) => response.data)
@@ -63,6 +63,4 @@ function ApiHandler(service, method, url, data = null) {
 
 const gatewayService = createAxiosService(serviceInfo.gateway);
 
-export {
-  ApiHandler,
-};
+export { ApiHandler };
