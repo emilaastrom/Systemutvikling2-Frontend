@@ -7,7 +7,11 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class',
   theme: {
+    fontFamily: {
+      custom1: ["SuperBubble", "sans-serif"],
+    },
     extend: {
       colors: {
         'mantis': {
@@ -31,6 +35,9 @@ const config: Config = {
       },
       backdropBlur: {
         '5px': '5px', 
+      },
+      fontFamily: {
+        'cookbook': 'Cookbook'
       }
     },
   },
