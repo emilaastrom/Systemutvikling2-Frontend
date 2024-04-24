@@ -17,7 +17,7 @@ const VolumeControl = () => {
 
   return (
     <div>
-      <p className="dark:text-white">
+      <div className="dark:text-white">
         Volum på lydeffekter:
         <input
           type="text"
@@ -69,7 +69,7 @@ const VolumeControl = () => {
             onChange={handleSliderChange}
           />
         </div>
-      </p>
+      </div>
     </div>
   );
 };
