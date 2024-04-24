@@ -5,11 +5,11 @@ import ProceduralPath from "@/app/components/path/ProceduralPath";
 import CheckpointContainer from "@/app/components/path/CheckpointContainer";
 
 export default function PathSection() {
-  const sectionRef = useRef<HTMLElement | null>(null)
+  const sectionRef = useRef<HTMLDivElement | null>(null)
   const positionRef = useRef(0);
   const velocityRef = useRef(0);
 
-  const [dimensions, setDimensions] = useState<Vector>({ x: 0, y: 0 });
+  const [dimensions, setDimensions] = useState<Vector>({ x: 1, y: 1 });
   const [position, setPosition] = useState(0)
 
   const [lastY, setLastY] = useState(0);
@@ -26,6 +26,8 @@ export default function PathSection() {
       setDimensions({
         x: entries[0].contentRect.width,
         y: entries[0].contentRect.height,
+        // x: 1000,
+        // y: 2000,
       });
     });
 
@@ -130,25 +132,37 @@ export default function PathSection() {
 
   return (
     <section
-    className="h-[600px] bg-gradient-to-b from-[#a3f07d] to-[#8CD867] overflow-x-hidden relative"
-    ref={sectionRef}
-    style={{ width:"200%", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", boxSizing: "border-box", maxHeight: "600px" }} // Curved cut-off
-  >
-      <PathProvider
-        seed={"seed"}
-        dimensions={dimensions}
-        position={position}
-        amplitude={150}
-        period={1 / 400}
+        className="h-[600px] bg-gradient-to-b from-[#a3f07d] to-[#8CD867] overflow-hidden relative"
+        style={{ width:"200%", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", boxSizing: "border-box", maxHeight: "600px" }}
+    >
+      <div ref={sectionRef} className="w-full h-full" style={{
+        // perspective: "1000px",
+        // perspectiveOrigin: "50% 0",
+        // transformStyle: "preserve-3d",
+      }}
       >
-        <ProceduralPath
-          dimensions={dimensions}
-          color={"#916953"}
-          stepLength={5}
-          width={50}
-        />
-        <CheckpointContainer />
-      </PathProvider>
+        <div style={{
+          // backgroundColor: "#8CD867",
+          // transform: "rotateX(60deg) translateY(-0px) scale(2)",
+          // transformOrigin: "center bottom",
+        }}>
+          <PathProvider
+              seed={"seed"}
+              dimensions={dimensions}
+              position={position}
+              amplitude={150}
+              period={1 / 400}
+          >
+            <CheckpointContainer/>
+            <ProceduralPath
+                dimensions={dimensions}
+                color={"#916953"}
+                stepLength={5}
+                width={50}
+            />
+          </PathProvider>
+        </div>
+      </div>
     </section>
   );
 }
