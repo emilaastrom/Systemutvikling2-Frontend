@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CustomIcon from '../icons/CustomIcon';
+import { AnimatePresence, motion } from 'framer-motion';
 
 type ChallengecardModalProps = {
     onClose: () => void;
@@ -38,12 +39,22 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
         event.stopPropagation();
     };
 
+    const [x1, setX1] = useState(100);
+    const [x2, setX2] = useState(-100);
+    
     const renderSuggestion = () => {
         const suggestion = suggestions[currentPage];
 
         return (
-            <div className="border-2 rounded-md p-4  cursor-pointer overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full">
-                <span className="text-gray-500 text-sm text-start">
+            <motion.div 
+            key={currentPage} 
+            initial={{ opacity: 0, x: x1 }} 
+            animate={{ opacity: 1, x: 0 }} 
+            exit={{ opacity: 0, x: x2 }}
+            transition={{ duration: 0.2 }}
+            className="border-2 rounded-md p-4  cursor-pointer overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
+        >
+           <span className="text-gray-500 text-sm text-start">
                     <span className="font-semibold">Kategori: </span> {suggestion.category}
                     </span>
                 <div className="flex flex-col md:px-16 x-4 justify-center items-center mb-2 ">
@@ -55,7 +66,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                 <div className="text-center text-gray-600 text-sm mt-auto">
                     <span className="font-semibold">Antall dager: </span> {suggestion.time}
                 </div>
-            </div>   
+            </motion.div> 
         );
     };
 
@@ -103,7 +114,10 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
 
                 <div className="flex justify-between h-2/3 mb-4 font-semibold">
                     <button 
-                        onClick={() => setCurrentPage(Math.max(0, currentPage - 1))} 
+                        onClick={() => {setCurrentPage(Math.max(0, currentPage - 1));
+                            setX1(-100);
+                            setX2(100);
+                          }} 
                         disabled={currentPage === 0}
                         className={`mx-1 px-4 py-2 font-bold ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
@@ -118,7 +132,10 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                     </button>
                     {renderSuggestion()}
                     <button 
-                        onClick={() => setCurrentPage(Math.min(totalPages - 1, currentPage + 1))} 
+                        onClick={() => {setCurrentPage(Math.min(totalPages - 1, currentPage + 1));
+                            setX1(100);
+                            setX2(-100);
+                        }}
                         disabled={currentPage === totalPages - 1}
                         className={`mx-1 px-4 py-2 font-bold ${currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
