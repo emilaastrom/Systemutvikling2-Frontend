@@ -74,103 +74,103 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
         <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
             <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 h-4/5 m-2 overflow-auto">
             <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
-    <div className="flex-grow flex justify-center items-center">
-        Ny utfordring?
-    </div>
-    <button className="absolute top-0 right-0 m-4" onClick={onClose}>
-        <CustomIcon 
-            className={""}
-            svg={
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-            }
-            />
-    </button>
-</div>
+            <div className="flex-grow flex justify-center items-center">
+                Ny utfordring?
+            </div>
+            <button className="absolute top-0 right-0 m-4" onClick={onClose}>
+                <CustomIcon 
+                    className={""}
+                    svg={
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    }
+                    />
+            </button>
+        </div>
 
 
              
-                <div className="flex justify-center m-4 text-lg ">
-                    <div className="flex items-center mr-4">
-                        <input
-                            type="radio"
-                            id="easy"
-                            name="difficulty"
-                            value="easy"
-                            checked={selectedDifficulty === 'easy'}
-                            onChange={() => setSelectedDifficulty('easy')}
-                        />
-                        <label htmlFor="easy" className="ml-2">Easy</label>
-                    </div>
-                    <div className="flex items-center mr-4">
-                        <input
-                            type="radio"
-                            id="medium"
-                            name="difficulty"
-                            value="medium"
-                            checked={selectedDifficulty === 'medium'}
-                            onChange={() => setSelectedDifficulty('medium')}
-                        />
-                        <label htmlFor="medium" className="ml-2">Medium</label>
-                    </div>
-                    <div className="flex items-center">
-                        <input
-                            type="radio"
-                            id="hard"
-                            name="difficulty"
-                            value="hard"
-                            checked={selectedDifficulty === 'hard'}
-                            onChange={() => setSelectedDifficulty('hard')}
-                        />
-                        <label htmlFor="hard" className="ml-2">Hard</label>
-                    </div>
+            <div className="flex justify-center m-4 text-lg ">
+                <div className="flex items-center mr-4">
+                    <input
+                        type="radio"
+                        id="easy"
+                        name="difficulty"
+                        value="easy"
+                        checked={selectedDifficulty === 'easy'}
+                        onChange={() => setSelectedDifficulty('easy')}
+                    />
+                    <label htmlFor="easy" className="ml-2">Easy</label>
                 </div>
-
-                <div className="flex justify-between h-2/3 mb-4 font-semibold">
-                    <button 
-                        onClick={() => {setCurrentPage(Math.max(0, currentPage - 1));
-                            setX1(-100);
-                            setX2(100);
-                          }} 
-                        disabled={currentPage === 0}
-                        className={`mx-1 md:px-4 py-2 font-bold ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
-                    >
-                        <CustomIcon 
-                            className={""}
-                            svg={
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                                </svg>
-                            }
-                         />
-                    </button>
-                    {renderSuggestion()}
-                    <button 
-                        onClick={() => {setCurrentPage(Math.min(totalPages - 1, currentPage + 1));
-                            setX1(100);
-                            setX2(-100);
-                        }}
-                        disabled={currentPage === totalPages - 1}
-                        className={`mx-1 md:px-4 py-2 font-bold ${currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
-                    >
-                        <CustomIcon 
-                            className={""}
-                            svg={
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
-                            }
-                         />
-                    </button>
+                <div className="flex items-center mr-4">
+                    <input
+                        type="radio"
+                        id="medium"
+                        name="difficulty"
+                        value="medium"
+                        checked={selectedDifficulty === 'medium'}
+                        onChange={() => setSelectedDifficulty('medium')}
+                    />
+                    <label htmlFor="medium" className="ml-2">Medium</label>
                 </div>
-
-                <div className="flex justify-center items-center">
-                    <button className="border-2 border-green-300 p-5">Legg til utfordring</button>
+                <div className="flex items-center">
+                    <input
+                        type="radio"
+                        id="hard"
+                        name="difficulty"
+                        value="hard"
+                        checked={selectedDifficulty === 'hard'}
+                        onChange={() => setSelectedDifficulty('hard')}
+                    />
+                    <label htmlFor="hard" className="ml-2">Hard</label>
                 </div>
-
             </div>
+
+            <div className="flex justify-between h-2/3 mb-4 font-semibold">
+                <button 
+                    onClick={() => {setCurrentPage(Math.max(0, currentPage - 1));
+                        setX1(-100);
+                        setX2(100);
+                        }} 
+                    disabled={currentPage === 0}
+                    className={`mx-1 md:px-4 py-2 font-bold ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                    <CustomIcon 
+                        className={""}
+                        svg={
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+                        }
+                        />
+                </button>
+                {renderSuggestion()}
+                <button 
+                    onClick={() => {setCurrentPage(Math.min(totalPages - 1, currentPage + 1));
+                        setX1(100);
+                        setX2(-100);
+                    }}
+                    disabled={currentPage === totalPages - 1}
+                    className={`mx-1 md:px-4 py-2 font-bold ${currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                >
+                    <CustomIcon 
+                        className={""}
+                        svg={
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                        }
+                        />
+                </button>
+            </div>
+
+            <div className="flex justify-center items-center">
+                <button className="border-2 border-green-300 p-5">Legg til utfordring</button>
+            </div>
+
         </div>
+    </div>
     );
 };
 
