@@ -18,7 +18,7 @@ const ChallengecardAddButton = () => {
             <div 
                 className="w-80 m-4 h-36 rounded-lg overflow-hidden relative cursor-pointer" 
                 style={{ 
-                    background: "url('cloud.svg')", 
+                    background: "url('cloudpinkhover.svg')", 
                     backgroundRepeat: 'no-repeat', 
                     backgroundSize: '320px 135px'
                 }}
