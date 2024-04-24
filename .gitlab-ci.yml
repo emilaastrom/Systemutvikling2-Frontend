@@ -2,7 +2,7 @@ stages:
   - buildDocker
 
 buildDocker:
-  stage: deploy
+  stage: buildDocker
   needs: ["build"]
   image: docker:latest
   services:
@@ -19,5 +19,3 @@ buildDocker:
     - docker build -t reg.sysdevservices.tech/frontend:latest .
     - docker tag reg.sysdevservices.tech/frontend:latest reg.sysdevservices.tech/frontend:latest
     - docker push reg.sysdevservices.tech/frontend:latest
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
