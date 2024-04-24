@@ -38,6 +38,9 @@ const config: Config = {
       },
       fontFamily: {
         'cookbook': 'Cookbook'
+      },
+      boxShadow: {
+        'custom': '0 3px 0 0px rgb(107 114 128), 0 6px 0 0px rgb(107 114 128)',
       }
     },
   },

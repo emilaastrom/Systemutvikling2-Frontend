@@ -137,15 +137,14 @@ export default function PathSection() {
         style={{ width:"200%", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", boxSizing: "border-box", maxHeight: "600px" }}
     >
       <div ref={sectionRef} className="w-full h-full" style={{
-        // perspective: "1000px",
-        // perspectiveOrigin: "50% 0",
-        // transformStyle: "preserve-3d",
+        perspective: "1000px",
+        perspectiveOrigin: "50% 0",
+        transformStyle: "preserve-3d",
       }}
       >
         <div style={{
-          // backgroundColor: "#8CD867",
-          // transform: "rotateX(60deg) translateY(-0px) scale(2)",
-          // transformOrigin: "center bottom",
+          transform: "rotateX(70deg) translateY(-0px) scale(3)",
+          transformOrigin: "center bottom",
         }}>
           <PathProvider
               seed={"seed"}

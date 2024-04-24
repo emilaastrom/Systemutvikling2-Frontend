@@ -52,14 +52,13 @@ const PathProvider: React.FC<PathProviderProps> = (
 
     const [scale, setScale] = useState(1);
     useEffect(() => {
-        setScale(dimensions.y / 755);
+        setScale(dimensions.y / 800); // 755
     }, [dimensions]);
 
     const [bounds, setBounds] = useState<Vector>({ x: 0, y: 0 });
     useEffect(() => {
-        const scaledPosition = -position;
-        const halfHeight = dimensions.y / (2 * scale);
-        setBounds({ x: scaledPosition - halfHeight, y: scaledPosition + halfHeight });
+        const halfHeight = dimensions.y / (scale * 2);
+        setBounds({ x: -position - halfHeight, y: -position + halfHeight});
     }, [dimensions, position, scale]);
 
     const worldToScreen = useCallback((worldPosition: Vector) => {
