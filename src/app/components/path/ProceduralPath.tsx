@@ -23,7 +23,7 @@ export default function ProceduralPath(
         const t0 = bounds.x;
         const p0 = worldToScreen({x: pathFunction(t0), y: t0});
         let pathData = `M ${p0.x},${p0.y} `;
-        for (let t = t0; t < bounds.y; t += stepLength) {
+        for (let t = t0 - (width / 2); t < bounds.y + (width / 2); t += stepLength) {
             const p = worldToScreen({x: pathFunction(t), y: t});
             pathData += `L ${p.x},${p.y} `;
         }

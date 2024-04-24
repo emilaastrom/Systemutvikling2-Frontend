@@ -23,12 +23,13 @@ export default function PathSection() {
       if (!Array.isArray(entries) || !entries.length) {
         return;
       }
-      setDimensions({
+      let newDimensions = {
         x: entries[0].contentRect.width,
         y: entries[0].contentRect.height,
-        // x: 1000,
-        // y: 2000,
-      });
+      };
+      if (newDimensions.x <= 0) newDimensions.x = 1;
+      if (newDimensions.y <= 0) newDimensions.y = 1;
+      setDimensions(newDimensions);
     });
 
     if (section) {
