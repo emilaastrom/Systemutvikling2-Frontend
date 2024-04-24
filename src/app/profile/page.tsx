@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import VolumeSlider from "../components/settings/VolumeSlider";
 import DarkModeToggle from "../components/settings/DarkModeToggle";
+import { useRouter } from "next/navigation";
 
 interface SidebarItemProps {
   title: string;
@@ -29,9 +30,20 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
 };
 
 const LogoutButton: React.FC = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // TODO: Log out the user
+    // Redirect to the login page
+    router.push("/login");
+  };
+
   return (
     <div className="bg-gray-100 md:col-span-1 mt-2 md:order-2 col-span-3 h-10 row-span-1 rounded-lg shadow-lg">
-      <button className="border-red-500 max-h-10  bg-red-50 bg-opacity-20 rounded-md hover:bg-red-100 text-red-500 h-10 w-full border-2">
+      <button
+        className="border-red-500 max-h-10  bg-white rounded-md text-red-500 h-10 w-full border-2 hover:scale-105 hover:text-black hover:bg-red-100 transition ease-in-out"
+        onClick={handleLogout}
+      >
         Logg av
       </button>
     </div>

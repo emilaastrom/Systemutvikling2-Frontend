@@ -4,12 +4,20 @@ import { motion } from "framer-motion";
 import NavbarButton from "./Navbarbutton";
 import { Alumni_Sans_Collegiate_One } from "next/font/google";
 import SvgIcon from "./icons/CustomIcon";
+import { usePathname } from "next/navigation";
+
 
 const Navbar = () => {
   const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
   };
+  const pathname = usePathname();
+
+  if (pathname === "/login") {
+    // If the user is on the login page, the navbar should not be displayed
+    return
+  }
 
   return (
     <div>
