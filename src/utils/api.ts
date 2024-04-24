@@ -48,7 +48,7 @@ const createAxiosService = (info, timeout = 1000) => {
   return service;
 };
 
-function apiHandler(service, method, url, data = null) {
+function ApiHandler(service, method, url, data = null) {
   const config = data ? [service + url, data] : [service + url];
   return gatewayService[method](...config)
     .then((response) => response.data)
@@ -63,125 +63,6 @@ function apiHandler(service, method, url, data = null) {
 
 const gatewayService = createAxiosService(serviceInfo.gateway);
 
-function GetActiveGoal(): Promise<Goal> {
-  return apiHandler(serviceInfo.goal.path, "get", "/getActiveGoal");
-}
-
-function SetGoal(data: SetGoalRequest): Promise<SetGoalResponse> {
-  return apiHandler(serviceInfo.goal.path, "post", "/setGoal", data);
-}
-
-function IncreaseProgress(
-  data: IncreaseProgressRequest
-): Promise<IncreaseProgressResponse> {
-  return apiHandler(serviceInfo.goal.path, "post", "/increaseProgress", data);
-}
-
-function GetAllGoals(): Promise<Goal[]> {
-  return apiHandler(serviceInfo.goal.path, "get", "/getAllGoals");
-}
-
-function GetUser(): Promise<User> {
-  return apiHandler(serviceInfo.user.path, "get", "/getUser");
-}
-
-function UpdateUser(data: User): Promise<User> {
-  return apiHandler(serviceInfo.user.path, "put", "/updateUser", data);
-}
-
-function GetAllByTimeLimitAsc(): Promise<Challenge> {
-  return apiHandler(serviceInfo.challenge.path, "get", "/getAllByTimeLimitAsc");
-}
-
-function GetAllByTimeLimitDsc(): Promise<Challenge> {
-  return apiHandler(serviceInfo.challenge.path, "get", "/getAllByTimeLimitDsc");
-}
-
-function UpdateChallenge(data: Challenge) {
-  return apiHandler(serviceInfo.challenge.path, "patch", "/updateChallenge");
-}
-
-function GenerateNewChallenges() {
-  return apiHandler(
-    serviceInfo.challenge.path,
-    "post",
-    "/generateNewChallenges"
-  );
-}
-
-function CreateConsent(): Promise<string> {
-  return apiHandler(serviceInfo.bank.path, "post", "/createConsent");
-}
-
-function GetConsent(): string {
-  return apiHandler(serviceInfo.bank.path, "get", "/getConsent");
-}
-
-function DeleteConsent(): string {
-  return apiHandler(serviceInfo.bank.path, "delete", "/deleteConsent");
-}
-
-function GetConsentStatus(): string {
-  return apiHandler(serviceInfo.bank.path, "post", "/getConsentStatus");
-}
-
-function GetAccountInfo(): string {
-  return apiHandler(serviceInfo.bank.path, "get", "/getAccountInfo");
-}
-
-function GetBalance(): string {
-  return apiHandler(serviceInfo.bank.path, "get", "/getBalance");
-}
-
-function GetTransactionList(): string {
-  return apiHandler(serviceInfo.bank.path, "get", "/getTransactionList");
-}
-
-function CreateTransfer(): string {
-  return apiHandler(serviceInfo.bank.path, "post", "/createTransfer");
-}
-
-function CreatePeriodicTransfer(): string {
-  return apiHandler(serviceInfo.bank.path, "post", "/createPeriodicTransfer");
-}
-
-function Login(data: LoginRequest): Promise<AuthResponse> {
-  return apiHandler(serviceInfo.auth.path, "post", "/login", data);
-}
-
-function Register(data: RegisterRequest): MessageResponse {
-  return apiHandler(serviceInfo.auth.path, "post", "/register", data);
-}
-
-function Verify(): AuthResponse {
-  return apiHandler(serviceInfo.auth.path, "get", "/verify");
-}
-
-function ValidateToken(data: string): boolean {
-  return apiHandler(serviceInfo.auth.path, "post", "/validateToken", data);
-}
 export {
-  GetActiveGoal,
-  SetGoal,
-  IncreaseProgress,
-  GetAllGoals,
-  GetUser,
-  UpdateUser,
-  GetAllByTimeLimitDsc,
-  GetAllByTimeLimitAsc,
-  UpdateChallenge,
-  GenerateNewChallenges,
-  CreateConsent,
-  GetConsent,
-  DeleteConsent,
-  GetConsentStatus,
-  GetAccountInfo,
-  GetBalance,
-  GetTransactionList,
-  CreateTransfer,
-  CreatePeriodicTransfer,
-  Login,
-  Register,
-  Verify,
-  ValidateToken,
+  ApiHandler,
 };
