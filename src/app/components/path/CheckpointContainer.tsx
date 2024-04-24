@@ -137,6 +137,7 @@ export default function CheckpointContainer() {
                             key={challenge.id}
                             passed={challenge.passed}
                             coords={getScreenPos(worldPos)}
+                            scale={scale}
                             size={size}
                             borderWidth={borderWidth}
                         />

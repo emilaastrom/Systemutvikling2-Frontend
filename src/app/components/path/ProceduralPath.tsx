@@ -36,10 +36,17 @@ export default function ProceduralPath(
 
     return (
         <motion.svg viewBox={`0 0 ${dimensions.x} ${dimensions.y}`}>
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" style={{stopColor: color, stopOpacity: 1}}/>
+                    <stop offset="70%" style={{stopColor: color, stopOpacity: 0.5}}/>
+                    <stop offset="95%" style={{stopColor: color, stopOpacity: 0}}/>
+                </linearGradient>
+            </defs>
             <motion.path
                 d={pathData}
                 fill={"none"}
-                stroke={color}
+                stroke={"url(#gradient)"}
                 strokeWidth={width * scale}
                 strokeLinecap={"round"}
             />
