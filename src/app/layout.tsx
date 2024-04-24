@@ -24,7 +24,7 @@ export default function RootLayout({
         <body>
           <CustomHeader />
           <div>
-            <Navbar />
+            {/*<Navbar />*/}
             <div> {children}</div>
           </div>
         </body>
