@@ -130,10 +130,10 @@ export default function PathSection() {
 
   return (
     <section
-      className="w-full h-full overflow-hidden relative"
-      ref={sectionRef}
-      
-    >
+    className="h-[600px] bg-gradient-to-b from-[#a3f07d] to-[#8CD867] overflow-x-hidden relative"
+    ref={sectionRef}
+    style={{ width:"200%", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", boxSizing: "border-box", maxHeight: "600px" }} // Curved cut-off
+  >
       <PathProvider
         seed={"seed"}
         dimensions={dimensions}
@@ -143,7 +143,7 @@ export default function PathSection() {
       >
         <ProceduralPath
           dimensions={dimensions}
-          color={"#9a9a9a"}
+          color={"#916953"}
           stepLength={5}
           width={50}
         />

@@ -65,7 +65,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
     return (
         <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
             <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto">
-                <div className="bg-green-200 p-4 rounded-t-lg w-full max-h-1/4 text-center flex flex-col justify-center items-center font-semibold overflow-auto">
+                <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center flex flex-col justify-center items-center font-semibold overflow-auto">
                     {challengeText}
                 </div>
                 <div className="flex justify-between m-4 font-semibold">
