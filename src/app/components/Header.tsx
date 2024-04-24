@@ -1,8 +1,27 @@
+"use client";
 import React from "react";
-
+import { usePathname } from "next/navigation";
 import SvgIcon from "./icons/CustomIcon";
 
 const CustomHeader = () => {
+  const pathname = usePathname();
+
+  // Custom login header
+  if (usePathname() === "/login") {
+    return (
+      <header>
+        <div className="fixed top-0 w-screen h-10 text-center bg-black z-20">
+          <div className="overflow-hidden bg-black text-white h-10 flex items-center">
+            <div className="w-screen animate-slide whitespace-nowrap">
+              nøff nøff 🐷
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  // Regular header for all other pages
   return (
     <header>
       <div className="fixed top-0 w-screen h-10 text-center bg-black z-20">
@@ -31,7 +50,9 @@ const CustomHeader = () => {
               </svg>
             }
           />
-          <h2 className="text-xl text-white ml-2 align-text-top leading-tight">31</h2>
+          <h2 className="text-xl text-white ml-2 align-text-top leading-tight">
+            31
+          </h2>
         </div>
         <div className="fixed flex right-5 w-auto h-fill align-middle text-black h-auto m-2 px-2 rounded-xl">
           <SvgIcon
@@ -53,7 +74,9 @@ const CustomHeader = () => {
               </svg>
             }
           />
-          <span className="text-xl text-white ml-2 align-text-top leading-tight">300 / 2000 kr</span>
+          <span className="text-xl text-white ml-2 align-text-top leading-tight">
+            300 / 2000 kr
+          </span>
         </div>
       </div>
     </header>

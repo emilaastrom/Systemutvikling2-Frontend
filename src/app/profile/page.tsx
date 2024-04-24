@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import VolumeSlider from "../components/settings/VolumeSlider";
 import DarkModeToggle from "../components/settings/DarkModeToggle";
+import { useRouter } from "next/navigation";
+import ThemeProvider from "../components/settings/ThemeProvider";
 
 interface SidebarItemProps {
   title: string;
@@ -29,9 +31,20 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
 };
 
 const LogoutButton: React.FC = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // TODO: Log out the user
+    // Redirect to the login page
+    router.push("/login");
+  };
+
   return (
     <div className="bg-gray-100 md:col-span-1 mt-2 md:order-2 col-span-3 h-10 row-span-1 rounded-lg shadow-lg">
-      <button className="border-red-500 max-h-10  bg-red-50 bg-opacity-20 rounded-md hover:bg-red-100 text-red-500 h-10 w-full border-2">
+      <button
+        className="border-red-500 max-h-10  bg-white rounded-md text-black h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 hover:font-semibold transition ease-in-out"
+        onClick={handleLogout}
+      >
         Logg av
       </button>
     </div>
@@ -172,58 +185,62 @@ const Home: React.FC = () => {
   };
 
   return (
-    <main className=" dark:bg-slate-700 w-screen pb-32 md:pb-0 md:h-screen flex flex-col">
-      <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 h-auto pt-20 md:px-48 px-4 w-screen">
-        {/* Profile section */}
-        <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">
-          <Image
-            src="/default.png"
-            width={100}
-            height={100}
-            alt="Picture"
-            className="md:ml-10 ml-5 rounded-full border-2 border-green-200 dark:border-slate-700"
-          ></Image>
-          <div id="userInfo" className="flex-grow md:ml-10 ml-5">
-            <h2 className="text-xl font-bold whitespace-nowrap">{realName}</h2>
-            {username}
+    <ThemeProvider>
+      <main className=" dark:bg-slate-700 w-screen pb-32 md:pb-0 md:h-screen flex flex-col">
+        <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 h-auto pt-20 md:px-48 px-4 w-screen">
+          {/* Profile section */}
+          <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">
+            <Image
+              src="/default.png"
+              width={100}
+              height={100}
+              alt="Picture"
+              className="md:ml-10 ml-5 rounded-full border-2 border-green-200 dark:border-slate-700"
+            ></Image>
+            <div id="userInfo" className="flex-grow md:ml-10 ml-5">
+              <h2 className="text-xl font-bold whitespace-nowrap">
+                {realName}
+              </h2>
+              {username}
+            </div>
+            <Image
+              src="/logo.png"
+              width={200}
+              height={200}
+              alt="Picture"
+              className="hidden md:inline"
+            ></Image>
           </div>
-          <Image
-            src="/logo.png"
-            width={200}
-            height={200}
-            alt="Picture"
-            className="hidden md:inline"
-          ></Image>
-        </div>
 
-        {/* Left sidebar */}
-        <div className="md:col-span-1 col-span-3 row-span-1 grid grid-cols-1 gap- dark:shadow-xl">
-          <div className="bg-white px-1 dark:bg-slate-500 bg-opacity-80 md:col-span-1 col-span-3 w-full md:row-span-3 rounded-lg shadow-lg flex flex-col justify-center items-center">
-            <SidebarItem
-              title="Konto"
-              onClick={() => setContent("Konto")}
-              isActive={content === "Konto"}
-            />
-            <SidebarItem
-              title="Badges"
-              onClick={() => setContent("Badges")}
-              isActive={content === "Badges"}
-            />
-            <SidebarItem
-              title="Innstillinger"
-              onClick={() => setContent("Innstillinger")}
-              isActive={content === "Innstillinger"}
-            />
+          {/* Left sidebar */}
+          <div className="md:col-span-1 col-span-3 row-span-1 grid grid-cols-1 gap- dark:shadow-xl">
+            <div className="bg-white px-1 dark:bg-slate-500 bg-opacity-80 md:col-span-1 col-span-3 w-full md:row-span-3 rounded-lg shadow-lg flex flex-col justify-center items-center">
+              <SidebarItem
+                title="Konto"
+                onClick={() => setContent("Konto")}
+                isActive={content === "Konto"}
+              />
+              <SidebarItem
+                title="Badges"
+                onClick={() => setContent("Badges")}
+                isActive={content === "Badges"}
+              />
+              <SidebarItem
+                title="Innstillinger"
+                onClick={() => setContent("Innstillinger")}
+                isActive={content === "Innstillinger"}
+              />
+            </div>
+            <LogoutButton />
           </div>
-          <LogoutButton />
-        </div>
 
-        {/* Main content */}
-        <div className="bg-white dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-fit rounded-lg shadow-lg overflow-y-auto">
-          {renderContent()}
+          {/* Main content */}
+          <div className="bg-white dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-fit rounded-lg shadow-lg overflow-y-auto">
+            {renderContent()}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </ThemeProvider>
   );
 };
 
