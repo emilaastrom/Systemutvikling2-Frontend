@@ -18,7 +18,7 @@ export default function Home() {
           <Challengecarousel />
         </div>
         <PathSection />
-      {/*</div>*/}
+      </div>
     </main>
   );
 }
