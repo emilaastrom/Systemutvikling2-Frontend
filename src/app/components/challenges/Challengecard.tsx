@@ -15,6 +15,7 @@ const Challengecard = ({
     endDate: Date;
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
@@ -22,6 +23,7 @@ const Challengecard = ({
     const handleCardClick = () => {
         setIsModalOpen(true);
     };
+
     const calculateDaysLeft = (endDate: Date) => {
         const today = new Date();
         const diffTime = endDate.getTime() - today.getTime();
@@ -35,16 +37,29 @@ const Challengecard = ({
         <>
             {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} />}
             <div className="flex justify-end" onClick={handleCardClick}>
-                <div className="w-60 m-4 border-2 border-gray-300 rounded-lg overflow-hidden shadow-md text-black bg-white cursor-pointer hover:bg-gray-200">
-                    <div className="p-2">
-                        <div className="h-24 p-2 flex flex-col justify-center items-center">
-                            <h2 className="overflow-hidden break-words text-center">{challenge}</h2>
+            <div 
+                className="w-80 m-4 rounded-lg overflow-hidden relative cursor-pointer" 
+                style={{ 
+                    background: "url('cloud.svg')", 
+                    backgroundRepeat: 'no-repeat', 
+                    backgroundSize: '320px 135px'
+                }}
+                onMouseOver={(e) => { 
+                    e.currentTarget.style.backgroundImage = "url('cloudgrey.svg')";
+                }}
+                onMouseOut={(e) => { 
+                    e.currentTarget.style.backgroundImage = "url('cloud.svg')";
+                }}
+            > 
+            <div className="p-2">
+                        <div className="h-24 pt-2 flex flex-col justify-center items-center">
+                            <h2 className="px-10 pt-5 overflow-hidden break-words text-center">{challenge}</h2>
                         </div>
-                        <div className="h-17 p-1 flex justify-between items-center">
-                            <p className="text-left font-semibold text-l">
+                        <div className="h-17 flex justify-center items-center">
+                            <p className="text-left font-semibold pr-5 text-l">
                                 {current}/{max}
                             </p>
-                            <p className="text-right font-semibold text-l">
+                            <p className="text-right pl-4 font-semibold text-l">
                                 {days} dager igjen
                             </p>
                         </div>

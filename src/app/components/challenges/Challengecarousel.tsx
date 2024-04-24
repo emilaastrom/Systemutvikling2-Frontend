@@ -4,7 +4,7 @@ import ChallengecardAddButton from "./ChallengecardAddButton";
 const Challengecarousel = () => {
   const challenges = [
     {
-      name: "Drikk kun 4 kopper kaffe på sit kafeen denne uka eller noe sånt",
+      name: "Drikk kun 4 kopper kaffe på sit kafeen denne uka eller noe ",
       current: 1,
       max: 4,
       startDate: new Date(2024, 5, 25),
@@ -87,7 +87,7 @@ const Challengecarousel = () => {
           />
         </div>
       ))}
-      <div className="h-100 m-4">
+      <div className="m-4">
         <ChallengecardAddButton />
       </div>
     </div>
