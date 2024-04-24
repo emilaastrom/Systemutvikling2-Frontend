@@ -18,17 +18,18 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
     const clipPath = `polygon(0% 100%, 100% 100%, 100% ${100 - percentage}%, 0% ${100 - percentage}%)`;
 
     return (
-        <div className=" font-semibold items-center text-center relative">
-            <div className='text-3xl'>
-            {goal}
+        <div className="font-semibold items-center md:mt-5 mt-3 md:mb-5 mb-3 text-gray-800 text-center relative">
+            <div className='md:text-4xl text-3xl font-custom1'>
+                {goal}
             </div>
-            <div className='relative h-48 flex justify-center items-center'>
+            <div className='relative h-32 md:h-48 flex justify-center items-center'>
                 <div className="absolute">
                     <Image 
                         src="/gris_transparent.png" 
                         alt="Gris transparent" 
                         height={160}
                         width={160}
+                        className="h-32 w-32 md:h-40 md:w-40"
                     />
                 </div>
                 <div className="absolute" style={{ clipPath: clipPath }}>
@@ -37,10 +38,11 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
                         alt="Gris" 
                         height={160}
                         width={160}
+                        className="h-32 w-32 md:h-40 md:w-40"
                     />
                 </div>
             </div>
-            <div className=" text-2xl relative">
+            <div className="text-3xl font-custom1 relative">
                 {current} / {max} kr
             </div>
         </div>

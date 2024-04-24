@@ -4,7 +4,7 @@ import ChallengecardAddButton from "./ChallengecardAddButton";
 const Challengecarousel = () => {
   const challenges = [
     {
-      name: "Drikk kun 4 kopper kaffe på sit kafeen denne uka eller noe sånt",
+      name: "Drikk kun 4 kopper kaffe på sit kafeen denne uka eller noe ",
       current: 1,
       max: 4,
       startDate: new Date(2024, 5, 25),
@@ -75,9 +75,9 @@ const Challengecarousel = () => {
     },
   ];
   return (
-    <div className="flex self-start w-screen text-black overflow-x-scroll overflow-y-hidden">
+    <div className="flex md:flex-col z-10 md:fixed md:right-1.5 md:top-5 md:h-screen md:py-6 self-start md:w-auto w-screen text-black overflow-x-scroll md:overflow-y-scroll">
       {challenges.map((challenge, index) => (
-        <div key={index} className="flex-none">
+        <div key={index} className="flex-none md:relative md:block">
           <Challengecard
             challenge={challenge.name}
             current={challenge.current}
@@ -87,7 +87,7 @@ const Challengecarousel = () => {
           />
         </div>
       ))}
-      <div className="h-100 m-4">
+      <div className="m-4">
         <ChallengecardAddButton />
       </div>
     </div>

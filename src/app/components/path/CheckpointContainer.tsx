@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo, useCallback } from "react";
+import React, {useContext, useState, useMemo, useCallback, useEffect} from "react";
 import Checkpoint from "@/app/components/path/Checkpoint";
 import { PathContext } from "@/app/hooks/PathProvider";
 import { Vector } from "@/util/types/vector";
@@ -88,8 +88,15 @@ export default function CheckpointContainer() {
         },
     ], []);
 
-    const { bounds, pathFunction, worldToScreen } = useContext(PathContext);
+    const { scale, bounds, pathFunction, worldToScreen } = useContext(PathContext);
+
     const [size, setSize] = useState(40);
+    const [borderWidth, setBorderWidth] = useState(4);
+
+    useEffect(() => {
+        setSize(40 * scale);
+        setBorderWidth(4 * scale);
+    }, [scale]);
 
     const calculateWorldPositions = useCallback((challenges: Array<any>) => {
         const positions: Vector[] = [];
@@ -102,7 +109,7 @@ export default function CheckpointContainer() {
         }
 
         return challenges.map((_, index) => positions[index]);
-    }, [pathFunction]);
+    }, [pathFunction, scale]);
 
     const worldPositions = useMemo(() => calculateWorldPositions(completedChallenges), [completedChallenges, calculateWorldPositions]);
 
@@ -131,6 +138,7 @@ export default function CheckpointContainer() {
                             passed={challenge.passed}
                             coords={getScreenPos(worldPos)}
                             size={size}
+                            borderWidth={borderWidth}
                         />
                     }
                 })

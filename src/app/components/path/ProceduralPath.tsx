@@ -16,7 +16,7 @@ export default function ProceduralPath(
         width: number;
     }) {
 
-    const { bounds, pathFunction, worldToScreen } = useContext(PathContext);
+    const { scale, bounds, pathFunction, worldToScreen } = useContext(PathContext);
     const [pathData, setPathData] = useState("");
 
     const generatePathData = useCallback(() => {
@@ -40,7 +40,7 @@ export default function ProceduralPath(
                 d={pathData}
                 fill={"none"}
                 stroke={color}
-                strokeWidth={width}
+                strokeWidth={width * scale}
                 strokeLinecap={"round"}
             />
         </motion.svg>

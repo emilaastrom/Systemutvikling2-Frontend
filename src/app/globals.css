@@ -40,3 +40,8 @@ body {
 .animate-slide {
   animation: slide 30s linear infinite;
 }
+
+@font-face {
+  font-family: 'SuperBubble';
+  src: url('./font/SuperBubble-Rpaj3.ttf');
+}
