@@ -72,10 +72,25 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
 
     return (
         <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
-            <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 h-4/5 m-5 overflow-auto">
-                <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center flex flex-col justify-center items-center font-semibold overflow-auto">
-                    Ny utfordring?
-                </div>              
+            <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 h-4/5 m-2 overflow-auto">
+            <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
+    <div className="flex-grow flex justify-center items-center">
+        Ny utfordring?
+    </div>
+    <button className="absolute top-0 right-0 m-4" onClick={onClose}>
+        <CustomIcon 
+            className={""}
+            svg={
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            }
+            />
+    </button>
+</div>
+
+
+             
                 <div className="flex justify-center m-4 text-lg ">
                     <div className="flex items-center mr-4">
                         <input
@@ -119,7 +134,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                             setX2(100);
                           }} 
                         disabled={currentPage === 0}
-                        className={`mx-1 px-4 py-2 font-bold ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`mx-1 md:px-4 py-2 font-bold ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                         <CustomIcon 
                             className={""}
@@ -137,7 +152,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                             setX2(-100);
                         }}
                         disabled={currentPage === totalPages - 1}
-                        className={`mx-1 px-4 py-2 font-bold ${currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`mx-1 md:px-4 py-2 font-bold ${currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                         <CustomIcon 
                             className={""}
@@ -151,7 +166,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                 </div>
 
                 <div className="flex justify-center items-center">
-                    <button className="border-2 border-green-200 p-5">Add challenge</button>
+                    <button className="border-2 border-green-300 p-5">Legg til utfordring</button>
                 </div>
 
             </div>
