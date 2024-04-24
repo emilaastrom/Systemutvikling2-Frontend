@@ -1,23 +1,30 @@
 "use client";
 import PathSection from "@/app/components/path/PathSection";
-import Image from "next/image";
-import Navbar from "./components/Navbar";
-import { useState } from "react";
-import ProgressBar from "./components/Progressbar";
-import Confetti from "react-confetti";
+import { useEffect } from "react";
 import Challengecarousel from "./components/Challengecarousel";
 import Goalpig from "./components/Goalpig";
+import { ThemeProvider } from "./components/settings/ThemeProvider";
+import ThemeManager from "./components/settings/ThemeManager";
 
 export default function Home() {
+  useEffect(() => {
+    const savedTheme =
+      (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light"; // Get saved theme if exists
+    ThemeManager.setTheme(savedTheme);
+    console.log("Theme set to: ", savedTheme);
+  }, []);
+
   return (
-    <main className="bg-white w-full h-screen flex">
-      <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
-        <div>
-          <Goalpig current={600} max={1000} goal={"Tur til københavn"} />
-          <Challengecarousel />
+    <ThemeProvider>
+      <main className="w-full h-screen flex">
+        <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
+          <div>
+            <Goalpig current={600} max={1000} goal={"Tur til københavn"} />
+            <Challengecarousel />
+          </div>
+          <PathSection />
         </div>
-        <PathSection />
-      </div>
-    </main>
+      </main>
+    </ThemeProvider>
   );
 }
