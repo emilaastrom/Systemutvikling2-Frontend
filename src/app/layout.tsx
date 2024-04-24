@@ -23,8 +23,8 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <body>
           <CustomHeader />
-          <div>
-            {/*<Navbar />*/}
+          <div className=" bg-gradient-to-b from-[#d9f7ca] to-[#c9fcb0] dark:bg-slate-700">
+            <Navbar />
             <div> {children}</div>
           </div>
         </body>
