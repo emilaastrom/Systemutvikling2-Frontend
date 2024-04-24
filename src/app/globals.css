@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+@font-face {
+  font-family: 'SuperBubble';
+  src: url('./font/SuperBubble-Rpaj3.ttf');
+}

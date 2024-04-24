@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Vector } from "@/util/types/vector";
-import NoiseProvider from "@/app/hooks/NoiseProvider";
+import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
 import CheckpointContainer from "@/app/components/path/CheckpointContainer";
 
 export default function PathSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const positionRef = useRef(0);
+  const velocityRef = useRef(0);
+
   const [dimensions, setDimensions] = useState<Vector>({ x: 0, y: 0 });
-  const position = useRef(0);
-  const velocity = useRef(0);
+  const [position, setPosition] = useState(0)
+
   const [lastY, setLastY] = useState(0);
   const [lastTime, setLastTime] = useState(0);
   const [animationFrameId, setAnimationFrameId] = useState(0);
@@ -45,9 +48,10 @@ export default function PathSection() {
       const currentTime = event.timeStamp;
       const deltaY = event.deltaY;
 
-      velocity.current = (deltaY / (currentTime - lastTime)) * 12;
-      position.current += deltaY;
+      velocityRef.current = (deltaY / (currentTime - lastTime)) * 12;
+      positionRef.current += deltaY;
 
+      setPosition(positionRef.current);
       setLastTime(currentTime);
     };
 
@@ -76,9 +80,10 @@ export default function PathSection() {
       const currentTime = event.timeStamp;
 
       const deltaY = lastY - currentY;
-      velocity.current = (deltaY / (currentTime - lastTime)) * 12;
-      position.current += deltaY;
+      velocityRef.current = (deltaY / (currentTime - lastTime)) * 12;
+      positionRef.current += deltaY;
 
+      setPosition(positionRef.current);
       setLastY(currentY);
       setLastTime(currentTime);
     };
@@ -88,11 +93,12 @@ export default function PathSection() {
       const threshold = 0.01;
 
       const applyMomentum = () => {
-        position.current += velocity.current;
+        positionRef.current += velocityRef.current;
 
-        velocity.current *= friction;
+        velocityRef.current *= friction;
 
-        if (Math.abs(velocity.current) > threshold) {
+        if (Math.abs(velocityRef.current) > threshold) {
+          setPosition(positionRef.current);
           setAnimationFrameId(requestAnimationFrame(applyMomentum));
         }
       };
@@ -120,15 +126,15 @@ export default function PathSection() {
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [sectionRef, velocity, lastY, lastTime, animationFrameId]);
+  }, [sectionRef, velocityRef, lastY, lastTime, animationFrameId]);
 
   return (
     <section
-      className="w-full h-full overflow-hidden relative"
-      ref={sectionRef}
-      
-    >
-      <NoiseProvider
+    className="h-[600px] bg-gradient-to-b from-[#a3f07d] to-[#8CD867] overflow-x-hidden relative"
+    ref={sectionRef}
+    style={{ width:"200%", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", boxSizing: "border-box", maxHeight: "600px" }} // Curved cut-off
+  >
+      <PathProvider
         seed={"seed"}
         dimensions={dimensions}
         position={position}
@@ -137,12 +143,12 @@ export default function PathSection() {
       >
         <ProceduralPath
           dimensions={dimensions}
-          color={"#9a9a9a"}
+          color={"#916953"}
           stepLength={5}
-          maxOffset={40}
+          width={50}
         />
-        <CheckpointContainer dimensions={dimensions} position={position} />
-      </NoiseProvider>
+        <CheckpointContainer />
+      </PathProvider>
     </section>
   );
 }
