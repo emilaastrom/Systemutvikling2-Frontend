@@ -2,40 +2,24 @@ import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 
 const host = "http://localhost";
-const api = "/api/v1";
+const api = "";
+// const api = "/api/v1";
 
+const serviceInfo = {
+  auth: { port: 8111, path: "/auth" },
+  goal: { port: 8081, path: "/goal" },
+  bank: { port: 8082, path: "/bank" },
+  user: { port: 8083, path: "/user" },
+  challenge: { port: 8084, path: "/challenge" },
+  gateway: { port: 8080, path: "" },
+};
 type Info = {
   port: number;
   path: string;
 };
 
-const authInfo: Info = {
-  port: 8080,
-  path: "/auth",
-};
-
-const goalInfo: Info = {
-  port: 8081,
-  path: "/goal",
-};
-
-const bankInfo: Info = {
-  port: 8082,
-  path: "/bank",
-};
-
-const userInfo: Info = {
-  port: 8083,
-  path: "/user",
-};
-
-const challengeInfo: Info = {
-  port: 8084,
-  path: "/challenge",
-};
-
 function getAuthToken() {
-  return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4NDcxMDFkYS0xMDBmLTQ2MTYtYTIxNy02MDM2YTZhZDIzMTIiLCJpYXQiOjE3MTM4NzYzMzUsImV4cCI6MTcxMzkxMjMzNX0.Q5f44k_KcgJgO3XvzVV3BFBSJHL-GKNP2031p2JUBs0";
+  return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZGVmNTU1My02Mzg4LTQ1OTYtODViMS00Njg3MDdlZWYyYzUiLCJpYXQiOjE3MTM5NTA1NTEsImV4cCI6MTcxMzk4NjU1MX0.thmhOHq3QVeZjv8aAPixTyQC5H4VPV7gKpu6sjLipzc";
   // const { token } = useAuth();
   // return token;
 }
@@ -65,8 +49,8 @@ const createAxiosService = (info, timeout = 1000) => {
 };
 
 function apiHandler(service, method, url, data = null) {
-  const config = data ? [url, data] : [url];
-  return service[method](...config)
+  const config = data ? [service + url, data] : [service + url];
+  return gatewayService[method](...config)
     .then((response) => response.data)
     .catch((error) => {
       console.error(
@@ -77,104 +61,104 @@ function apiHandler(service, method, url, data = null) {
     });
 }
 
-const goalService = createAxiosService(goalInfo);
-const userService = createAxiosService(userInfo);
-const challengeService = createAxiosService(challengeInfo);
-const bankService = createAxiosService(bankInfo);
-const authService = createAxiosService(authInfo);
+const gatewayService = createAxiosService(serviceInfo.gateway);
 
 function GetActiveGoal(): Promise<Goal> {
-  return apiHandler(goalService, "get", "/getActiveGoal");
+  return apiHandler(serviceInfo.goal.path, "get", "/getActiveGoal");
 }
 
 function SetGoal(data: SetGoalRequest): Promise<SetGoalResponse> {
-  return apiHandler(goalService, "post", "/setGoal", data);
+  return apiHandler(serviceInfo.goal.path, "post", "/setGoal", data);
 }
 
 function IncreaseProgress(
   data: IncreaseProgressRequest,
 ): Promise<IncreaseProgressResponse> {
-  return apiHandler(goalService, "post", "/increaseProgress", data);
+  return apiHandler(serviceInfo.goal.path, "post", "/increaseProgress", data);
 }
 
 function GetAllGoals(): Promise<Goal[]> {
-  return apiHandler(goalService, "get", "/getAllGoals");
+  return apiHandler(serviceInfo.goal.path, "get", "/getAllGoals");
 }
 
 function GetUser(): Promise<User> {
-  return apiHandler(userService, "get", "/getUser");
+  return apiHandler(serviceInfo.user.path, "get", "/getUser");
 }
 
 function UpdateUser(data: User): Promise<User> {
-  return apiHandler(userService, "put", "/updateUser", data);
+  return apiHandler(serviceInfo.user.path, "put", "/updateUser", data);
 }
 
 function GetAllByTimeLimitAsc(): Promise<Challenge> {
-  return apiHandler(challengeService, "get", "/getAllByTimeLimitAsc");
+  return apiHandler(serviceInfo.challenge.path, "get", "/getAllByTimeLimitAsc");
 }
 
 function GetAllByTimeLimitDsc(): Promise<Challenge> {
-  return apiHandler(challengeService, "get", "/getAllByTimeLimitDsc");
+  return apiHandler(serviceInfo.challenge.path, "get", "/getAllByTimeLimitDsc");
 }
 
 function UpdateChallenge(data: Challenge) {
-  return apiHandler(challengeService, "patch", "/updateChallenge");
+  return apiHandler(serviceInfo.challenge.path, "patch", "/updateChallenge");
 }
 
 function GenerateNewChallenges() {
-  return apiHandler(challengeService, "post", "/generateNewChallenges");
+  return apiHandler(
+    serviceInfo.challenge.path,
+    "post",
+    "/generateNewChallenges",
+  );
 }
 
 function CreateConsent(): Promise<string> {
-  return apiHandler(bankService, "post", "/createConsent");
+  return apiHandler(serviceInfo.bank.path, "post", "/createConsent");
 }
 
 function GetConsent(): string {
-  return apiHandler(bankService, "get", "/getConsent");
+  return apiHandler(serviceInfo.bank.path, "get", "/getConsent");
 }
 
 function DeleteConsent(): string {
-  return apiHandler(bankService, "delete", "/deleteConsent");
+  return apiHandler(serviceInfo.bank.path, "delete", "/deleteConsent");
 }
 
 function GetConsentStatus(): string {
-  return apiHandler(bankService, "post", "/getConsentStatus");
+  return apiHandler(serviceInfo.bank.path, "post", "/getConsentStatus");
 }
 
 function GetAccountInfo(): string {
-  return apiHandler(bankService, "get", "/getAccountInfo");
+  return apiHandler(serviceInfo.bank.path, "get", "/getAccountInfo");
 }
 
 function GetBalance(): string {
-  return apiHandler(bankService, "get", "/getBalance");
+  return apiHandler(serviceInfo.bank.path, "get", "/getBalance");
 }
 
 function GetTransactionList(): string {
-  return apiHandler(bankService, "get", "/getTransactionList");
+  return apiHandler(serviceInfo.bank.path, "get", "/getTransactionList");
 }
 
 function CreateTransfer(): string {
-  return apiHandler(bankService, "post", "/createTransfer");
+  return apiHandler(serviceInfo.bank.path, "post", "/createTransfer");
 }
 
 function CreatePeriodicTransfer(): string {
-  return apiHandler(bankService, "post", "/createPeriodicTransfer");
+  return apiHandler(serviceInfo.bank.path, "post", "/createPeriodicTransfer");
 }
 
 function Login(data: LoginRequest): Promise<AuthResponse> {
-  return apiHandler(authService, "post", "/login", data);
+  return apiHandler(serviceInfo.auth.path, "post", "/login", data);
 }
 
 function Register(data: RegisterRequest): MessageResponse {
-  return apiHandler(authService, "post", "/register", data);
+  return apiHandler(serviceInfo.auth.path, "post", "/register", data);
 }
 
 function Verify(): AuthResponse {
-  return apiHandler(authService, "get", "/verify");
+  return apiHandler(serviceInfo.auth.path, "get", "/verify");
 }
 
 function ValidateToken(data: string): boolean {
-  return apiHandler(authService, "post", "/validateToken", data);
+  return apiHandler(serviceInfo.auth.path, "post", "/validateToken", data);
 }
 export {
   GetActiveGoal,
