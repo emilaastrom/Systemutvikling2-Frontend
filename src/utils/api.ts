@@ -42,7 +42,7 @@ const createAxiosService = (info, timeout = 1000) => {
       }
       return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(error)
   );
 
   return service;
@@ -55,7 +55,7 @@ function apiHandler(service, method, url, data = null) {
     .catch((error) => {
       console.error(
         `Failed to ${method === "get" ? "fetch" : "post"}: ${url}`,
-        error,
+        error
       );
       throw error;
     });
@@ -72,7 +72,7 @@ function SetGoal(data: SetGoalRequest): Promise<SetGoalResponse> {
 }
 
 function IncreaseProgress(
-  data: IncreaseProgressRequest,
+  data: IncreaseProgressRequest
 ): Promise<IncreaseProgressResponse> {
   return apiHandler(serviceInfo.goal.path, "post", "/increaseProgress", data);
 }
@@ -105,7 +105,7 @@ function GenerateNewChallenges() {
   return apiHandler(
     serviceInfo.challenge.path,
     "post",
-    "/generateNewChallenges",
+    "/generateNewChallenges"
   );
 }
 
