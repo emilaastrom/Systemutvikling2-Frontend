@@ -1,9 +1,8 @@
 stages:
-  - buildDocker
+  - build
 
 buildDocker:
-  stage: buildDocker
-  needs: ["build"]
+  stage: build
   image: docker:latest
   services:
     - name: docker:20-dind
