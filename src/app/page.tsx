@@ -1,67 +1,30 @@
 "use client";
 import PathSection from "@/app/components/path/PathSection";
-import Image from "next/image";
-import Navbar from "./components/Navbar";
-import { use, useEffect, useState } from "react";
-import ProgressBar from "./components/Progressbar";
-import Confetti from "react-confetti";
-import Challengecarousel from "./components/Challengecarousel";
-import { GetActiveGoal } from "@/utils/api";
+import { useEffect } from "react";
+import Challengecarousel from "./components/challenges/Challengecarousel";
+import Goalpig from "./components/Goalpig";
+import { ThemeProvider } from "./components/settings/ThemeProvider";
+import ThemeManager from "./components/settings/ThemeManager";
+
 export default function Home() {
-  const [activeGoal, setActiveGoal] = useState<Goal[] | null>(null);
-  type Goal = {
-    title: string;
-    description: string;
-    // Add other properties of the goal here
-  };
-
-  const tet = async () => {
-    const req = await fetch("http://localhost:8080/goal/getActiveGoal", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZGVmNTU1My02Mzg4LTQ1OTYtODViMS00Njg3MDdlZWYyYzUiLCJpYXQiOjE3MTM5NDk3NzgsImV4cCI6MTcxMzk4NTc3OH0.nrN5N9iTyfqnw8EbV1by4uPFoJjyH__7axBhmWXNnDA",
-      },
-    });
-    const res = await req.json();
-    console.log(res);
-  };
-
-  tet();
-  /*
-  const getActiveGoal = async () => {
-    const goal = await GetActiveGoal();
-    console.log(goal);
-    setActiveGoal(goal);
-  };
-  getActiveGoal();
-
   useEffect(() => {
-    getActiveGoal();
-  }, [activeGoal]);
+    const savedTheme =
+      (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light"; // Get saved theme if exists
+    ThemeManager.setTheme(savedTheme);
+    console.log("Theme set to: ", savedTheme);
+  }, []);
 
-  if (!activeGoal) {
-    return <div>Loading...</div>;
-  }*/
   return (
-    <main className="bg-gradient-to-b from-[#65DEF1] via-[#ffecbe] to-[#f8e539] w-full overflow-x-hidden h-screen flex">
-      <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
-        <div>
-          <Goalpig current={600} max={1000} goal={"Tur til københavn"} />
-          <Challengecarousel />
-          <button>TEST</button>
+    <ThemeProvider>
+      <main className="bg-gradient-to-b from-[#65DEF1] via-[#ffecbe] to-[#f8e539] w-full overflow-x-hidden h-screen flex">
+        <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
           <div>
-            {/*activeGoal.map((goal, i) => (
-              <div key={i}>
-                <h1>{goal.title}</h1>
-                <p>{goal.description}</p>
-              </div>
-            ))*/}
+            <Goalpig current={600} max={1000} goal={"Tur til københavn"} />
+            <Challengecarousel />
           </div>
+          <PathSection />
         </div>
-        <PathSection />
-      </div>
-    </main>
+      </main>
+    </ThemeProvider>
   );
 }
