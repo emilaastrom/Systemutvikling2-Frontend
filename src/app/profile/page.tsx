@@ -5,6 +5,8 @@ import VolumeSlider from "../components/settings/VolumeSlider";
 import DarkModeToggle from "../components/settings/DarkModeToggle";
 import { useRouter } from "next/navigation";
 import ThemeProvider from "../components/settings/ThemeProvider";
+import InputBox from "../components/settings/InputBox";
+import CustomizeExperience from "../components/settings/CustomizeExperience";
 
 interface SidebarItemProps {
   title: string;
@@ -42,7 +44,7 @@ const LogoutButton: React.FC = () => {
   return (
     <div className="bg-gray-100 md:col-span-1 mt-2 md:order-2 col-span-3 h-10 row-span-1 rounded-lg shadow-lg">
       <button
-        className="border-red-500 max-h-10  bg-white rounded-md text-black h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 hover:font-semibold transition ease-in-out"
+        className=" max-h-10  bg-white rounded-md text-black h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 hover:font-semibold transition ease-in-out"
         onClick={handleLogout}
       >
         Logg av
@@ -70,25 +72,14 @@ const Home: React.FC = () => {
     switch (content) {
       case "Konto":
         return (
-          <div>
-            <div className="m-10 text-black dark:text-white">
-              Brukskonto
-              <br />
-              <input
-                type="text"
-                placeholder="Kontonr"
-                className="border-2 rounded-lg p-1 border-green-400 dark:border-slate-500"
-              />
-            </div>
-
-            <div className="m-10 dark:text-white">
-              Sparekonto <br />
-              <input
-                type="text"
-                placeholder="Kontonr"
-                className="border-2 rounded-lg p-1 border-green-400 dark:border-slate-500"
-              />
-            </div>
+          <div id="nameBox" className="mb-6 m-10  md:w-fill w-2/3">
+            <InputBox label={"Brukernavn"} placeholder={"mittKuleBrukernavn"} disabled={true} />
+            <InputBox label={"Fornavn"} placeholder={firstName} />
+            <InputBox label={"Etternavn"} placeholder={lastName} />
+            <InputBox label={"Epost"} placeholder={username} disabled={true}/>
+            <InputBox label={"Telefon"} placeholder="12345678" />
+            <CustomizeExperience/>
+            <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 w-full">Lagre</button>
           </div>
         );
       case "Badges":
@@ -125,42 +116,9 @@ const Home: React.FC = () => {
             ></Image>
           </div>
         );
-      case "Innstillinger":
+      case "Preferanser":
         return (
           <div className="ml-8 m-8 h-fill dark:bg-slate-600">
-            <div id="nameBox" className="mb-6 w-2/3 md:w-1/3">
-              <div className="mb-4">
-                <label
-                  htmlFor="first-name"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
-                  Fornavn:
-                </label>
-                <input
-                  type="text"
-                  id="first-name"
-                  placeholder={firstName}
-                  className="mt-1 border-2 rounded-lg px-4 py-2 border-green-400 dark:bg-slate-200 dark:border-slate-700 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  style={{ textAlign: "left" }}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
-                  Etternavn:
-                </label>
-                <input
-                  type="text"
-                  id="last-name"
-                  placeholder={lastName}
-                  className="mt-1 border-2 rounded-lg px-4 py-2 border-green-400 dark:border-slate-700 dark:bg-slate-200 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  style={{ textAlign: "left" }}
-                />
-              </div>
-            </div>
-
             <div className="">
               <VolumeSlider />
             </div>
@@ -186,8 +144,8 @@ const Home: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <main className=" dark:bg-slate-700 w-screen pb-32 md:pb-0 md:h-screen flex flex-col">
-        <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 h-auto pt-20 md:px-48 px-4 w-screen">
+      <main className=" dark:bg-slate-700 w-fill min-h-screen pb-16 flex flex-col">
+        <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 pt-20 md:px-48 px-4 w-screen">
           {/* Profile section */}
           <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">
             <Image
@@ -226,16 +184,16 @@ const Home: React.FC = () => {
                 isActive={content === "Badges"}
               />
               <SidebarItem
-                title="Innstillinger"
-                onClick={() => setContent("Innstillinger")}
-                isActive={content === "Innstillinger"}
+                title="Preferanser"
+                onClick={() => setContent("Preferanser")}
+                isActive={content === "Preferanser"}
               />
             </div>
             <LogoutButton />
           </div>
 
           {/* Main content */}
-          <div className="bg-white dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-fit rounded-lg shadow-lg overflow-y-auto">
+          <div className="bg-white mb-48 dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-auto rounded-lg shadow-lg overflow-y-auto">
             {renderContent()}
           </div>
         </div>
