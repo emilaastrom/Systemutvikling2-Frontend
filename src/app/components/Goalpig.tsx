@@ -18,7 +18,7 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
     const clipPath = `polygon(0% 100%, 100% 100%, 100% ${100 - percentage}%, 0% ${100 - percentage}%)`;
 
     return (
-        <div className="font-semibold items-center md:mt-5 mt-3 md:mb-5 mb-3 text-gray-800 text-center relative">
+        <div className="font-semibold items-center md:mt-5 mt-3 md:mb-5 mb-3 text-dark text-center relative">
             <div className='md:text-4xl text-3xl font-custom1'>
                 {goal}
             </div>
