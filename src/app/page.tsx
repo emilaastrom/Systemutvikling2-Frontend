@@ -69,9 +69,9 @@ export default function Home() {
                   className="bg-white text-black border-2 border-black p-2 m-2 absolute z-10"
                   onClick={openCheckpointModal}
                 >
-                  TESTKNAPP FOR UTFORDRING PÅ STIEN <br />
+                  TESTKNAPP FOR UTFORDRING PÅ STIEN <br/>
                   <span className="text-xs">
-                    husk det lille problemet med at vi ikke kan trykke
+                    husk det lille problemet med at vi ikke kan trykke <br/>
                     checkpoints den om vi ikke bruker chrome
                   </span>
                 </button>
