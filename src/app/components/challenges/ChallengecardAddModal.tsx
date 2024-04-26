@@ -71,8 +71,8 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
     };
 
     return (
-        <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
-            <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 h-4/5 m-2 overflow-auto">
+        <div onClick={onClose} className="modal-container">
+            <div onClick={stopPropagation} className="modal-content">
             <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
             <div className="flex-grow flex justify-center items-center">
                 Ny utfordring?
