@@ -54,7 +54,7 @@ const LogoutButton: React.FC = () => {
 };
 
 const Home: React.FC = () => {
-  const [content, setContent] = useState<string>("Konto");
+  const [content, setContent] = useState<string>("Bruker");
   const username: string = "epost@mail.com";
   const realName: string = "Ola Nordmann";
   const [firstName, setFirstName] = useState("");
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
 
   const renderContent = () => {
     switch (content) {
-      case "Konto":
+      case "Bruker":
         return (
           <div id="nameBox" className="mb-6 m-10  md:w-fill w-4/5">
             <InputBox label={"Brukernavn"} placeholder={"mittKuleBrukernavn"} disabled={true} />
@@ -174,9 +174,9 @@ const Home: React.FC = () => {
           <div className="md:col-span-1 col-span-3 row-span-1 grid grid-cols-1 gap- dark:shadow-xl">
             <div className="bg-white px-1 dark:bg-slate-500 bg-opacity-80 md:col-span-1 col-span-3 w-full md:row-span-3 rounded-lg shadow-lg flex flex-col justify-center items-center">
               <SidebarItem
-                title="Konto"
-                onClick={() => setContent("Konto")}
-                isActive={content === "Konto"}
+                title="Bruker"
+                onClick={() => setContent("Bruker")}
+                isActive={content === "Bruker"}
               />
               <SidebarItem
                 title="Badges"
