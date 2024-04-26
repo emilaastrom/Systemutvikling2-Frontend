@@ -72,7 +72,7 @@ const Home: React.FC = () => {
     switch (content) {
       case "Konto":
         return (
-          <div id="nameBox" className="mb-6 m-10  md:w-fill w-2/3">
+          <div id="nameBox" className="mb-6 m-10  md:w-fill w-4/5">
             <InputBox label={"Brukernavn"} placeholder={"mittKuleBrukernavn"} disabled={true} />
             <InputBox label={"Fornavn"} placeholder={firstName} />
             <InputBox label={"Etternavn"} placeholder={lastName} />
