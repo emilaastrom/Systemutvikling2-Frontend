@@ -17,7 +17,7 @@ export default function Checkpoint({ passed, coords, scale, size, borderWidth }:
                 opacity: opacity,
                 // boxShadow: "0 3px 0 0px rgb(107 114 128), 0 6px 0 0px rgb(107 114 128)",
             }}
-            className={`${color} ${hoverColor} rounded-full border-4 border-gray-500 transform translate-y-[-6px] active:translate-y-0 shadow-custom active:shadow-none`}
+            className={`${color} ${hoverColor} rounded-full border-4 border-gray-500 transform translate-y-[-6px] active:translate-y-0 shadow-custom active:shadow-none child`}
         >
         </button>
     );
