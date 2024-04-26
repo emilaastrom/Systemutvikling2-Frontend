@@ -51,7 +51,7 @@ const Challengecard = ({
                     e.currentTarget.style.backgroundImage = "url('cloud.svg')";
                 }}
             > 
-            <div className="p-2">
+            <div className="p-2 text-dark">
                         <div className="h-24 pt-2 flex flex-col justify-center items-center">
                             <h2 className="px-10 pt-5 overflow-hidden break-words text-center">{challenge}</h2>
                         </div>
