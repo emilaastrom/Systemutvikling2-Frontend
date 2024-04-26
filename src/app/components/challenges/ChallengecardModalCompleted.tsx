@@ -83,7 +83,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
     >
       <div
         onClick={stopPropagation}
-        className="bg-white md:h-1/3 h-1/3 rounded-lg w-screen md:w-1/2 m-5 overflow-auto"
+        className="bg-white md:h-1/3 min-h-80 rounded-lg w-screen md:w-1/2 m-5 overflow-auto"
       >
         <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
           <div className="flex-grow flex justify-center items-center">
