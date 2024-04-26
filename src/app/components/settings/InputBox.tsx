@@ -12,7 +12,7 @@ interface InputBoxProps {
 const InputBox: React.FC<InputBoxProps> = ({
   label,
   placeholder,
-  className = "md:w-1/3 w-2/3",
+  className = "md:w-64 w-2/3",
   classNameLabel = "block text-sm font-medium text-gray-700 dark:text-white",
   classNameInput = "mt-1 border-2 rounded-lg px-4 py-2 border-green-400 dark:bg-slate-200 dark:border-slate-700 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500",
   disabled = false,

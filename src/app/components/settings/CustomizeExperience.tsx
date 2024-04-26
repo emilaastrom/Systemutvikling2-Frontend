@@ -61,7 +61,7 @@ const CustomizeExperience = () => {
                 key={challenge.id}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className={`cursor-pointer p-2 border rounded-lg ${
+                className={`cursor-pointer p-2 border rounded-lg overflow-x-hidden ${
                   selectedChallenges.has(challenge.id)
                     ? "bg-green-200 border-green-500"
                     : "bg-white border-gray-300"
