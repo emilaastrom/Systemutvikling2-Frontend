@@ -31,7 +31,7 @@ export default function Home() {
     progress: 0,
     deadline: new Date(),
     username: "john",
-    active: false,
+    active: true,
   };
 
   function setGoal() {
