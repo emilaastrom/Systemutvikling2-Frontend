@@ -61,7 +61,7 @@ export default function Home() {
   return (
     <ThemeProvider>
       <modalContext.Provider value={{ toggleModal }}>
-        <main className="bg-gradient-to-b from-[#65DEF1] via-[#ffecbe] to-[#f8e539] w-full overflow-x-hidden h-screen flex">
+        <main className="bg-gradient-to-b from-sky-dark to-sky-light w-full overflow-x-hidden h-screen flex">
           <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
             <div>
               <div className="md:h-72 h-48">
@@ -85,10 +85,10 @@ export default function Home() {
                   <div className="justify-center h-full items-center flex">
                     {/* Call openModal function on button click */}
                     <button
-                      className="p-2 bg-green-600 text-gray-50"
+                      className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2"
                       onClick={toggleGoalModal}
                     >
-                      Start nytt sparemål
+                      Lag et nytt sparemål
                     </button>
                   </div>
                 )}

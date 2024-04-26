@@ -133,7 +133,7 @@ export default function PathSection() {
 
   return (
     <section
-        className="h-[600px] bg-gradient-to-b from-[#a3f07d] to-[#8CD867] overflow-hidden relative parent"
+        className="h-[600px] bg-gradient-to-b from-grass-light to-grass-dark overflow-hidden relative parent"
         style={{ width:"200%", borderTopLeftRadius: "50%", borderTopRightRadius: "50%", boxSizing: "border-box", maxHeight: "600px" }}
     >
       <div ref={sectionRef} className="w-full h-full" style={{
@@ -156,7 +156,6 @@ export default function PathSection() {
             <CheckpointContainer/>
             <ProceduralPath
                 dimensions={dimensions}
-                color={"#916953"}
                 stepLength={5}
                 width={50}
             />

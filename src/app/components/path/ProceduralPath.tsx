@@ -1,17 +1,16 @@
-import { motion } from "framer-motion";
 import React, { useState, useEffect, useCallback, useContext } from "react";
+import { motion } from "framer-motion";
+import { colors } from "../../../../tailwind.config";
 import { Vector } from "@/util/types/vector";
 import { PathContext } from "@/app/hooks/PathProvider";
 
 export default function ProceduralPath(
     {
         dimensions,
-        color,
         stepLength,
         width,
     }: {
         dimensions: Vector;
-        color: string;
         stepLength: number;
         width: number;
     }) {
@@ -37,16 +36,28 @@ export default function ProceduralPath(
     return (
         <motion.svg viewBox={`0 0 ${dimensions.x} ${dimensions.y}`}>
             <defs>
-                <linearGradient id="gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                    <stop offset="0%" style={{stopColor: color, stopOpacity: 1}}/>
-                    <stop offset="70%" style={{stopColor: color, stopOpacity: 0.5}}/>
-                    <stop offset="95%" style={{stopColor: color, stopOpacity: 0}}/>
+                <linearGradient id="gradient-light" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" style={{stopColor: colors.path.light, stopOpacity: 1}}/>
+                    <stop offset="70%" style={{stopColor: colors.path.light, stopOpacity: 0.5}}/>
+                    <stop offset="95%" style={{stopColor: colors.path.light, stopOpacity: 0}}/>
+                </linearGradient>
+                <linearGradient id="gradient-dark" x1="0%" y1="100%" x2="0%" y2="0%">
+                    <stop offset="0%" style={{stopColor: colors.path.dark, stopOpacity: 1}}/>
+                    <stop offset="70%" style={{stopColor: colors.path.dark, stopOpacity: 0.5}}/>
+                    <stop offset="95%" style={{stopColor: colors.path.dark, stopOpacity: 0}}/>
                 </linearGradient>
             </defs>
             <motion.path
                 d={pathData}
                 fill={"none"}
-                stroke={"url(#gradient)"}
+                stroke={"url(#gradient-light)"}
+                strokeWidth={width * scale * 1.5}
+                strokeLinecap={"round"}
+            />
+            <motion.path
+                d={pathData}
+                fill={"none"}
+                stroke={"url(#gradient-dark)"}
                 strokeWidth={width * scale}
                 strokeLinecap={"round"}
             />
