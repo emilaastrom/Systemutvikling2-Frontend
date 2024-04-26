@@ -1,39 +1,31 @@
 import React from 'react';
+import InputBox from './settings/InputBox';
 
 const NewGoalModal = ({ closeModal }) => {
+
+  const handleContentClick = (event) => {
+    event.stopPropagation();
+  };
+
   return (
-    <div className="modal-container flex justify-center items-center">
-      <div className="modal-content bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Create New Goal</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-            Title
-          </label>
-          <input
-            className="border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="title"
-            type="text"
-            placeholder="Enter title"
-          />
+    <div className="modal-container flex justify-center items-center" onClick={closeModal}>
+      <div className="modal-content bg-white p-6 rounded-lg shadow-md" onClick={handleContentClick}>
+        <h2 className="text-2xl font-bold mb-4 text-center">Lag et nytt sparemål</h2>
+        <div className="mb-4 flex justify-center">
+          <InputBox label='Tittel' placeholder='Ny mobil'/>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-            Description
-          </label>
-          <textarea
-            className="border rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="description"
-            placeholder="Enter description"
-          ></textarea>
+        <div className="mb-4 flex justify-center">
+          <InputBox label='Hvor mye koster det?' placeholder='3000'/>
         </div>
-        <div className="flex justify-end">
+       
+        <div className="flex justify-center">
           <button
-            className="bg-green-600 text-white px-4 py-2 rounded-md mr-2"
+            className="bg-gray-400 text-white px-4 py-2 rounded-md mr-2"
             onClick={closeModal}
           >
-            Close
+            Cancel
           </button>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-md">
+          <button className="bg-green-600 text-white px-4 py-2 rounded-md">
             Create
           </button>
         </div>

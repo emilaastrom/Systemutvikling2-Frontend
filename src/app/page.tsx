@@ -59,8 +59,8 @@ export default function Home() {
               ) : (
                 <div className="justify-center h-full items-center flex">
                   {/* Call openModal function on button click */}
-                  <button className="p-2 bg-green-600 text-gray-50" onClick={openModal}>
-                    Start nytt sparemål
+                  <button className="p-4 bg-green-600 text-gray-50 rounded-md mr-2" onClick={openModal}>
+                    Lag et nytt sparemål
                   </button>
                 </div>
               )}
