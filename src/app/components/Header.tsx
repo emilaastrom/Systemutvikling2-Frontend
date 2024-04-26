@@ -11,7 +11,7 @@ const CustomHeader = () => {
   if (usePathname() === "/login") {
     return (
       <header>
-        <div className="fixed top-0 w-screen h-10 text-center bg-background z-20">
+        <div className="fixed top-0 w-screen h-10 text-center bg-background-50 z-20">
           <div className="overflow-hidden bg-background text-dark h-10 flex items-center">
             <div className="w-screen animate-slide whitespace-nowrap">
               nøff nøff 🐷
@@ -25,7 +25,7 @@ const CustomHeader = () => {
   // Regular header for all other pages
   return (
     <header>
-      <div className="fixed top-0 w-screen h-10 text-center bg-background z-20">
+      <div className="fixed top-0 w-screen h-10 text-center bg-background-50 z-20 drop-shadow-lg">
         <div className="fixed flex align-middle left-5 w-auto text-dark h-auto m-2 px-2 rounded-xl">
           <SvgIcon
             className="h-5 w-5"

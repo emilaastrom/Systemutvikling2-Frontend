@@ -11,7 +11,14 @@ export const colors = {
     "dark": "#7D8A7B",
   },
   "accent": "#ffb000",
-  "background": "#ffffff",
+  "background": {
+    "50": "#ffffff",
+    '100': '#F3F4F6',
+    '200': '#E5E7EB',
+    '300': '#D1D5DB',
+    '400': '#9CA3AF',
+  },
+  "light": "#f5f5f5",
   "dark": "#3E4A3C",
   "path": {
     "light": "#F2DC9B",

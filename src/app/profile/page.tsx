@@ -7,6 +7,22 @@ import { useRouter } from "next/navigation";
 import ThemeProvider from "../components/settings/ThemeProvider";
 import InputBox from "../components/settings/InputBox";
 import CustomizeExperience from "../components/settings/CustomizeExperience";
+import AccountSelect from "@/app/components/settings/AccountSelect";
+
+const accounts = [
+  {
+    id: 1,
+    number: "123456789",
+    balance: 1000,
+    type: "Sparekonto",
+  },
+  {
+    id: 2,
+    number: "987654321",
+    balance: 5000,
+    type: "Brukskonto",
+  },
+];
 
 interface SidebarItemProps {
   title: string;
@@ -59,6 +75,8 @@ const Home: React.FC = () => {
   const realName: string = "Ola Nordmann";
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [selectedAccountId, setSelectedAccountId] = useState<number | undefined>(1);
+
 
   useEffect(() => {
     const names = realName.split(" ");
@@ -79,7 +97,24 @@ const Home: React.FC = () => {
             <InputBox label={"Epost"} placeholder={username} disabled={true}/>
             <InputBox label={"Telefon"} placeholder="12345678" />
             <CustomizeExperience/>
-            <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 w-full">Lagre</button>
+            <button className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 w-full">Lagre</button>
+          </div>
+        );
+      case "Konto":
+        return (
+          <div className="mx-10 my-6 md:w-fill">
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-semibold mb-6 text-black">
+                Velg bank konto for sparing
+              </h1>
+              <AccountSelect accounts={accounts} selectedId={selectedAccountId} setSelectedId={setSelectedAccountId}/>
+            </div>
+            <button
+              className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 w-full"
+              onClick={() => console.log()}
+            >
+              Lagre
+            </button>
           </div>
         );
       case "Badges":
@@ -144,8 +179,8 @@ const Home: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <main className=" dark:bg-slate-700 w-fill min-h-screen pb-16 flex flex-col">
-        <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 pt-20 md:px-48 px-4 w-screen">
+      <main className="dark:bg-slate-700 w-fill min-h-screen pb-16 flex flex-col">
+        <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 pt-20 md:px-48 px-4 w-full">
           {/* Profile section */}
           <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">
             <Image
@@ -179,6 +214,11 @@ const Home: React.FC = () => {
                 isActive={content === "Bruker"}
               />
               <SidebarItem
+                title="Konto"
+                onClick={() => setContent("Konto")}
+                isActive={content === "Konto"}
+              />
+              <SidebarItem
                 title="Badges"
                 onClick={() => setContent("Badges")}
                 isActive={content === "Badges"}
@@ -193,8 +233,8 @@ const Home: React.FC = () => {
           </div>
 
           {/* Main content */}
-          <div className="bg-white mb-48 dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-auto rounded-lg shadow-lg overflow-y-auto">
-            {renderContent()}
+          <div className="bg-white dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-auto rounded-lg shadow-lg overflow-y-auto">
+            { renderContent() }
           </div>
         </div>
       </main>
