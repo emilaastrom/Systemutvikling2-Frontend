@@ -59,7 +59,7 @@ export default function Home() {
               ) : (
                 <div className="justify-center h-full items-center flex">
                   {/* Call openModal function on button click */}
-                  <button className="p-4 bg-green-600 text-gray-50 rounded-md mr-2" onClick={openModal}>
+                  <button className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2" onClick={openModal}>
                     Lag et nytt sparemål
                   </button>
                 </div>

@@ -12,7 +12,7 @@ const NewGoalModal = ({ closeModal }) => {
       <div className="modal-content bg-white p-6 rounded-lg shadow-md" onClick={handleContentClick}>
         <h2 className="text-2xl font-bold mb-4 text-center">Lag et nytt sparemål</h2>
         <div className="mb-4 flex justify-center">
-          <InputBox label='Tittel' placeholder='Ny mobil'/>
+          <InputBox label='Tittel' placeholder='f.eks. "Ny mobil"'/>
         </div>
         <div className="mb-4 flex justify-center">
           <InputBox label='Hvor mye koster det?' placeholder='3000'/>
@@ -25,7 +25,7 @@ const NewGoalModal = ({ closeModal }) => {
           >
             Cancel
           </button>
-          <button className="bg-green-600 text-white px-4 py-2 rounded-md">
+          <button className="bg-primary-dark hover:bg-primary-light text-white px-4 py-2 rounded-md">
             Create
           </button>
         </div>
