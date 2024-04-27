@@ -7,29 +7,56 @@ import { ThemeProvider } from "./components/settings/ThemeProvider";
 import ThemeManager from "./components/settings/ThemeManager";
 import { ApiHandler } from "@/utils/api";
 import { Goal } from "@/util/types/Goal";
-import NewGoalModal from "./components/GoalModal"; // Import the NewGoalModal component
+import NewGoalModal from "./components/GoalModal"; 
 import { progress } from "framer-motion";
 import ChallengecardModal from "./components/challenges/ChallengecardModal";
 import ChallengecardAddModal from "./components/challenges/ChallengecardAddModal";
 import ChallengecardModalCompleted from "./components/challenges/ChallengecardModalCompleted";
+import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
 
 export default function Home() {
+  const [succeededChallenges, setSucceededChallenges] = useState([]);
+  const [notSucceededChallenges, setNotSucceededChallenges] = useState([]);
   useEffect(() => {
     const savedTheme =
-      (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light"; // Get saved theme if exists
+      (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light"; 
     ThemeManager.setTheme(savedTheme);
     console.log("Theme set to: ", savedTheme);
     if (showModal) {
       document.body.style.overflow = "hidden";
     }
+    /* fetch active challenges */
+    const activeChallenges = [
+
+    ];
+    
+    console.log(activeChallenges);
+  const challengesWithCompletionTimePassed = activeChallenges.filter(challenge => {
+    return challenge.completionTime < new Date();
+  });
+const succeededChallenges = challengesWithCompletionTimePassed.filter(challenge => challenge.userSucceeded);
+const notSucceededChallenges = challengesWithCompletionTimePassed.filter(challenge => !challenge.userSucceeded);
+
+setSucceededChallenges(() => succeededChallenges);
+setNotSucceededChallenges(() => notSucceededChallenges);
+
+if (succeededChallenges.length > 0 || notSucceededChallenges.length > 0) {
+  toggleCompletedPopup();
+}
+
+//TODO: gjør dem inaktiv etterpå og gjør completion time til en utregning basert på start time og timelimit
   }, []);
 
   const [showModal, setShowModal] = useState(false); // State for modal visibility
   const [showGoalModal, setShowGoalModal] = useState(false); // State for goal modal visibility
+  const [showCompletedPopup, setShowCompletedPopup] = useState(false); // State for modal visibility
 
   // Function to toggle modal visibility
   const toggleModal = () => {
     setShowModal(!showModal);
+  };
+  const toggleCompletedPopup = () => {
+    setShowCompletedPopup(!showCompletedPopup);
   };
   const toggleGoalModal = () => {
     setShowGoalModal(!showGoalModal);
@@ -83,7 +110,6 @@ export default function Home() {
                   />
                 ) : (
                   <div className="justify-center h-full items-center flex">
-                    {/* Call openModal function on button click */}
                     <button
                       className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2"
                       onClick={toggleGoalModal}
@@ -94,12 +120,10 @@ export default function Home() {
                 )}
               </div>
               <Challengecarousel />
-              {/* <button onClick={getGoal}>test</button> */}
             </div>
             <PathSection />
           </div>
         </main>
-        {/* Render modal component conditionally based on showModal state */}
         {showGoalModal && <NewGoalModal closeModal={toggleGoalModal} />}
         {showModal && (
           <ChallengecardModalCompleted
@@ -107,6 +131,13 @@ export default function Home() {
             challengeText={"veldig kult eksempel på en utfordring yippi!"}
             challengeStartDate={new Date()}
             challengeEndDate={new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)}
+          />
+        )}
+        {showCompletedPopup && (
+          <ChallengesFinishedPopup
+            closePopup={toggleCompletedPopup}
+            succeeded={succeededChallenges}
+            failed={notSucceededChallenges}
           />
         )}
       </modalContext.Provider>
