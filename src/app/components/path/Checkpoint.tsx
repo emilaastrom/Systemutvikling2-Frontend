@@ -10,14 +10,14 @@ export default function Checkpoint({ passed, coords, scale, size, borderWidth }:
         <button
             style={{
                 position: "absolute",
-                left: `${coords.x}px`,
-                top: `${coords.y}px`,
+                left: `${coords.x - size / 2}px`,
+                top: `${coords.y - size / 2}px`,
                 width: `${size}px`,
                 height: `${size}px`,
                 borderWidth: `${borderWidth}px`,
                 opacity: opacity,
             }}
-            className={`${color} ${hoverColor} rounded-full border-4 border-dark transform translate-y-[-6px] active:translate-y-0 shadow-custom shadow-dark active:shadow-none`}
+            className={`${color} ${hoverColor} rounded-full border-4 border-dark transform translate-y-[-6px] active:translate-y-0 shadow-custom shadow-dark active:shadow-none child`}
         >
         </button>
     );
