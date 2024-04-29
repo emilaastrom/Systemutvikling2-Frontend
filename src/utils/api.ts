@@ -1,66 +1,65 @@
-import axios from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { useAuth } from "@/context/AuthContext";
 
-const host = "http://localhost";
-const api = "";
-// const api = "/api/v1";
+const protocol: string = "https://";
+const host: string = "ep.sysdevservices.tech/";
 
-const serviceInfo = {
-  auth: { port: 8111, path: "/auth" },
-  goal: { port: 8081, path: "/goal" },
-  bank: { port: 8082, path: "/bank" },
-  user: { port: 8083, path: "/user" },
-  challenge: { port: 8084, path: "/challenge" },
-  gateway: { port: 8080, path: "" },
-};
-type Info = {
-  port: number;
-  path: string;
-};
+export const useApiService = (): AxiosInstance => {
+  const { token } = useAuth();
 
-function getAuthToken() {
-  return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZGVmNTU1My02Mzg4LTQ1OTYtODViMS00Njg3MDdlZWYyYzUiLCJpYXQiOjE3MTM5NTA1NTEsImV4cCI6MTcxMzk4NjU1MX0.thmhOHq3QVeZjv8aAPixTyQC5H4VPV7gKpu6sjLipzc";
-  // const { token } = useAuth();
-  // return token;
-}
-
-const token = getAuthToken();
-//TODO Remove any
-const createAxiosService = (info: any, timeout = 1000) => {
-  const service = axios.create({
-    baseURL: `${host}:${info.port}${api}${info.path}`,
+  const service: AxiosInstance = axios.create({
+    baseURL: `${protocol}${host}:8080`,
     headers: {
       "Content-Type": "application/json",
     },
-    timeout,
+    timeout: 1000,
   });
 
-  service.interceptors.request.use(
-    (config) => {
+service.interceptors.request.use(
+    (config: any): any => { // Using 'any' to avoid strict type errors
+      // Ensure headers are properly initialized to an object if undefined
+      config.headers = config.headers || {};
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers["Authorization"] = `Bearer ${token}`;
       }
+
       return config;
     },
-    (error: any) => Promise.reject(error)
+    (error: AxiosError) => Promise.reject(error),
   );
 
   return service;
 };
 
-function ApiHandler(service: any, method: any, url: String, data = null) {
-  const config = data ? [service + url, data] : [service + url];
-  return gatewayService[method](...config)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error(
-        `Failed to ${method === "get" ? "fetch" : "post"}: ${url}`,
-        error
-      );
+export const useApiHandler = () => {
+  const gatewayService = useApiService();
+
+  const apiHandler = async (
+    serviceName: string,
+    method: "get" | "post" | "put" | "patch" | "delete",
+    url: string,
+    data: any = null,
+  ): Promise<any> => {
+    const path: string = `${protocol}${host}${serviceName}${url}`;
+
+    try {
+      switch (method) {
+        case 'get':
+        case 'delete':
+          // Direct method call with the path only
+          return (await gatewayService[method](path)).data;
+
+        case 'post':
+        case 'put':
+        case 'patch':
+          // Method calls with path and data
+          return (await gatewayService[method](path, data)).data;
+      }
+    } catch (error) {
+      console.error(`Failed to ${method}: ${url}`, error);
       throw error;
-    });
-}
+    }
+  };
 
-const gatewayService = createAxiosService(serviceInfo.gateway);
-
-export { ApiHandler };
+  return apiHandler;
+};
