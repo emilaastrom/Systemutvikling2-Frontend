@@ -5,9 +5,8 @@ import Challengecarousel from "./components/challenges/Challengecarousel";
 import Goalpig from "./components/Goalpig";
 import { ThemeProvider } from "./components/settings/ThemeProvider";
 import ThemeManager from "./components/settings/ThemeManager";
-import { ApiHandler } from "@/utils/api";
 import { Goal } from "@/util/types/Goal";
-import NewGoalModal from "./components/GoalModal"; 
+import NewGoalModal from "./components/GoalModal";
 import { progress } from "framer-motion";
 import ChallengecardModal from "./components/challenges/ChallengecardModal";
 import ChallengecardAddModal from "./components/challenges/ChallengecardAddModal";
@@ -19,32 +18,36 @@ export default function Home() {
   const [notSucceededChallenges, setNotSucceededChallenges] = useState([]);
   useEffect(() => {
     const savedTheme =
-      (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light"; 
+      (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light";
     ThemeManager.setTheme(savedTheme);
     console.log("Theme set to: ", savedTheme);
     if (showModal) {
       document.body.style.overflow = "hidden";
     }
     /* fetch active challenges */
-    const activeChallenges = [
+    const activeChallenges = [];
 
-    ];
-    
     console.log(activeChallenges);
-  const challengesWithCompletionTimePassed = activeChallenges.filter(challenge => {
-    return challenge.completionTime < new Date();
-  });
-const succeededChallenges = challengesWithCompletionTimePassed.filter(challenge => challenge.userSucceeded);
-const notSucceededChallenges = challengesWithCompletionTimePassed.filter(challenge => !challenge.userSucceeded);
+    const challengesWithCompletionTimePassed = activeChallenges.filter(
+      (challenge) => {
+        return challenge.completionTime < new Date();
+      }
+    );
+    const succeededChallenges = challengesWithCompletionTimePassed.filter(
+      (challenge) => challenge.userSucceeded
+    );
+    const notSucceededChallenges = challengesWithCompletionTimePassed.filter(
+      (challenge) => !challenge.userSucceeded
+    );
 
-setSucceededChallenges(() => succeededChallenges);
-setNotSucceededChallenges(() => notSucceededChallenges);
+    setSucceededChallenges(() => succeededChallenges);
+    setNotSucceededChallenges(() => notSucceededChallenges);
 
-if (succeededChallenges.length > 0 || notSucceededChallenges.length > 0) {
-  toggleCompletedPopup();
-}
+    if (succeededChallenges.length > 0 || notSucceededChallenges.length > 0) {
+      toggleCompletedPopup();
+    }
 
-//TODO: gjør dem inaktiv etterpå og gjør completion time til en utregning basert på start time og timelimit
+    //TODO: gjør dem inaktiv etterpå og gjør completion time til en utregning basert på start time og timelimit
   }, []);
 
   const [showModal, setShowModal] = useState(false); // State for modal visibility
@@ -96,9 +99,9 @@ if (succeededChallenges.length > 0 || notSucceededChallenges.length > 0) {
                   className="bg-white text-black border-2 border-black p-2 m-2 absolute z-10"
                   onClick={openCheckpointModal}
                 >
-                  TESTKNAPP FOR UTFORDRING PÅ STIEN <br/>
+                  TESTKNAPP FOR UTFORDRING PÅ STIEN <br />
                   <span className="text-xs">
-                    husk det lille problemet med at vi ikke kan trykke <br/>
+                    husk det lille problemet med at vi ikke kan trykke <br />
                     checkpoints den om vi ikke bruker chrome
                   </span>
                 </button>
