@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import AccountSelect from "@/app/components/settings/AccountSelect";
 
 const FirstTimeLogin = () => {
   return (
@@ -70,13 +70,30 @@ const accounts = [
   },
 ];
 
+const ChooseAccount = () => {
+  const [selectedAccounts, setSelectedAccounts] = useState({});
+
+  return (
+    <div className="flex flex-col items-center justify-center bg-white min-h-screen">
+      <h1 className="text-2xl font-semibold mb-6 text-black">
+        Choose Your Account
+      </h1>
+      <AccountSelect
+        accounts={accounts}
+        selectedAccounts={selectedAccounts}
+        setSelectedAccounts={setSelectedAccounts}
+      />
+    </div>
+  );
+}
+
 function Page() {
   const [nr, setNr] = useState(1);
   return (
     <div>
-      {nr === 1 && <FirstTimeLogin />}
-      {nr === 2 && <ChooseAccount accounts={accounts} />}
-      {nr === 3 && <CustomizeExperience />}
+      {nr === 1 && <FirstTimeLogin/>}
+      {nr === 2 && <ChooseAccount/>}
+      {nr === 3 && <CustomizeExperience/>}
 
       <button onClick={() => setNr(nr - 1)}>prev</button>
       <button onClick={() => setNr(nr + 1)}>Next</button>
@@ -84,47 +101,15 @@ function Page() {
   );
 }
 
-const ChooseAccount = ({ accounts }: any) => {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
-      <h1 className="text-2xl font-semibold mb-6 text-black">
-        Choose Your Account
-      </h1>
-      <div className="space-y-4">
-        {accounts.map((account: any, index: any) => (
-          <motion.div
-            key={account.id}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 * index }}
-            className="bg-white rounded-xl  border-green-300 border-2 shadow-lg p-3 text-black w-full md:w-96"
-          >
-            <h2 className="text-lg font-bold">
-              Account Number: {account.number}
-            </h2>
-            <p className="text-gray-600">
-              Balance: ${account.balance.toFixed(2)}
-            </p>
-            <p className="text-gray-600">Type: {account.type}</p>
-            <button className="mt-4 bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl">
-              Select
-            </button>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 const CustomizeExperience = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState("EZ");
   const challenges = [
-    { id: 1, name: "Coffee", emoji: "☕" },
-    { id: 2, name: "Subscriptions", emoji: "📦" },
-    { id: 3, name: "Clothes", emoji: "👗" },
-    { id: 4, name: "Gambling", emoji: "🎰" },
-    { id: 5, name: "Takeaway", emoji: "🍕" },
-    { id: 6, name: "Beer", emoji: "🍺" },
+    {id: 1, name: "Coffee", emoji: "☕"},
+    {id: 2, name: "Subscriptions", emoji: "📦"},
+    {id: 3, name: "Clothes", emoji: "👗"},
+    {id: 4, name: "Gambling", emoji: "🎰"},
+    {id: 5, name: "Takeaway", emoji: "🍕"},
+    {id: 6, name: "Beer", emoji: "🍺"},
   ];
   const [selectedChallenges, setSelectedChallenges] = useState(new Set());
   const [isMounted, setIsMounted] = useState(false);
