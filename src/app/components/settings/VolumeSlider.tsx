@@ -16,8 +16,8 @@ const VolumeControl = () => {
   };
 
   return (
-    <div>
-      <div className="dark:text-white">
+    <div className="flex justify-center items-center">
+      <div className="dark:text-white text-center">
         Volum på lydeffekter:
         <input
           type="text"
@@ -27,7 +27,7 @@ const VolumeControl = () => {
           placeholder="Sett volum (0-100)"
         />
         %
-        <div className="md:w-1/3 w-2/3 pr-8 py-2">
+        <div className="md:w-1/3 w-fill pr-8 py-2">
           <style>
             {`
         #volume-slider::-webkit-slider-thumb {
@@ -61,7 +61,7 @@ const VolumeControl = () => {
           <input
             type="range"
             id="volume-slider"
-            className="appearance-none w-full h-3 bg-gray-300 dark:bg-gray-700 rounded-md"
+            className="appearance-none w-64 h-3 bg-gray-300 dark:bg-gray-700 rounded-md"
             min="0"
             max="100"
             value={volumeValue}

@@ -175,18 +175,21 @@ const Home: React.FC = () => {
         );
       case "Preferanser":
         return (
-          <div className="ml-8 m-8 w-fill dark:bg-slate-600 ">
+          <div className="ml-8 m-8 w-fill dark:bg-slate-600 mt-12">
+            <div className="font-semibold text-center text-2xl mt-5 mx-5">
+              Dine preferanser
+            </div>
             <div className="flex flex-col items-center justify-center">
-              <div className="">
+              <div className="pt-12">
                 <VolumeSlider />
               </div>
 
-              <div id="darkModeToggle" className="w-2/3 md:w-fill ">
+              <div id="darkModeToggle" className="w-2/3 md:w-fill mt-8">
                 <DarkModeToggle />
               </div>
             </div>
 
-            <div className="flex items-center justify-center space-x-4 pt-12">
+            <div className="flex items-center justify-center space-x-4 pt-8">
               <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 text-white rounded-lg p-2 border-green-600 w-1/3">
                 Lagre
               </button>
