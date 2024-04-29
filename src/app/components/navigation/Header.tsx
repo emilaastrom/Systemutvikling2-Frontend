@@ -1,11 +1,26 @@
 "use client";
-import React from "react";
+import React, {useState} from "react";
 import { colors } from "../../../../tailwind.config";
 import { usePathname } from "next/navigation";
 import SvgIcon from "../icons/CustomIcon";
+import { useApiHandler } from "../../../utils/api";
 
 const CustomHeader = () => {
-  const pathname = usePathname();
+  const [progress, setProgress] = useState<number>();
+  const [max, setMax] = useState<number>();
+  const apiHandler = useApiHandler();
+
+  const fetchActiveGoal = async () => {
+    console.log("Fetching activegoal data");
+    try {
+      const data = await apiHandler("goal", "get", "/getActiveGoal");
+      console.log(data);
+      setProgress(data.progress);
+      setMax(data.amount)
+    } catch (error) {
+      console.error(error);
+    }
+    }
 
   // Custom login header
   if (usePathname() === "/login") {
@@ -13,7 +28,7 @@ const CustomHeader = () => {
       <header></header>
     );
   }
-
+  fetchActiveGoal()
   // Regular header for all other pages
   return (
     <header>
@@ -68,7 +83,7 @@ const CustomHeader = () => {
             }
           />
           <span className="text-xl text-dark ml-2 align-text-top leading-tight">
-            300 / 2000 kr
+            {progress} / {max} kr
           </span>
         </div>
       </div>
