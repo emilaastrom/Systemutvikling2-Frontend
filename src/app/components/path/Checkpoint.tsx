@@ -10,8 +10,8 @@ export default function Checkpoint({ passed, coords, scale, size, borderWidth }:
         <button
             style={{
                 position: "absolute",
-                left: `${coords.x}px`,
-                top: `${coords.y}px`,
+                left: `${coords.x - size / 2}px`,
+                top: `${coords.y - size / 2}px`,
                 width: `${size}px`,
                 height: `${size}px`,
                 borderWidth: `${borderWidth}px`,
