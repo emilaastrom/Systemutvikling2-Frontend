@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthState>({ token: null });
 
   const login = async (username: string, password: string) => {
-    const response = await fetch("http://localhost:8080/api/v1/auth/login", {
+    const response = await fetch("https://ep.sysdevservices.tech/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const data = await response.json(); // Parse the response body once
       console.log(data); // Log the data
 
-      localStorage.setItem("token", data.token); // Assuming the token is in the 'token' property
+      localStorage.setItem("token", data.token);
       setAuth({ token: data.token });
     } else {
       throw new Error("Failed to login");
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     phone: string
   ) => {
-    const response = await fetch("http://localhost:8080/api/v1/auth/register", {
+    const response = await fetch("https://ep.sysdevservices.tech/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const verifyEmail = async (code: string) => {
     const response = await fetch(
-      `http://localhost:8080/api/v1/auth/verify?token=${code}`,
+      `https://ep.sysdevservices.tech/auth/auth/verify?token=${code}`,
       {
         method: "GET",
       }
@@ -96,9 +96,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const tokenString = localStorage.getItem("token");
     const userString = localStorage.getItem("user");
-    if (tokenString && userString) {
-      const token: Token = JSON.parse(tokenString);
-      const user: User = JSON.parse(userString);
+    if (tokenString) {
+      const token: Token = tokenString;
       setAuth({ token });
     }
   }, []);
