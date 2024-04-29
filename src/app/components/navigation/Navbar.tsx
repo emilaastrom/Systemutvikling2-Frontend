@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import NavbarButton from "./Navbarbutton";
 import { Alumni_Sans_Collegiate_One } from "next/font/google";
-import SvgIcon from "./icons/CustomIcon";
+import SvgIcon from "../icons/CustomIcon";
 import { usePathname } from "next/navigation";
 
 

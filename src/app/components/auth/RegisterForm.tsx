@@ -75,9 +75,9 @@ const RegisterForm = () => {
 
               <input
                 type="username"
-                placeholder="username"
+                placeholder="Brukernavn"
                 name="username"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
+                className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                 value={userData.username}
                 onChange={handleChange}
                 required
@@ -85,9 +85,9 @@ const RegisterForm = () => {
 
               <input
                 type="text"
-                placeholder="First Name"
+                placeholder="Fornavn"
                 name="firstName"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
+                className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                 value={userData.firstName}
                 onChange={handleChange}
                 required
@@ -95,9 +95,9 @@ const RegisterForm = () => {
 
               <input
                 type="text"
-                placeholder="Last Name"
+                placeholder="Etternavn"
                 name="lastName"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
+                className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                 value={userData.lastName}
                 onChange={handleChange}
                 required
@@ -107,7 +107,7 @@ const RegisterForm = () => {
                 type="email"
                 placeholder="Email"
                 name="email"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
+                className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                 value={userData.email}
                 onChange={handleChange}
                 required
@@ -115,9 +115,9 @@ const RegisterForm = () => {
 
               <input
                 type="text"
-                placeholder="Phone"
+                placeholder="Telefonnummer"
                 name="phone"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
+                className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                 value={userData.phone}
                 onChange={handleChange}
                 required
@@ -125,9 +125,9 @@ const RegisterForm = () => {
 
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Passord"
                 name="password"
-                className="border rounded-md border-[#06DD36] text-black py-2 px-4 mb-4"
+                className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                 value={userData.password}
                 onChange={handleChange}
                 required

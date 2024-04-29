@@ -28,7 +28,7 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col ">
-      <h1 className="text-md underline font-bold mb-2 text-black">Login</h1>
+      <h1 className="text-md underline font-bold mb-2 text-black">Logg Inn</h1>
       {errorMessage && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -40,16 +40,16 @@ const LoginForm = () => {
       )}
       <input
         type="username"
-        placeholder="username"
-        className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
+        placeholder="Brukernavn"
+        className="border-2 rounded-md border-primary-light text-black py-2 px-4 mb-4"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         required
       />
       <input
         type="password"
-        placeholder="Password"
-        className="border rounded-md border-[#06DD36] text-black py-2 px-4 mb-4"
+        placeholder="Passord"
+        className="border-2 rounded-md border-primary-light text-black py-2 px-4 mb-4"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
@@ -59,7 +59,7 @@ const LoginForm = () => {
         className="bg-black text-white py-2 px-6 rounded-md hover:bg-gray-800 transition-colors duration-300"
         disabled={isLoading}
       >
-        {isLoading ? "Logging in..." : "Login"}
+        {isLoading ? "Logger inn..." : "Logg Inn"}
       </button>
     </form>
   );
