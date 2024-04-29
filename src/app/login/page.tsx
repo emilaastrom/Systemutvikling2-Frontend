@@ -36,15 +36,24 @@ const Login = () => {
     setCircleProps(circles);
   }, []);
 
-  const [toggle, setToggle] = useState(true);
+  const [formIndex, setFormIndex] = useState(0);
 
-  const changeToggle = () => {
-    setToggle(!toggle);
+  const renderForm = () => {
+    switch(formIndex) {
+      case 0:
+        return <LoginForm setFormIndex={setFormIndex} />;
+      case 1:
+        return <RegisterForm setFormIndex={setFormIndex} />;
+      case 2:
+        return <LoginForm setFormIndex={setFormIndex} />;
+      default:
+        return null;
+    }
   };
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center h-screen bg-white"
+      className="flex flex-col items-center justify-top h-screen bg-white"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -89,18 +98,12 @@ const Login = () => {
             alt="logo "
             className="mx-auto"
           />
-          <h1 className="text-3xl font-mono mb-12 text-black text-center">
+          <h1 className="text-3xl font-mono mb-6 text-black text-center">
             Sparesti
           </h1>
         </div>
         <div className="flex justify-around w-full max-w-4xl">
-          <button
-            onClick={() => changeToggle()}
-            className="bg-primary-light p-2 m-4 rounded-lg"
-          >
-            <ArrowPathIcon className="h-6 w-6 text-black" />
-          </button>
-          {toggle ? <LoginForm /> : <RegisterForm />}
+          {renderForm()}
         </div>
       </div>
     </motion.div>
