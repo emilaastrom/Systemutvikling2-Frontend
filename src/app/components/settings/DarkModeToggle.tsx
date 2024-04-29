@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ThemeProvider } from "@/app/components/settings/ThemeProvider";
 import ThemeManager from "./ThemeManager";
 
 const DarkModeToggle = () => {
