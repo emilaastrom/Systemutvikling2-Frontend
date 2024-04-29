@@ -73,7 +73,7 @@ const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) =
                 Register
               </h1>
 
-              <div className="grid grid-flow-col grid-rows-3 grid-cols-2 gap-x-4">
+              <div className="grid grid-flow-row grid-rows-3 grid-cols-2 gap-x-4">
                 <input
                   type="username"
                   placeholder="Brukernavn"
@@ -83,7 +83,15 @@ const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) =
                   onChange={handleChange}
                   required
                 />
-
+                <input
+                  type="password"
+                  placeholder="Passord"
+                  name="password"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.password}
+                  onChange={handleChange}
+                  required
+                />
                 <input
                   type="text"
                   placeholder="Fornavn"
@@ -93,7 +101,6 @@ const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) =
                   onChange={handleChange}
                   required
                 />
-
                 <input
                   type="text"
                   placeholder="Etternavn"
@@ -103,7 +110,6 @@ const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) =
                   onChange={handleChange}
                   required
                 />
-
                 <input
                   type="email"
                   placeholder="Email"
@@ -113,23 +119,12 @@ const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) =
                   onChange={handleChange}
                   required
                 />
-
                 <input
                   type="text"
                   placeholder="Telefonnummer"
                   name="phone"
                   className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                   value={userData.phone}
-                  onChange={handleChange}
-                  required
-                />
-
-                <input
-                  type="password"
-                  placeholder="Passord"
-                  name="password"
-                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
-                  value={userData.password}
                   onChange={handleChange}
                   required
                 />

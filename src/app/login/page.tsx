@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useAuth } from "@/context/AuthContext";
+import Image from "next/image";
 import LoginForm from "../components/auth/LoginForm";
 import RegisterForm from "../components/auth/RegisterForm";
+import PasswordResetForm from "@/app/components/auth/PasswordResetForm";
+
 type CircleProps = {
   left: string;
   top: string;
@@ -15,8 +17,6 @@ type CircleProps = {
   duration: number;
   delay: number;
 };
-import { ArrowPathIcon } from "@heroicons/react/16/solid";
-import Image from "next/image";
 
 const Login = () => {
   const [circleProps, setCircleProps] = useState<CircleProps[]>([]);
@@ -45,7 +45,7 @@ const Login = () => {
       case 1:
         return <RegisterForm setFormIndex={setFormIndex} />;
       case 2:
-        return <LoginForm setFormIndex={setFormIndex} />;
+        return <PasswordResetForm setFormIndex={setFormIndex} />;
       default:
         return null;
     }
