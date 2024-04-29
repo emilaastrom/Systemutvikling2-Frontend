@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-const RegisterForm = () => {
+const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
   const [formStep, setFormStep] = useState("register"); // 'register' or 'verify'
   const [userData, setUserData] = useState({
     username: "",
@@ -63,90 +63,95 @@ const RegisterForm = () => {
         <AnimatePresence>
           {formStep === "register" && (
             <motion.form
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
               onSubmit={handleSubmit}
-              className="flex flex-col w-64 space-y-4"
+              className="flex flex-col px-8"
             >
               <h1 className="text-md underline font-bold mb-2 text-black">
                 Register
               </h1>
 
-              <input
-                type="username"
-                placeholder="username"
-                name="username"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
-                value={userData.username}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="text"
-                placeholder="First Name"
-                name="firstName"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
-                value={userData.firstName}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="text"
-                placeholder="Last Name"
-                name="lastName"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
-                value={userData.lastName}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="email"
-                placeholder="Email"
-                name="email"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
-                value={userData.email}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="text"
-                placeholder="Phone"
-                name="phone"
-                className="border border-[#06DD36] text-black rounded-md py-2 px-4 mb-4"
-                value={userData.phone}
-                onChange={handleChange}
-                required
-              />
-
-              <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                className="border rounded-md border-[#06DD36] text-black py-2 px-4 mb-4"
-                value={userData.password}
-                onChange={handleChange}
-                required
-              />
+              <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <input
+                  type="username"
+                  placeholder="Brukernavn"
+                  name="username"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.username}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder="Passord"
+                  name="password"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Fornavn"
+                  name="firstName"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Etternavn"
+                  name="lastName"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.lastName}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Telefonnummer"
+                  name="phone"
+                  className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
+                  value={userData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
               <button
                 type="submit"
                 className="bg-black text-white py-2 px-6 rounded-md hover:bg-gray-800 transition-colors duration-300"
                 disabled={isLoading}
               >
-                {isLoading ? "Registering..." : "Register"}
+                {isLoading ? "Registrerer..." : "Register"}
               </button>
+              <p className="text-gray-600 my-2">
+                Er du allerede registrert? <span
+                  onClick={() => setFormIndex(0)}
+                  className="text-primary-dark hover:underline cursor-pointer"
+                >
+                  Logg inn her.
+                </span>
+              </p>
             </motion.form>
-          )}
+            )}
 
           {formStep === "verify" && (
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
+              initial={{scale: 0}}
+              animate={{scale: 1}}
               exit={{ scale: 0 }}
             >
               <div className="w-64 h-64 p-8 bg-gray-100 rounded-2xl">

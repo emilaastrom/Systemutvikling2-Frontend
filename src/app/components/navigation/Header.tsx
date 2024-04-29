@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { colors } from "../../../tailwind.config";
+import { colors } from "../../../../tailwind.config";
 import { usePathname } from "next/navigation";
-import SvgIcon from "./icons/CustomIcon";
+import SvgIcon from "../icons/CustomIcon";
 
 const CustomHeader = () => {
   const pathname = usePathname();
@@ -10,15 +10,7 @@ const CustomHeader = () => {
   // Custom login header
   if (usePathname() === "/login") {
     return (
-      <header>
-        <div className="fixed top-0 w-screen h-10 text-center bg-background-50 z-20">
-          <div className="overflow-hidden bg-background text-dark h-10 flex items-center">
-            <div className="w-screen animate-slide whitespace-nowrap">
-              nøff nøff 🐷
-            </div>
-          </div>
-        </div>
-      </header>
+      <header></header>
     );
   }
 
