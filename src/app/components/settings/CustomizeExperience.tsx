@@ -39,7 +39,7 @@ const CustomizeExperience = () => {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h1 className="text-2xl font-bold mb-4 dark:text-white">Tilpass din spareopplevelse</h1>
+          <h1 className="font-semibold text-2xl mb-4 dark:text-white">Sparepreferanser</h1>
           <div className="flex space-x-2 justify-center mb-8">
             {["Enkel", "Medium", "Vanskelig"].map((difficulty) => (
               <button

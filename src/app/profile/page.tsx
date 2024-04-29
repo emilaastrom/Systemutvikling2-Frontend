@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import ThemeProvider from "../components/settings/ThemeProvider";
 import InputBox from "../components/settings/InputBox";
 import CustomizeExperience from "../components/settings/CustomizeExperience";
-import AccountSelect from "@/app/components/settings/AccountSelect";
+import AccountSelect from "../components/settings/AccountSelect";
+import GoalHistoryModule from "../components/settings/GoalHistoryModule";
 
 const accounts = [
   {
@@ -77,7 +78,6 @@ const Home: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [selectedAccounts, setSelectedAccounts] = useState({});
 
-
   useEffect(() => {
     const names = realName.split(" ");
     if (names.length > 0) {
@@ -90,16 +90,31 @@ const Home: React.FC = () => {
     switch (content) {
       case "Bruker":
         return (
-          <div id="nameBox" className="mb-6 m-10  md:w-fill w-4/5">
-            <InputBox label={"Brukernavn"} placeholder={"mittKuleBrukernavn"} disabled={true} />
+          <div
+            id="nameBox"
+            className="mb-6 my-10 md:w-11/12 w-auto flex flex-col items-center overflow-y-auto overflow-x-hidden "
+          >
+            <div className="font-semibold text-2xl text-center m-5">
+              Brukerinformasjon
+            </div>
+            <InputBox
+              label={"Brukernavn"}
+              placeholder={"mittKuleBrukernavn"}
+              disabled={true}
+            />
             <InputBox label={"Fornavn"} placeholder={firstName} />
             <InputBox label={"Etternavn"} placeholder={lastName} />
-            <InputBox label={"Epost"} placeholder={username} disabled={true}/>
+            <InputBox label={"Epost"} placeholder={username} disabled={true} />
             <InputBox label={"Telefon"} placeholder="12345678" />
-            <CustomizeExperience/>
-            <button className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 w-full">Lagre</button>
+            <span className="mt-16 px-2 w-full">
+              <CustomizeExperience />
+            </span>
+            <button className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 md:w-1/3 w-2/3">
+              Lagre
+            </button>
           </div>
         );
+
       case "Konto":
         return (
           <div className="mx-10 my-6 md:w-fill">
@@ -121,52 +136,60 @@ const Home: React.FC = () => {
             </button>
           </div>
         );
-      case "Badges":
+      case "Maalhistorikk":
         return (
-          <div className="flex justify-start gap-4 m-5">
-            {/* TODO: Add proper badges with descriptions*/}
-            <Image
-              src="/logo.png"
-              height={100}
-              width={100}
-              alt="badge"
-              className="rounded-full border-2"
-            ></Image>
-            <Image
-              src="/logo.png"
-              height={100}
-              width={100}
-              alt="badge"
-              className="rounded-full border-2"
-            ></Image>
-            <Image
-              src="/logo.png"
-              height={100}
-              width={100}
-              alt="badge"
-              className="rounded-full border-2"
-            ></Image>
-            <Image
-              src="/logo.png"
-              height={100}
-              width={100}
-              alt="badge"
-              className="rounded-full border-2"
-            ></Image>
+          <div className="flex flex-col justify-start gap-4 m-5 overflow-y-auto">
+            <div className="font-semibold text-center text-2xl">
+              Oversikt over tidligere mål
+            </div>
+            <div className="flex flex-col text-center items-center pb-12">
+              <GoalHistoryModule
+                goalDescription={"Nytt headset!"}
+                startedAt={new Date("2023-01-01")}
+                completedAt={new Date()}
+              />
+              <GoalHistoryModule
+                goalDescription={"Tur til Italia!"}
+                startedAt={new Date()}
+                completedAt={new Date()}
+              />
+              <GoalHistoryModule
+                goalDescription={
+                  "Ny telefon! Den er kjempefin og ny og dette er ikke placeholder tekst for å teste grenser på lengde av tekst i denne boksen."
+                }
+                startedAt={new Date()}
+                completedAt={new Date()}
+              />
+              <GoalHistoryModule
+                goalDescription={"Ny bil!"}
+                startedAt={new Date()}
+                completedAt={new Date()}
+              />
+              <GoalHistoryModule
+                goalDescription={"Nytt headset!"}
+                startedAt={new Date()}
+                completedAt={new Date()}
+              />
+            </div>
           </div>
         );
       case "Preferanser":
         return (
-          <div className="ml-8 m-8 h-fill dark:bg-slate-600">
-            <div className="">
-              <VolumeSlider />
+          <div className="ml-8 m-8 w-fill dark:bg-slate-600 mt-12">
+            <div className="font-semibold text-center text-2xl mt-5 mx-5">
+              Dine preferanser
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <div className="pt-12">
+                <VolumeSlider />
+              </div>
+
+              <div id="darkModeToggle" className="w-2/3 md:w-fill mt-8">
+                <DarkModeToggle />
+              </div>
             </div>
 
-            <div id="darkModeToggle">
-              <DarkModeToggle />
-            </div>
-
-            <div className="flex items-center space-x-4 pt-4">
+            <div className="flex items-center justify-center space-x-4 pt-8">
               <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 text-white rounded-lg p-2 border-green-600 w-1/3">
                 Lagre
               </button>
@@ -223,9 +246,9 @@ const Home: React.FC = () => {
                 isActive={content === "Konto"}
               />
               <SidebarItem
-                title="Badges"
-                onClick={() => setContent("Badges")}
-                isActive={content === "Badges"}
+                title="Målhistorikk"
+                onClick={() => setContent("Maalhistorikk")}
+                isActive={content === "Maalhistorikk"}
               />
               <SidebarItem
                 title="Preferanser"
@@ -238,7 +261,7 @@ const Home: React.FC = () => {
 
           {/* Main content */}
           <div className="bg-white dark:bg-slate-600 bg-opacity-80 md:col-span-2 md:order-1 col-span-3 row-span-4 h-auto rounded-lg shadow-lg overflow-y-auto">
-            { renderContent() }
+            {renderContent()}
           </div>
         </div>
       </main>
