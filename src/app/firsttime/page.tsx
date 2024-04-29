@@ -71,12 +71,18 @@ const accounts = [
 ];
 
 const ChooseAccount = () => {
+  const [selectedAccounts, setSelectedAccounts] = useState({});
+
   return (
     <div className="flex flex-col items-center justify-center bg-white min-h-screen">
       <h1 className="text-2xl font-semibold mb-6 text-black">
         Choose Your Account
       </h1>
-      <AccountSelect accounts={accounts}/>
+      <AccountSelect
+        accounts={accounts}
+        selectedAccounts={selectedAccounts}
+        setSelectedAccounts={setSelectedAccounts}
+      />
     </div>
   );
 }

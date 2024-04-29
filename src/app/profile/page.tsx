@@ -75,7 +75,7 @@ const Home: React.FC = () => {
   const realName: string = "Ola Nordmann";
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [selectedAccountId, setSelectedAccountId] = useState<number | undefined>(1);
+  const [selectedAccounts, setSelectedAccounts] = useState({});
 
 
   useEffect(() => {
@@ -107,7 +107,11 @@ const Home: React.FC = () => {
               <h1 className="text-2xl font-semibold mb-6 text-black">
                 Velg bank konto for sparing
               </h1>
-              <AccountSelect accounts={accounts} selectedId={selectedAccountId} setSelectedId={setSelectedAccountId}/>
+              <AccountSelect
+                accounts={accounts}
+                selectedAccounts={selectedAccounts}
+                setSelectedAccounts={setSelectedAccounts}
+              />
             </div>
             <button
               className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 w-full"

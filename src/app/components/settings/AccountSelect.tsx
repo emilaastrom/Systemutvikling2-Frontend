@@ -1,9 +1,21 @@
 import { motion } from "framer-motion";
-import {MutableRefObject} from "react";
 
-export default function AccountSelect({ accounts, selectedId, setSelectedId }: { accounts: any; selectedId: number; setSelectedId: (id: number) => void; }) {
-  const handleSelect = (id: number) => {
-    setSelectedId(id);
+export default function AccountSelect({ accounts, selectedAccounts, setSelectedAccounts }: { accounts: any; selectedAccounts: {}; setSelectedAccounts: (selectedAccounts: {}) => void; }) {
+
+  const handleSelect = (id: number, option: string) => {
+    setSelectedAccounts((prevOptions: {[key: number]: string}) => {
+      let newOptions = { ...prevOptions, [id]: option };
+
+      if (option === "From" || option === "To") {
+        for (let accountId in newOptions) {
+          if (Number(accountId) !== id && newOptions[accountId] === option) {
+            newOptions[accountId] = 'None';
+          }
+        }
+      }
+
+      return newOptions;
+    });
   };
 
   return (
@@ -23,13 +35,15 @@ export default function AccountSelect({ accounts, selectedId, setSelectedId }: {
             Saldo: ${account.balance.toFixed(2)}
           </p>
           <p className="text-gray-600">Type: {account.type}</p>
-          <button
-            className="mt-4 bg-primary-light hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-xl"
-            onClick={() => handleSelect(account.id)}
-            disabled={account.id === selectedId}
+          <select
+            className="w-full mt-1 border-2 rounded-lg px-4 py-2 bg-background-100 border-primary-light"
+            value={selectedAccounts[account.id] || 'None'}
+            onChange={(e) => handleSelect(account.id, e.target.value)}
           >
-            {account.id === selectedId ? "Valgt" : "Velg"}
-          </button>
+            <option>From</option>
+            <option>To</option>
+            <option>None</option>
+          </select>
         </motion.div>
       ))}
     </div>
