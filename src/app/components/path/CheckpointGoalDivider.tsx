@@ -29,21 +29,39 @@ export default function Checkpoint({
     }
   }, [divRef.current]); // Dependency on divRef.current ensures re-calculation when the div changes
 
-  // Adjusted style with dynamic left positioning based on the div width
-  const style = {
-    position: 'absolute',
-    left: `${coords.x - dimensions.width / 2}px`, // Adjusts left based on the width of the div
-    top: `${coords.y - dimensions.height / 2}px`,
-    opacity: opacity
-  };
 
-  return (
-    <div ref={divRef} className="" style={style}>
-      <div className="flex ">
-        <p className="flex bg-white bg-opacity-15">
-          Mål: Tur til København!
-        </p>
-      </div>
-    </div>
-  );
+  interface StyleProps {
+    coords: {
+      x: number;
+      y: number;
+    };
+    dimensions: {
+      width: number;
+      height: number;
+    };
+    opacity: number;
+  }
+  
+   // Calculate positions dynamically
+   const leftPosition = coords.x - dimensions.width / 2;
+   const topPosition = coords.y - dimensions.height / 2;
+   const opacityStyle = { opacity };
+ 
+   return (
+     <div
+       ref={divRef}
+       className="absolute" // Positioning from Tailwind
+       style={{
+         left: `${leftPosition}px`,
+         top: `${topPosition}px`,
+         ...opacityStyle
+       }}
+     >
+       <div className="flex">
+         <p className="flex bg-white bg-opacity-15">
+           Mål: Tur til København!
+         </p>
+       </div>
+     </div>
+   );
 }
