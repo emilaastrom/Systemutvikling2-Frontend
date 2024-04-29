@@ -45,3 +45,45 @@ body {
   font-family: 'SuperBubble';
   src: url('./font/SuperBubble-Rpaj3.ttf');
 }
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  right: 0; 
+  width: 100vw;
+  height: 100vh; 
+  z-index: 40; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+  background-color: #ffffff;
+  width: 80%; 
+  max-width: 600px;
+  border-radius: 8px;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.parent {
+  /* Remove comment to enable clicking all browsers, not just chrome.
+  This will disable scrolling when not hovering checkpoints
+  */
+  /* pointer-events: none; */
+}
+
+.child {
+  pointer-events: auto;
+}

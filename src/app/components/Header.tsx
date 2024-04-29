@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { colors } from "../../../tailwind.config";
 import { usePathname } from "next/navigation";
 import SvgIcon from "./icons/CustomIcon";
 
@@ -10,8 +11,8 @@ const CustomHeader = () => {
   if (usePathname() === "/login") {
     return (
       <header>
-        <div className="fixed top-0 w-screen h-10 text-center bg-black z-20">
-          <div className="overflow-hidden bg-black text-white h-10 flex items-center">
+        <div className="fixed top-0 w-screen h-10 text-center bg-background-50 z-20">
+          <div className="overflow-hidden bg-background text-dark h-10 flex items-center">
             <div className="w-screen animate-slide whitespace-nowrap">
               nøff nøff 🐷
             </div>
@@ -24,17 +25,17 @@ const CustomHeader = () => {
   // Regular header for all other pages
   return (
     <header>
-      <div className="fixed top-0 w-screen h-10 text-center bg-black z-20">
-        <div className="fixed flex align-middle left-5 w-auto text-black h-auto m-2 px-2 rounded-xl">
+      <div className="fixed top-0 w-screen h-10 text-center bg-background-50 z-20 drop-shadow-lg">
+        <div className="fixed flex align-middle left-5 w-auto text-dark h-auto m-2 px-2 rounded-xl">
           <SvgIcon
             className="h-5 w-5"
             svg={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill=""
+                fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke="orange"
+                stroke={colors.accent}
                 className="w-6 h-6"
               >
                 <path
@@ -50,7 +51,7 @@ const CustomHeader = () => {
               </svg>
             }
           />
-          <h2 className="text-xl text-white ml-2 align-text-top leading-tight">
+          <h2 className="text-xl text-dark ml-2 align-text-top leading-tight">
             31
           </h2>
         </div>
@@ -60,10 +61,10 @@ const CustomHeader = () => {
             svg={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                fill="#006400"
+                fill={colors.primary.dark}
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke="#32CD32"
+                stroke={colors.primary.light}
                 className="w-6 h-6"
               >
                 <path
@@ -74,7 +75,7 @@ const CustomHeader = () => {
               </svg>
             }
           />
-          <span className="text-xl text-white ml-2 align-text-top leading-tight">
+          <span className="text-xl text-dark ml-2 align-text-top leading-tight">
             300 / 2000 kr
           </span>
         </div>

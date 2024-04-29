@@ -1,6 +1,39 @@
 import type { Config } from "tailwindcss";
 const plugin = require('tailwindcss/plugin');
 
+export const colors = {
+  "primary": {
+    "light": "#3dda4c",
+    "dark": "#23ad2a",
+  },
+  "secondary": {
+    "light": "#A1AF9F",
+    "dark": "#7D8A7B",
+  },
+  "accent": "#ffb000",
+  "background": {
+    "50": "#ffffff",
+    '100': '#F3F4F6',
+    '200': '#E5E7EB',
+    '300': '#D1D5DB',
+    '400': '#9CA3AF',
+  },
+  "light": "#f5f5f5",
+  "dark": "#3E4A3C",
+  "path": {
+    "light": "#F2DC9B",
+    "dark": "#F2B66D",
+  },
+  "grass": {
+    "light": "#a3f07d",
+    "dark": "#8CD867",
+  },
+  "sky": {
+    "light": "#62cff4",
+    "dark": "#2c67f2",
+  },
+} as const;
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,23 +44,10 @@ const config: Config = {
   theme: {
     fontFamily: {
       custom1: ["SuperBubble", "sans-serif"],
+      mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace']
     },
     extend: {
-      colors: {
-        'mantis': {
-          '50': '#f6faf3',
-          '100': '#e9f5e3',
-          '200': '#d3eac8',
-          '300': '#afd89d',
-          '400': '#82bd69',
-          '500': '#61a146',
-          '600': '#4c8435',
-          '700': '#3d692c',
-          '800': '#345427',
-          '900': '#2b4522',
-          '950': '#13250e',
-        },
-      },
+      colors: colors,
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -38,6 +58,9 @@ const config: Config = {
       },
       fontFamily: {
         'cookbook': 'Cookbook'
+      },
+      boxShadow: {
+        'custom': '0 3px 0 0px, 0 6px 0 0px',
       }
     },
   },
