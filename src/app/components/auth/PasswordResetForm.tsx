@@ -16,7 +16,7 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col" style={{maxWidth: "500px"}}>
+    <form onSubmit={handleSubmit} className="flex flex-col px-16" style={{maxWidth: "600px"}}>
       <h1 className="text-md underline font-bold mb-2 text-black">
         Glemt Passord
       </h1>

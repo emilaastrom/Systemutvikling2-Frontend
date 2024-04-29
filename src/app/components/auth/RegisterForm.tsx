@@ -67,13 +67,13 @@ const RegisterForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) =
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               onSubmit={handleSubmit}
-              className="flex flex-col"
+              className="flex flex-col px-8"
             >
               <h1 className="text-md underline font-bold mb-2 text-black">
                 Register
               </h1>
 
-              <div className="grid grid-flow-row grid-rows-3 grid-cols-2 gap-x-4">
+              <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-x-4">
                 <input
                   type="username"
                   placeholder="Brukernavn"
