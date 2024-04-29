@@ -68,10 +68,6 @@ export default function Home() {
   // Pass toggleModal function to child components via context
   const modalContext = React.createContext({ toggleModal });
 
-  function getGoal() {
-    console.log(ApiHandler("/goal", "get", "/getActiveGoal"));
-  }
-
   const goal = {
     name: "test",
     description: "testdescription",
