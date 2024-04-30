@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Vector } from "@/util/types/vector";
 import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
-import CheckpointContainer from "@/app/components/path/CheckpointContainer";
+import PathElements from "@/app/components/path/PathElements";
 
 export default function PathSection() {
   const sectionRef = useRef<HTMLDivElement | null>(null)
@@ -153,7 +153,7 @@ export default function PathSection() {
               amplitude={150}
               period={1 / 400}
           >
-            <CheckpointContainer/>
+            <PathElements/>
             <ProceduralPath
                 dimensions={dimensions}
                 stepLength={5}

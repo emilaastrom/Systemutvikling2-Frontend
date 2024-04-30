@@ -8,6 +8,7 @@ export default function Checkpoint({ passed, coords, scale, size, borderWidth }:
 
     return (
         <button
+            className={`${color} ${hoverColor} rounded-full border-4 border-dark transform translate-y-[-6px] active:translate-y-0 shadow-custom shadow-dark active:shadow-none child`}
             style={{
                 position: "absolute",
                 left: `${coords.x - size / 2}px`,
@@ -17,7 +18,6 @@ export default function Checkpoint({ passed, coords, scale, size, borderWidth }:
                 borderWidth: `${borderWidth}px`,
                 opacity: opacity,
             }}
-            className={`${color} ${hoverColor} rounded-full border-4 border-dark transform translate-y-[-6px] active:translate-y-0 shadow-custom shadow-dark active:shadow-none child`}
         >
         </button>
     );
