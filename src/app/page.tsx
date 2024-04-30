@@ -83,12 +83,13 @@ export default function Home() {
 
   return (
     <ThemeProvider>
-      <main className="bg-gradient-to-b from-sky-dark to-sky-light w-full overflow-x-hidden h-screen flex">
+      <main className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-light via-sky-medium to-sky-dark w-full overflow-x-hidden h-screen flex">
         <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
           <div>
+          <Challengecarousel />
             <div className="md:h-72 h-48">
               <button
-                className="bg-white text-black border-2 border-black p-2 m-2 absolute z-10"
+                className="bg-white text-black border-2 border-black p-2 m-2 absolute right-0 z-10"
                 onClick={openCheckpointModal}
               >
                 TESTKNAPP FOR UTFORDRING PÅ STIEN <br />
@@ -112,7 +113,6 @@ export default function Home() {
                 </div>
               )}
             </div>
-            <Challengecarousel />
           </div>
           <PathSection />
         </div>
