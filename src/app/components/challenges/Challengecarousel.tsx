@@ -1,5 +1,6 @@
 import Challengecard from "./Challengecard";
 import ChallengecardAddButton from "./ChallengecardAddButton";
+import { Challenge } from "@/util/types/Challenge";
 
 const Challengecarousel = () => {
   const challenges = [
@@ -76,7 +77,7 @@ const Challengecarousel = () => {
   ];
   return (
     <div
-      className="flex z-10 self-start w-screen text-black overflow-x-scroll md:pl-48 overflow-y-auto no-scrollbar"
+      className="flex z-10 self-start w-screen text-black overflow-x-scroll overflow-y-auto no-scrollbar"
     >
       {challenges.map((challenge, index) => (
         <div key={index} className="flex-none md:relative md:block">

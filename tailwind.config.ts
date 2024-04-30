@@ -3,8 +3,8 @@ const plugin = require('tailwindcss/plugin');
 
 export const colors = {
   "primary": {
-    "light": "#3dda4c",
-    "dark": "#23ad2a",
+    "light": "#14c973",
+    "dark": "#119e5b",
   },
   "secondary": {
     "light": "#A1AF9F",
@@ -21,16 +21,17 @@ export const colors = {
   "light": "#f5f5f5",
   "dark": "#3E4A3C",
   "path": {
-    "light": "#F2DC9B",
-    "dark": "#F2B66D",
+    "light": "#EBCE9A",
+    "dark": "#EBCE9A",
   },
   "grass": {
-    "light": "#a3f07d",
-    "dark": "#8CD867",
+    "light": "#076639",
+    "dark": "#054A29",
   },
   "sky": {
-    "light": "#62cff4",
-    "dark": "#2c67f2",
+    "light": "#a7dcfb",
+    "medium": "#9ADAFF",
+    "dark": "#4abdff",
   },
 } as const;
 
