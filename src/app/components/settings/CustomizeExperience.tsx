@@ -1,35 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const CustomizeExperience = () => {
-    const [selectedDifficulty, setSelectedDifficulty] = useState("EZ");
-    const challenges = [
-      { id: 1, name: "Kaffe", emoji: "☕" },
-      { id: 2, name: "Abonnementer", emoji: "📦" },
-      { id: 3, name: "Klær", emoji: "👗" },
-      { id: 4, name: "Pengespill", emoji: "🎰" },
-      { id: 5, name: "Takeaway", emoji: "🍕" },
-      { id: 6, name: "Drinks", emoji: "🍺" },
-    ];
-    const [selectedChallenges, setSelectedChallenges] = useState(new Set());
-    const [isMounted, setIsMounted] = useState(false);
-  
-    useEffect(() => {
-      setIsMounted(true);
-      return () => setIsMounted(false);
-    }, []);
-  
-    const toggleChallenge = (id) => {
-      setSelectedChallenges(prev => {
-        const newSet = new Set(prev);
-        if (prev.has(id)) {
-          newSet.delete(id);
-        } else {
-          newSet.add(id);
-        }
-        return newSet;
-      });
-    };
+  const challenges = [
+    { id: 1, name: "Snus", emoji: "🚬" },       // Assuming emoji representation
+    { id: 2, name: "Brus", emoji: "🥤" },
+    { id: 3, name: "Uteliv", emoji: "🌃" },
+    { id: 4, name: "Klær", emoji: "👗" },       // Same as in the original list
+    { id: 5, name: "Kaffe", emoji: "☕" },      // Same as in the original list
+    { id: 6, name: "Takeout", emoji: "🥡" },
+    { id: 7, name: "Pengespill", emoji: "🎰" },   // Same as "Pengespill" in the original list
+    { id: 8, name: "Kino", emoji: "🎬" },
+    { id: 9, name: "Snop", emoji: "🍬" }
+  ];
 
     return (
       <div className="flex flex-col items-center justify-center text-black p-4">
