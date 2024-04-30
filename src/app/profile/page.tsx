@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import VolumeSlider from "../components/settings/VolumeSlider";
 import DarkModeToggle from "../components/settings/DarkModeToggle";
@@ -9,6 +9,7 @@ import InputBox from "../components/settings/InputBox";
 import CustomizeExperience from "../components/settings/CustomizeExperience";
 import AccountSelect from "../components/settings/AccountSelect";
 import GoalHistoryModule from "../components/settings/GoalHistoryModule";
+import { useApiHandler } from "../../utils/api";
 
 const accounts = [
   {
@@ -36,7 +37,7 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
   isActive,
 }) => {
   return (
-    <div
+    <button
       className={`h-10 text-black my-1 dark:text-white dark:bg-slate-500 dark:hover:bg-white dark:hover:text-black flex w-full justify-center rounded-lg items-center hover:bg-green-100 hover:cursor-pointer ${
         isActive
           ? "bg-green-200 hover:bg-green-200 dark:bg-slate-300 dark:text-black"
@@ -45,7 +46,7 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
       onClick={onClick}
     >
       {title}
-    </div>
+    </button>
   );
 };
 
@@ -72,11 +73,33 @@ const LogoutButton: React.FC = () => {
 
 const Home: React.FC = () => {
   const [content, setContent] = useState<string>("Bruker");
-  const username: string = "epost@mail.com";
-  const realName: string = "Ola Nordmann";
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+
+  // Dynamic user data, initially fetched from the API
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [difficultyLevel, setDifficultyLevel] = useState<string>("");
+  const [selectedChallenges, setSelectedChallenges] = useState(new Set());
   const [selectedAccounts, setSelectedAccounts] = useState({});
+
+  // Initial data to compare data before sending update request to API
+  const [initialFirstName, setInitialFirstName] = useState("");
+  const [initialLastName, setInitialLastName] = useState("");
+  const [initialEmail, setInitialEmail] = useState("");
+  const [initialPhone, setInitialPhone] = useState("");
+  const [initialDifficultyLevel, setInitialDifficultyLevel] = useState("");
+  const [initialChallenges, setInitialChallenges] = useState(new Set());
+
+  interface UserData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    difficultyLevel?: string;
+  }
+
   // Callback function to handle changes in selected difficulty
   const handleDifficultyChange = (difficulty) => {
     setDifficultyLevel(difficulty);
@@ -89,6 +112,32 @@ const Home: React.FC = () => {
     setSelectedChallenges(challenges);
     // Call any other logic you need for handling challenges change
   };
+
+  const apiHandler = useApiHandler();
+
+  const FetchUser = useCallback(async () => {
+    try {
+      const data = await apiHandler("user", "get", "/getUser");
+      console.log(data);
+
+      setFirstName(data.firstName);
+      setLastName(data.lastName);
+      setEmail(data.email);
+      setPhone(data.phone);
+      setDifficultyLevel(data.difficultyLevel);
+      setSelectedChallenges(new Set(data.challenges));
+
+      setInitialFirstName(data.firstName);
+      setInitialLastName(data.lastName);
+      setInitialEmail(data.email);
+      setInitialPhone(data.phone);
+      setInitialDifficultyLevel(data.difficultyLevel);
+      setInitialChallenges(new Set(data.challenges));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [apiHandler]); // apiHandler is listed as a dependency
+
   const router = useRouter();
 
   const updateUserButton = async () => {
@@ -219,11 +268,17 @@ const Home: React.FC = () => {
               aria-label="Inndatafelt for telefonnummer"
             />
             <span className="mt-16 px-2 w-full">
-              <CustomizeExperience />
+              <CustomizeExperience
+                selectedDifficulty={`${difficultyLevel}`}
+                setSelectedDifficulty={handleDifficultyChange}
+                selectedChallenges={selectedChallenges}
+                setSelectedChallenges={handleChallengesChange}
+              />
             </span>
             <button
               onClick={updateUserButton}
               className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 md:w-1/3 w-2/3"
+            >
               Lagre
             </button>
           </div>
@@ -234,7 +289,7 @@ const Home: React.FC = () => {
           <div className="mx-10 my-6 md:w-fill">
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-2xl font-semibold mb-6 text-black">
-                Velg bank konto for sparing
+                Velg bankkonto for sparing
               </h1>
               <AccountSelect
                 accounts={accounts}
