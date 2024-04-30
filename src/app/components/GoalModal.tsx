@@ -37,11 +37,11 @@ const NewGoalModal = ({ closeModal }) => {
   }
 
   const setNewGoal = async () => {
-    const data = await apiHandler("goal", "post", "/setGoal", {
+    const goal = await apiHandler("goal", "post", "/setGoal", {
       name: title,
       amount: amount
     });
-    if (data.successful){
+    if (goal.data.successful){
       location.reload()
     } else{
       document.getElementById("error").innerHTML="Kunne ikke legge til sparemål"
