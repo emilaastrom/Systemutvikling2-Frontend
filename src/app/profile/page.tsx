@@ -219,9 +219,10 @@ const Home: React.FC = () => {
             ></Image>
             <div id="userInfo" className="flex-grow md:ml-10 ml-5">
               <h2 className="text-xl font-bold whitespace-nowrap">
-                {realName}
+                {initialFirstName} {initialLastName}
               </h2>
-              {username}
+              <p className="text-sm">{initialEmail}</p>
+              <p className="text-sm">{initialPhone}</p>
             </div>
             <Image
               src="/logo.png"
