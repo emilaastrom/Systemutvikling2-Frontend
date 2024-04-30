@@ -15,8 +15,7 @@ const BadgesPage: React.FC = () => {
         console.log("Fetching goal data");
     try {
       const data = await apiHandler("goal", "get", "/getCompletedGoals");
-      console.log(data);
-      setGoals(data.numCompleted);
+      setGoals(data.data.numCompleted);
     } catch (error) {
       console.error(error);
     }
@@ -26,8 +25,7 @@ const BadgesPage: React.FC = () => {
         console.log("Fetching earned data");
     try {
       const data = await apiHandler("goal", "get", "/getTotalSaved");
-      console.log(data);
-      setEarned(data.totalSaved);
+      setEarned(data.data.totalSaved);
     } catch (error) {
       console.error(error);
     }
