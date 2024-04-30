@@ -43,8 +43,12 @@ export default function Home() {
         console.error(goal.data);
       }
     } catch (error) {
+      if(error.response && error.response.status===400){
+        setActive(0)
+      } else{
       setActive(-1)
       console.error(error);
+      }
     }
   };
 
