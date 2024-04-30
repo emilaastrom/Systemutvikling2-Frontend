@@ -9,27 +9,16 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
-  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
-    try {
-      await login(username, password);
-      router.push("/bankId");
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Invalid username or password.");
-      setIsLoading(false);
-    }
+    console.log("Send password reset email");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col ">
+    <form onSubmit={handleSubmit} className="flex flex-col px-16" style={{maxWidth: "600px"}}>
       <h1 className="text-md underline font-bold mb-2 text-black">
-        Logg Inn
+        Glemt Passord
       </h1>
       {errorMessage && (
         <motion.div
@@ -40,6 +29,7 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
           {errorMessage}
         </motion.div>
       )}
+      <p className="mb-4">Skriv inn brukernavnet ditt, så sender vi deg en e-post med instruksjoner for å tilbakestille passordet ditt.</p>
       <input
         type="username"
         placeholder="Brukernavn"
@@ -48,30 +38,19 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
         onChange={(e) => setUsername(e.target.value)}
         required
       />
-      <input
-        type="password"
-        placeholder="Passord"
-        className="border-2 rounded-md border-primary-light text-black py-2 px-4"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <p onClick={() => setFormIndex(2)} className="text-primary-dark hover:underline mt-1 mb-6 cursor-pointer">
-        Glemt passord?
-      </p>
       <button
         type="submit"
         className="bg-black text-white py-2 px-6 rounded-md hover:bg-gray-800 transition-colors duration-300"
         disabled={isLoading}
       >
-        {isLoading ? "Logger inn..." : "Logg Inn"}
+        {isLoading ? "Sender Epost..." : "Send Epost"}
       </button>
       <p className="text-gray-600 my-2">
-        Har du ikke en konto? <span
-          onClick={() => setFormIndex(1)}
-          className="text-primary-dark hover:underline cursor-pointer"
-        >
-          Registrer deg her.
+        Husker du passordet? <span
+        onClick={() => setFormIndex(0)}
+        className="text-primary-dark hover:underline cursor-pointer"
+      >
+          Logg inn her.
         </span>
       </p>
     </form>
