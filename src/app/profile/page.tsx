@@ -159,13 +159,13 @@ const Home: React.FC = () => {
 
     if (selectedChallenges !== initialChallenges) {
       console.log("Initial challenges: ", initialChallenges);
-      console.warn("Updating challenges: ", selectedChallenges);
+      console.warn("Updating challenges: ", selectedChallenges);      let challenge
       let stringOfChallenges =
-        "[" +
-        Array.from(selectedChallenges)
-          .map((challenge) => `"${challenge.toUpperCase()}"`)
-          .join(" ") +
-        "]";
+      "[" +
+      Array.from(selectedChallenges as Set<string>)  // Asserting that the set contains strings
+        .map((challenge) => `"${challenge.toUpperCase()}"`)
+        .join(" ") +
+      "]";
       console.log("stringOfChallenges: ", stringOfChallenges);
       try {
         await apiHandler("user", "put", "/updateUser", {
