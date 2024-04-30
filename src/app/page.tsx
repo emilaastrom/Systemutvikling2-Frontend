@@ -28,15 +28,19 @@ export default function Home() {
   const fetchActiveGoal = async () => {
     console.log("Fetching active goal data");
     try {
-      const data = await apiHandler("goal", "get", "/getActiveGoal");
-      if (data != null && data.active===true){
-      setGoal(data.name);
-      setCurrent(data.progress);
-      setMax(data.amount);
+      const goal = await apiHandler("goal", "get", "/getActiveGoal");
+      if (goal.data != null && goal.data.active===true && goal.status===200){
+      setGoal(goal.data.name);
+      setCurrent(goal.data.progress);
+      setMax(goal.data.amount);
       setActive(1);
     }
-      else if(data===null){
+      else if(goal.data===null || goal.status===400){
         setActive(0)
+      }
+      else{
+        setActive(-1)
+        console.error(goal.data);
       }
     } catch (error) {
       setActive(-1)
