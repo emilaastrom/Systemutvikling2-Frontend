@@ -77,14 +77,110 @@ const Home: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [selectedAccounts, setSelectedAccounts] = useState({});
+  // Callback function to handle changes in selected difficulty
+  const handleDifficultyChange = (difficulty) => {
+    setDifficultyLevel(difficulty);
+    // Call any other logic you need for handling difficulty change
+  };
+
+  // Callback function to handle changes in selected challenges
+  const handleChallengesChange = (challenges) => {
+    console.log("page/Selected challenges: ", challenges);
+    setSelectedChallenges(challenges);
+    // Call any other logic you need for handling challenges change
+  };
+  const router = useRouter();
+
+  const updateUserButton = async () => {
+    if (difficultyLevel !== initialDifficultyLevel) {
+      console.warn("Updating difficulty level", difficultyLevel);
+      try {
+        await apiHandler("user", "put", "/updateUser", {
+          defaultDifficulty: difficultyLevel,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+      FetchUser();
+    } else {
+      console.warn("No difficulty level has been updated");
+      console.log("old difficulty level: ", initialDifficultyLevel);
+      console.log("new difficulty level: ", difficultyLevel);
+    }
+
+    if (selectedChallenges !== initialChallenges) {
+      console.log("Initial challenges: ", initialChallenges);
+      console.warn("Updating challenges: ", selectedChallenges);
+      let stringOfChallenges =
+        "[" +
+        Array.from(selectedChallenges)
+          .map((challenge) => `"${challenge.toUpperCase()}"`)
+          .join(" ") +
+        "]";
+      console.log("stringOfChallenges: ", stringOfChallenges);
+      try {
+        await apiHandler("user", "put", "/updateUser", {
+          challenges: stringOfChallenges,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (!firstName || !lastName || !email || !phone) {
+      return;
+    } else {
+      // Check if any fields have been updated, if so adding them to the updates object
+      let updates: Partial<UserData> = {};
+      if (firstName !== initialFirstName) updates.firstName = firstName;
+      if (lastName !== initialLastName) updates.lastName = lastName;
+      if (email !== initialEmail) updates.email = email;
+      if (phone !== initialPhone) updates.phone = phone;
+      if (difficultyLevel !== initialDifficultyLevel)
+        updates.difficultyLevel = difficultyLevel;
+
+      // Calling the API to update only the user data lines that have been changed
+      if (Object.keys(updates).length > 0) {
+        console.log("Updating fields: ", updates);
+        try {
+          await apiHandler("user", "put", "/updateUser", updates);
+          // location.reload();
+        } catch (error) {
+          console.error(error);
+        }
+        FetchUser();
+      } else {
+        console.log("No text fields have been updated");
+      }
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case "Fornavn":
+        setFirstName(value);
+        break;
+      case "Etternavn":
+        setLastName(value);
+        break;
+      case "Epost":
+        setEmail(value);
+        break;
+      case "Telefon":
+        setPhone(value);
+        break;
+      default:
+        console.warn(`Unknown field updated: ${name}, with value: ${value}`);
+        break;
+    }
+  };
 
   useEffect(() => {
-    const names = realName.split(" ");
-    if (names.length > 0) {
-      setFirstName(names[0]); // Set the first name
-      setLastName(names.slice(1).join(" ")); // Join the rest as the last name
+    if (!firstName || !lastName || !email || !phone) {
+      FetchUser();
     }
-  }, []);
+  });
 
   const renderContent = () => {
     switch (content) {
@@ -98,18 +194,36 @@ const Home: React.FC = () => {
               Brukerinformasjon
             </div>
             <InputBox
-              label={"Brukernavn"}
-              placeholder={"mittKuleBrukernavn"}
+              label={"Fornavn"}
+              placeholder={firstName}
+              onChange={handleChange}
+              aria-label="Inndatafelt for fornavn"
+            />
+            <InputBox
+              label={"Etternavn"}
+              placeholder={lastName}
+              onChange={handleChange}
+              aria-label="Inndatafelt for etternavn"
+            />
+            <InputBox
+              label={"Epost"}
+              placeholder={email}
+              onChange={handleChange}
+              aria-label="Inndatafelt for epostadresse"
               disabled={true}
             />
-            <InputBox label={"Fornavn"} placeholder={firstName} />
-            <InputBox label={"Etternavn"} placeholder={lastName} />
-            <InputBox label={"Epost"} placeholder={username} disabled={true} />
-            <InputBox label={"Telefon"} placeholder="12345678" />
+            <InputBox
+              label={"Telefon"}
+              placeholder={phone}
+              onChange={handleChange}
+              aria-label="Inndatafelt for telefonnummer"
+            />
             <span className="mt-16 px-2 w-full">
               <CustomizeExperience />
             </span>
-            <button className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 md:w-1/3 w-2/3">
+            <button
+              onClick={updateUserButton}
+              className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 md:w-1/3 w-2/3"
               Lagre
             </button>
           </div>
