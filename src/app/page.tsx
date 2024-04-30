@@ -22,18 +22,24 @@ export default function Home() {
   const [goal, setGoal] = useState<string>("");
   const [current, setCurrent] = useState<number>();
   const [max, setMax] = useState<number>();
-  const [active, setActive] = useState<boolean>();
+  const [active, setActive] = useState<number>(-1);
 
   const apiHandler = useApiHandler();
   const fetchActiveGoal = async () => {
     console.log("Fetching active goal data");
     try {
       const data = await apiHandler("goal", "get", "/getActiveGoal");
+      if (data != null && data.active===true){
       setGoal(data.name);
       setCurrent(data.progress);
       setMax(data.amount);
-      setActive(data.active);
+      setActive(1);
+    }
+      else if(data===null){
+        setActive(0)
+      }
     } catch (error) {
+      setActive(-1)
       console.error(error);
     }
   };
@@ -84,10 +90,10 @@ export default function Home() {
                 </span>
               </button>
               {/* Render Goalpig only if 'active' is true and 'goal' is set */}
-              {active && goal && (
+              {active===1 && (
                 <Goalpig current={current} max={max} goal={goal} />
               )}
-              {goal==null && (
+              {active===0 && (
                 <div className="justify-center h-full items-center flex">
                   <button
                     className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2"
