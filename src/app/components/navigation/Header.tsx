@@ -14,8 +14,9 @@ const CustomHeader = () => {
     console.log("Fetching activegoal data");
     try {
       const data = await apiHandler("goal", "get", "/getActiveGoal");
-      setProgress(data.progress);
-      setMax(data.amount)
+      if(data.status===200){
+      setProgress(data.data.progress);
+      setMax(data.data.amount)}
     } catch (error) {
       console.error(error);
     }
