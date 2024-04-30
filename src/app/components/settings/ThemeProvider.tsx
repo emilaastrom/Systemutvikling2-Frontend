@@ -7,9 +7,9 @@ const ThemeContext = createContext({
 });
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  useEffect(() => {
+
     ThemeManager.initialize();
-  }, []);
+
 
   return (
     <ThemeContext.Provider value={{ theme: ThemeManager.getCurrentTheme(), setTheme: ThemeManager.setTheme }}>
