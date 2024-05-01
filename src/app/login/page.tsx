@@ -90,11 +90,11 @@ const Login = () => {
       </motion.div>
 
       <div className="z-10">
-        <div className="">
+        <div className="mt-4">
           <Image
-            src="/logo.png"
-            width={200}
-            height={200}
+            src="/gris.svg"
+            width={150}
+            height={150}
             alt="logo "
             className="mx-auto"
           />
