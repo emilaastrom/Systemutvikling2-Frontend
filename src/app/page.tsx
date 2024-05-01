@@ -12,6 +12,7 @@ import ChallengecardModalCompleted from "./components/challenges/ChallengecardMo
 import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
 import { useApiHandler } from "../utils/api";
 import Goalpig from "./components/Goalpig"; // Move the import here
+import { error } from "console";
 
 export default function Home() {
   const [succeededChallenges, setSucceededChallenges] = useState([]);
@@ -52,8 +53,19 @@ export default function Home() {
     }
   };
 
+  const fetchActiveChallenges = async () => {
+    console.log("fetching active challenges")
+    try{
+    const activeChallenges = await apiHandler("challenge", "get", "/getActiveChallenges")
+    console.log("active challenges:",activeChallenges.data)}
+    catch(error){
+      console.error(error)
+    }
+}
+
   useEffect(() => {
     fetchActiveGoal();
+    fetchActiveChallenges();
     const savedTheme =
       (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light";
     ThemeManager.setTheme(savedTheme);
