@@ -3,6 +3,20 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import DarkModeToggle from './DarkModeToggle';
 import ThemeManager from './ThemeManager'; // Import ThemeManager if it's needed for testing
 
+// Mock window.matchMedia before rendering the component
+beforeAll(() => {
+  window.matchMedia = jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // Deprecated, but still necessary for compatibility
+    removeListener: jest.fn(), // Deprecated, but still necessary for compatibility
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  }));
+});
+
 describe('DarkModeToggle component', () => {
   test('renders DarkModeToggle component', () => {
     render(<DarkModeToggle />);
@@ -30,6 +44,28 @@ describe('DarkModeToggle component', () => {
     expect(darkModeRadio).toBeChecked();
     expect(autoModeRadio).not.toBeChecked();
 
+    fireEvent.click(lightModeRadio);
+
+    // Assert that the light mode radio button is checked
+    expect(lightModeRadio).toBeChecked();
+    expect(darkModeRadio).not.toBeChecked();
+    expect(autoModeRadio).not.toBeChecked();
+
     // You can add more assertions as needed based on your component's behavior
   });
 });
+
+// Test to select the "Auto / system" radio button
+test('selects Auto / system radio button', () => {
+  render(<DarkModeToggle />);
+
+  // Find the radio button by its label text
+  const autoModeRadio = screen.getByLabelText('Auto / system');
+
+  // Simulate a click event on the radio button
+  fireEvent.click(autoModeRadio);
+
+  // Assert that the radio button is checked after clicking it
+  expect(autoModeRadio).toBeChecked();
+});
+
