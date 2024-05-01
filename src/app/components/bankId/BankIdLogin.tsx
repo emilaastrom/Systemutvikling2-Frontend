@@ -2,18 +2,26 @@ import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { useApiHandler } from "@/utils/api";
 import { useRouter } from "next/navigation";
+
 const BankIdLogin = () => {
   const handler = useApiHandler();
   const [loading, setLoading] = useState(false);
   const [pollInterval, setPollInterval] = useState(null);
+  const [error, setError] = useState(false);
   const router = useRouter();
+
   const handleLogin = async () => {
     setLoading(true);
     const req = await handler("bank", "post", "/createConsent");
-    console.log(req.status);
-    if (req) {
-      router.push(req);
-    } else console.log(req.status);
+    console.log(req);
+
+    if (req.data && req.status === 200) {
+      setError(false);
+      router.push(req.data.sca);
+    } else {
+      setLoading(false);
+      setError(req.data.Error);
+    }
   };
 
   /*
@@ -29,13 +37,15 @@ const BankIdLogin = () => {
     }, 3000); // Polls every 3 seconds
     setPollInterval(interval);
   };
-*/
+
 
   useEffect(() => {
     return () => {
       if (pollInterval) clearInterval(pollInterval);
     };
   }, [pollInterval]);
+
+  */
 
   return (
     <motion.div
@@ -90,6 +100,15 @@ const BankIdLogin = () => {
         >
           Log in with BankId
         </motion.button>
+      )}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-red-500 mt-4"
+        >
+          An error occured. Please Try again
+        </motion.div>
       )}
     </motion.div>
   );

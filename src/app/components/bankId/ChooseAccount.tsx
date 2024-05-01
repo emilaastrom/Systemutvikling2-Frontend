@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import AccountSelect from "@/app/components/settings/AccountSelect";
 

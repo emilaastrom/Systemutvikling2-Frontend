@@ -39,7 +39,7 @@ const Login = () => {
   const [formIndex, setFormIndex] = useState(0);
 
   const renderForm = () => {
-    switch(formIndex) {
+    switch (formIndex) {
       case 0:
         return <LoginForm setFormIndex={setFormIndex} />;
       case 1:
