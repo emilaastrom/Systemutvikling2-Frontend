@@ -3,8 +3,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useApiHandler } from "@/utils/api";
 
-const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
+const LoginForm = ({
+  setFormIndex,
+}: {
+  setFormIndex: (index: number) => void;
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -12,13 +17,29 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
   const { login } = useAuth();
   const router = useRouter();
 
+  const apiHandler = useApiHandler();
+
+  const getStatus = async () => {
+    const req = await apiHandler("user", "get", "/getUserStatus");
+    console.log(req);
+  };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage("");
     try {
       await login(username, password);
-      router.push("/firsttime");
+
+      const req = await apiHandler("user", "get", "/getUserStatus");
+      if (req.data.firstLogin) {
+        router.push("/bankId");
+      } else if (req.data.hasConnectedBankAccount) {
+        router.push("/connectBankAccount");
+      } else if (req.data.hasCustomizedGoals) {
+        router.push("/customizeGoals");
+      } else {
+        setErrorMessage("Invalid username or password.");
+      }
     } catch (error) {
       console.error(error);
       setErrorMessage("Invalid username or password.");
@@ -28,13 +49,11 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col ">
-      <h1 className="text-md underline font-bold mb-2 text-black">
-        Logg Inn
-      </h1>
+      <h1 className="text-md underline font-bold mb-2 text-black">Logg Inn</h1>
       {errorMessage && (
         <motion.div
-          initial={{opacity: 0}}
-          animate={{opacity: 1}}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="text-red-500 mb-2"
         >
           {errorMessage}
@@ -56,7 +75,10 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <p onClick={() => setFormIndex(2)} className="text-primary-dark hover:underline mt-1 mb-6 cursor-pointer">
+      <p
+        onClick={() => setFormIndex(2)}
+        className="text-primary-dark hover:underline mt-1 mb-6 cursor-pointer"
+      >
         Glemt passord?
       </p>
       <button
@@ -67,7 +89,8 @@ const LoginForm = ({setFormIndex}: {setFormIndex: (index: number) => void}) => {
         {isLoading ? "Logger inn..." : "Logg Inn"}
       </button>
       <p className="text-gray-600 my-2">
-        Har du ikke en konto? <span
+        Har du ikke en konto?{" "}
+        <span
           onClick={() => setFormIndex(1)}
           className="text-primary-dark hover:underline cursor-pointer"
         >
