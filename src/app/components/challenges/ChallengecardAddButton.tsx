@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import ChallengecardAddModal from './ChallengecardAddModal';
+interface ChallengecardAddButtonProps {
+    reloadFunction: () => void;
+}
 
-const ChallengecardAddButton = () => {
+const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadFunction }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        reloadFunction()
     };
 
     const handleAddClick = () => {

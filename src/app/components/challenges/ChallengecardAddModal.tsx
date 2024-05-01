@@ -8,44 +8,58 @@ type ChallengecardModalProps = {
 };
 
 type Suggestion = {
-    title: string;
-    description: string;
-    category: string;
-    time: number;
-    
+    id: string,
+    name: string,
+    description: string,
+    durationDays: number,
+    type: string,
+    price: number
 };
 
 const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) => {
-    const [currentPage, setCurrentPage] = useState(0); // Zero-based index for the current page
+    const [currentPage, setCurrentPage] = useState(0);
     const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
     const [difficultyDays, setDifficultyDays] = useState<number>(0);
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const apiHandler = useApiHandler()
 
+    const customNameMapping = {
+        SNUS: "Snus",
+        BRUS: "Brus",
+        UTELIV: "Uteliv",
+        KLÆR: "Klær",
+        KAFFE: "Kaffe",
+        TAKEOUT: "Mat",
+        GAMBLING: "Pengespill",
+        KINO: "Kino",
+        SNOP: "Snop",
+      };
+      const customDiffMapping = {
+        EASY: "Enkel",
+        MEDIUM: "Medium",
+        HARD: "Vanskelig",
+      };
+
     const fetchSuggestions = async () => {
-        
-        const user = await apiHandler("user", "get", "/getUser")
-        console.log(user.data)
-        const suggestionsdata = await apiHandler("challenge", "get", "/getNewChallenges?number=3")
-        console.log("new challenges: ",suggestionsdata.data)
+        try {
+            const suggestionsData = await apiHandler("challenge", "get", "/getNewChallenges?number=3");
+            const user = await apiHandler("user", "get", "/getUser"); 
+            setSuggestions(suggestionsData.data)  
+            setIsLoading(false); 
+            setSelectedDifficulty(customDiffMapping[user.data.defaultDifficulty]); 
+            calculateDifficultyDays(customDiffMapping[user.data.defaultDifficulty], 0, suggestionsData.data)
+            
+        } catch (error) {
+            console.error("Error fetching suggestions:", error);
+            setIsLoading(false);
+        }
     }
 
     useEffect(() => {
         fetchSuggestions();
-    })
-    const suggestions: Suggestion[] = [
-        { 
-            title: 'Utfordring 1', 
-            description: 'Description for Utfordring 1  Sot nibh praese amet risus tincidunt vitae semper quis lectus nulla at volutpat.', 
-            category: 'kaffe', 
-            time: 15 
-        },
-        { title: 'Utfordring 2', description: 'Description for Utfordring 2', category: 'kaffe', time: 15 },
-        { title: 'Utfordring 3', description: 'Description for Utfordring 3', category: 'kaffe', time: 10 },
-        { title: 'Utfordring 4', description: 'Description for Utfordring 4', category: 'kaffe', time: 18 },
-        { title: 'Utfordring 5', description: 'Description for Utfordring 5', category: 'kaffe', time: 15 },
-        { title: 'Utfordring 6', description: 'Description for Utfordring 6', category: 'kaffe', time: 15 }
-    ];
+    }, [])
 
     const totalPages = suggestions.length;
 
@@ -65,19 +79,19 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
             animate={{ opacity: 1, x: 0 }} 
             exit={{ opacity: 0, x: x2 }}
             transition={{ duration: 0.2 }}
-            className="border-2 rounded-md p-4  cursor-pointer overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
+            className="border-2 rounded-md p-4 overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
         >
            <span className="text-gray-500 text-sm text-start">
-                    <span className="font-semibold">Kategori: </span> {suggestion.category}
+                    <span className="font-semibold">Kategori: </span> {customNameMapping[suggestion.type]}
                     </span>
-                <div className="flex flex-col md:px-16 x-4 justify-center items-center mb-2 ">
-                    <h3 className="text-xl font-semibold text-center mb-5">{suggestion.title}</h3>
+                <div className="flex flex-col md:px-16 x-4 justify-center items-center my-4 ">
+                    <h3 className="text-xl font-semibold text-center mb-5">{suggestion.name}</h3>
                     <p className="text-md text-gray-700 text-center mb-2">{suggestion.description}</p>
                 </div>
                 
                 
-                <div className="text-center text-gray-600 text-sm mt-auto">
-                    <span className="font-semibold">Antall dager: </span> {suggestion.time}<br />
+                <div className="text-center text-gray-600 text-md mt-auto">
+                    <span className="font-semibold">Antall dager: </span> {suggestion.durationDays}<br />
                     <div className='mt-2'>
                         <span className="font-semibold">Dager for fullført: </span> <span className='bg-primary-light p-1 font-semibold text-light rounded-md'>{difficultyDays}</span>
                     </div>
@@ -86,23 +100,38 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
         );
     };
 
-    const calculateDifficultyDays = (difficulty:string, page:number) => {
+    const calculateDifficultyDays = (difficulty:string, page:number, suggestions:Suggestion[]) => {
+    
         if(difficulty==="Vanskelig"){
-        setDifficultyDays(suggestions[page].time)
+        setDifficultyDays(suggestions[page].durationDays)
     } else if(difficulty==="Medium"){
-        setDifficultyDays(Math.floor(suggestions[page].time/100*80))
+        setDifficultyDays(Math.floor(suggestions[page].durationDays/100*80))
     } else if(difficulty==="Enkel"){
-        setDifficultyDays(Math.floor(suggestions[page].time/100*50))
+        setDifficultyDays(Math.floor(suggestions[page].durationDays/100*50))
     }
     }
 
     const difficultyChange = (difficulty:string, currentPage:number) => {
         setSelectedDifficulty(difficulty); 
-        calculateDifficultyDays(difficulty, currentPage)
+        calculateDifficultyDays(difficulty, currentPage, suggestions)
     }
 
     const submit = () => {
-        
+        const difficultyLevel = Object.keys(customDiffMapping).find(
+            key => customDiffMapping[key] === selectedDifficulty
+          );
+          
+       apiHandler("challenge","put","/assignChallenge",{
+        id:suggestions[currentPage].id,
+        difficulty:difficultyLevel
+    })
+    setTimeout(function() {
+        location.reload();
+    }, 200); 
+    }
+
+    if (isLoading) {
+        return ;
     }
 
     return (
