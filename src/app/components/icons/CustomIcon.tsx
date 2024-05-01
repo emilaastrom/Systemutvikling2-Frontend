@@ -1,15 +1,14 @@
-// components/CustomIcon.js
 import React from "react";
 
 interface CustomIconProps {
   className: string;
   svg: React.ReactNode;  // Accepting React node to allow any JSX element
+  ariaLabel?: string;
 }
 
-const CustomIcon: React.FC<CustomIconProps> = ({ className, svg }) => {
-  // Apply the className to the outer container of the SVG, if necessary
+const CustomIcon: React.FC<CustomIconProps> = ({ className, svg, ariaLabel }) => {
   return (
-    <div className={className}>
+    <div className={className} aria-label={ariaLabel}>
       {svg}
     </div>
   );
