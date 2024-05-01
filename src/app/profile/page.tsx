@@ -80,7 +80,7 @@ const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [difficultyLevel, setDifficultyLevel] = useState<string>("");
-  const [selectedChallenges, setSelectedChallenges] = useState(new Set());
+  const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
   const [selectedAccounts, setSelectedAccounts] = useState({});
 
   // Initial data to compare data before sending update request to API
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
   const [initialEmail, setInitialEmail] = useState("");
   const [initialPhone, setInitialPhone] = useState("");
   const [initialDifficultyLevel, setInitialDifficultyLevel] = useState("");
-  const [initialChallenges, setInitialChallenges] = useState(new Set());
+  const [initialChallenges, setInitialChallenges] = useState<string[]>([]);
 
   interface UserData {
     firstName: string;
@@ -100,13 +100,12 @@ const Home: React.FC = () => {
     difficultyLevel?: string;
   }
 
-  // Callback function to handle changes in selected difficulty
+  // Callback function to respond to changes in selected difficulty level
   const handleDifficultyChange = (difficulty) => {
     setDifficultyLevel(difficulty);
-    // Call any other logic you need for handling difficulty change
   };
 
-  // Callback function to handle changes in selected challenges
+  // Callback function to respond to changes in selected selectedChallenges
   const handleChallengesChange = (challenges) => {
     console.log("page/Selected challenges: ", challenges);
     setSelectedChallenges(challenges);
@@ -117,28 +116,53 @@ const Home: React.FC = () => {
 
   const FetchUser = useCallback(async () => {
     try {
-      const data = await apiHandler("user", "get", "/getUser");
-      console.log(data);
+      const fetched = await apiHandler("user", "get", "/getUser");
 
-      setFirstName(data.firstName);
-      setLastName(data.lastName);
-      setEmail(data.email);
-      setPhone(data.phone);
-      setDifficultyLevel(data.difficultyLevel);
-      setSelectedChallenges(new Set(data.challenges));
+      setUsername(fetched.data.username);
+      setFirstName(fetched.data.firstName);
+      setLastName(fetched.data.lastName);
+      setEmail(fetched.data.email);
+      setPhone(fetched.data.phone);
+      setDifficultyLevel(fetched.data.difficultyLevel);
 
-      setInitialFirstName(data.firstName);
-      setInitialLastName(data.lastName);
-      setInitialEmail(data.email);
-      setInitialPhone(data.phone);
-      setInitialDifficultyLevel(data.difficultyLevel);
-      setInitialChallenges(new Set(data.challenges));
+      setInitialUsername(fetched.data.username);
+      setInitialFirstName(fetched.data.firstName);
+      setInitialLastName(fetched.data.lastName);
+      setInitialEmail(fetched.data.email);
+      setInitialPhone(fetched.data.phone);
+      setInitialDifficultyLevel(fetched.data.difficultyLevel);
+
+      if (fetched.data.options) {
+        setSelectedChallenges([...fetched.data.options]);
+        setInitialChallenges([...fetched.data.options]);
+      } else {
+        console.warn("No challenges found in user data", fetched.data.options);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching data from API: ", error);
     }
-  }, [apiHandler]); // apiHandler is listed as a dependency
+  }, [apiHandler]);
 
   const router = useRouter();
+
+  const areArraysEqual = (a, b) => {
+    const freqCounterA = a.reduce((acc, el) => {
+      acc[el] = (acc[el] || 0) + 1;
+      return acc;
+    }, {});
+    const freqCounterB = b.reduce((acc, el) => {
+      acc[el] = (acc[el] || 0) + 1;
+      return acc;
+    }, {});
+
+    if (Object.keys(freqCounterA).length !== Object.keys(freqCounterB).length)
+      return false;
+
+    for (const key in freqCounterA) {
+      if (freqCounterA[key] !== freqCounterB[key]) return false;
+    }
+    return true;
+  };
 
   const updateUserButton = async () => {
     if (difficultyLevel !== initialDifficultyLevel) {
@@ -153,27 +177,25 @@ const Home: React.FC = () => {
       FetchUser();
     } else {
       console.warn("No difficulty level has been updated");
-      console.log("old difficulty level: ", initialDifficultyLevel);
-      console.log("new difficulty level: ", difficultyLevel);
+      console.log("Old difficulty level: ", initialDifficultyLevel);
+      console.log("New difficulty level: ", difficultyLevel);
     }
 
-    if (selectedChallenges !== initialChallenges) {
-      console.log("Initial challenges: ", initialChallenges);
-      console.warn("Updating challenges: ", selectedChallenges);      let challenge
-      let stringOfChallenges =
-      "[" +
-      Array.from(selectedChallenges as Set<string>)  // Asserting that the set contains strings
-        .map((challenge) => `"${challenge.toUpperCase()}"`)
-        .join(" ") +
-      "]";
-      console.log("stringOfChallenges: ", stringOfChallenges);
+    if (!areArraysEqual(selectedChallenges, initialChallenges)) {
+      console.log("Updating challenges");
+      const optionsJSON = JSON.stringify({
+        options: selectedChallenges,
+      });
+
       try {
-        await apiHandler("user", "put", "/updateUser", {
-          challenges: stringOfChallenges,
-        });
+        await apiHandler("user", "put", "/updateUser", optionsJSON);
       } catch (error) {
         console.error(error);
       }
+    } else {
+      console.warn("No challenges have been updated");
+      console.log("old challenges: ", initialChallenges);
+      console.log("new challenges: ", selectedChallenges);
     }
 
     if (!firstName || !lastName || !email || !phone) {
@@ -181,6 +203,7 @@ const Home: React.FC = () => {
     } else {
       // Check if any fields have been updated, if so adding them to the updates object
       let updates: Partial<UserData> = {};
+      if (username !== initialUsername) updates.username = username;
       if (firstName !== initialFirstName) updates.firstName = firstName;
       if (lastName !== initialLastName) updates.lastName = lastName;
       if (email !== initialEmail) updates.email = email;
@@ -199,9 +222,10 @@ const Home: React.FC = () => {
         }
         FetchUser();
       } else {
-        console.log("No text fields have been updated");
+        console.log("No text fields have been updated, did not send request to API.");
       }
     }
+    location.reload();
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,7 +250,7 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!firstName || !lastName || !email || !phone) {
+    if (!email) {
       FetchUser();
     }
   });
