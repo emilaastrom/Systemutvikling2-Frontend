@@ -26,11 +26,11 @@ const ChooseAccount = () => {
           console.log("response.data", response.data);
           setAccounts(
             response.data.map((account) => ({
-              id: account.bban,
+              id: account.bban, // Assuming `bban` should be mapped to `id`
               number: account.bban,
               name: account.name,
-              ownerName: account.ownerName,
-              type: account.name,
+              ownerName: account.ownerName, // Make sure `ownerName` is always provided by the API
+              type: account.type, // Ensure this is actually 'type' in the API or adjust accordingly
             }))
           );
         }
