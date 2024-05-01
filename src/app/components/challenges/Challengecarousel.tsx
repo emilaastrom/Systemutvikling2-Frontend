@@ -78,6 +78,7 @@ const Challengecarousel = () => {
         max={challenge.assignedChallenge.subStatus.length}
         startDate={startDate}
         endDate={endDate}
+        subStatus={challenge.assignedChallenge.subStatus}
       />
     </div>
   );

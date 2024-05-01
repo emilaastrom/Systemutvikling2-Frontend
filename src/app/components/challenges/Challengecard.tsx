@@ -7,7 +7,8 @@ const Challengecard = ({
     current,
     max,
     startDate,
-    endDate
+    endDate,
+    subStatus
 }: {
     id: string,
     challenge: string;
@@ -15,6 +16,7 @@ const Challengecard = ({
     max: number;
     startDate: Date;
     endDate: Date;
+    subStatus: boolean[];
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     
@@ -37,7 +39,7 @@ const Challengecard = ({
 
     return (
         <>
-            {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} id={id}/>}
+            {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} id={id} subStatus={subStatus}/>}
             <div className="flex justify-end" onClick={handleCardClick}>
             <div 
                 className="w-80 m-4 rounded-lg overflow-hidden relative cursor-pointer" 

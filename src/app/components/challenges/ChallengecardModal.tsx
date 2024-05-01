@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChallengecardModalButton from './ChallengecardModalButton';
 import CustomIcon from '../icons/CustomIcon';
 import { useApiHandler } from '@/utils/api';
@@ -9,9 +9,43 @@ type ChallengecardModalProps = {
     challengeStartDate: Date;
     challengeEndDate: Date;
     id: string;
+    subStatus: boolean[];
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate, id }) => {
+const generateDates = (month: number, year: number, startDate: Date, endDate: Date) => {
+    const startDay = new Date(year, month - 1, 1);
+    const endDay = new Date(year, month, 0);
+    const startOffset = startDay.getDay(); 
+    const endOffset = endDay.getDay(); 
+
+    const dates = [];
+
+    for (let i = 1; i <= endDay.getDate(); i++) {
+        const currentDate = new Date(year, month - 1, i);
+
+        let uniqueId = `${year}-${month}-${i}`; 
+
+        let isEnabled = currentDate >= startDate && currentDate < endDate;
+
+        dates.push({ 
+            date: i, 
+            enabled: isEnabled, 
+            uniqueId: uniqueId 
+        });
+    }
+
+    for (let i = 0; i < startOffset; i++) {
+        dates.unshift({ date: 0, enabled: false, uniqueId: `${year}-${month}-0-${i}` });
+    }
+
+    for (let i = endOffset; i < 6; i++) {
+        dates.push({ date: 0, enabled: false, uniqueId: `${year}-${month}-0-${i}` });
+    }
+
+    return dates;
+};
+
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate, id, subStatus }) => {
     const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth()+1); 
     const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
 
@@ -20,36 +54,6 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
     };
-
-    const generateDates = (month: number, year: number, startDate: Date, endDate: Date) => {
-        const startDay = new Date(year, month - 1, 1);
-        const endDay = new Date(year, month, 0);
-        const startOffset = startDay.getDay(); 
-        const endOffset = endDay.getDay(); 
-    
-        const dates = [];
-    
-        for (let i = 1; i <= endDay.getDate(); i++) {
-            const currentDate = new Date(year, month - 1, i);
-    
-            if (currentDate >= startDate && currentDate <= endDate) {
-                dates.push({ date: i, enabled: true });
-            } else {
-                dates.push({ date: i, enabled: false });
-            }
-        }
-    
-        for (let i = 0; i < startOffset; i++) {
-            dates.unshift({ date: 0, enabled: false });
-        }
-    
-        for (let i = endOffset; i < 6; i++) {
-            dates.push({ date: 0, enabled: false });
-        }
-    
-        return dates;
-    };
-    
 
     const changeMonth = (increment: number) => {
         let newMonth = currentMonth + increment;
@@ -75,6 +79,49 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
             location.reload();
         }, 200); 
     }
+
+    const saveProgress = () => {
+        const clickedStatusArray = Object.values(clickedStatus); 
+        apiHandler("challenge","patch","/updateProgress",{id:id,subStatus:clickedStatusArray})
+        
+    };
+
+const dates = generateDates(currentMonth, currentYear, challengeStartDate, challengeEndDate);
+
+const initialClickedStatus = {};
+dates.forEach(date => {
+    if (date.enabled) {
+        initialClickedStatus[date.uniqueId] = false;
+    }
+});
+
+const [clickedStatus, setClickedStatus] = useState(initialClickedStatus);
+
+const handleClick = (uniqueId: string) => {
+    setClickedStatus(prevState => ({
+        ...prevState,
+        [uniqueId]: !prevState[uniqueId]
+    }));
+    console.log(clickedStatus);
+};
+
+const initialStatus = () => {
+    const newClickedStatus = { ...clickedStatus }; // Create a copy of the current clickedStatus
+
+    for (let i = 0; i < subStatus.length; i++) {
+        if (subStatus[i]) {
+            // If subStatus at index i is true, set clickedStatus at index i to true
+            const uniqueId = dates[i].uniqueId; // Get the uniqueId corresponding to the index
+            newClickedStatus[uniqueId] = true;
+        }
+    }
+
+    setClickedStatus(newClickedStatus); // Update clickedStatus with the modified values
+};
+
+useEffect(() => {
+    initialStatus();
+}, [])
 
     return (
         <div onClick={onClose} className="modal-container">
@@ -136,24 +183,35 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
                             {day}
                         </div>
                     ))}
-                    {generateDates(currentMonth, currentYear, challengeStartDate, challengeEndDate).map((day, index) => (
-                        <div key={index} className="flex-none sm:p-0 text-center">
-                            <div className={day.enabled ? "" : "opacity-10 cursor-not-allowed pointer-events-none"}>
-                                {day.date ? (
-                                    <ChallengecardModalButton 
-                                        text={`${day.date}.`}
-                                    />
-                                ) : (
-                                    <div className="opacity-0">{day.date}</div>
-                                )}
-                            </div>
-                        </div>
-                    ))}
+                    {dates.map((day, index) => (
+    <div key={day.uniqueId} className="flex-none sm:p-0 text-center">
+        <div className={day.enabled ? "" : "opacity-10 cursor-not-allowed pointer-events-none"}>
+            {day.date ? (
+                <div className="flex justify-center items-center">
+                    <div 
+                        className={`w-14 h-14 border-2 border-gray-300 rounded-lg shadow-lg cursor-pointer flex justify-center items-center ${clickedStatus[day.uniqueId] ? 'bg-green-200' : 'bg-white hover:bg-green-100'}`}
+                        onClick={() => handleClick(day.uniqueId)} 
+                    >
+                        {day.date}
+                    </div>
+                </div>
+            ) : (
+                <div className="opacity-0">{day.date}</div>
+            )}
+        </div>
+    </div>
+))}
+
+
+
                 </div>
             </div>
             <div className="w-full flex justify-center">
                 <div onClick={deleteChallenge} className="border-2 bg-white border-red-600 text-red-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
                     Slett utfordring
+                </div>
+                <div onClick={saveProgress} className="border-2 bg-white border-green-600 text-green-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
+                    lagre fremgang
                 </div>
             </div>
         </div>
