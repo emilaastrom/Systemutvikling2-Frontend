@@ -12,15 +12,12 @@ const BankIdLogin = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    const req = await handler("bank", "post", "/createConsent");
-    console.log(req);
-
-    if (req.data && req.status === 200) {
-      setError(false);
+    try {
+      const req = await handler("bank", "post", "/createConsent");
       router.push(req.data.sca);
-    } else {
+    } catch (e) {
+      setError(true);
       setLoading(false);
-      setError(req.data.Error);
     }
   };
 

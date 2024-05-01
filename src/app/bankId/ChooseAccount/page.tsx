@@ -4,10 +4,16 @@ import AccountSelect from "@/app/components/settings/AccountSelect";
 import { useApiHandler } from "@/utils/api";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { Account, SelectedAccounts } from "@/util/types/BankTypes";
+
 const ChooseAccount = () => {
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedAccounts, setSelectedAccounts] = useState({});
+
+  const [selectedAccounts, setSelectedAccounts] = useState<SelectedAccounts>({
+    From: null,
+    To: null,
+  });
   const [error, setError] = useState(null);
   const apiHandler = useApiHandler();
   const Router = useRouter();
@@ -32,24 +38,32 @@ const ChooseAccount = () => {
       } catch (error) {
         console.error("Failed to fetch accounts:", error);
       } finally {
-        setIsLoading(false); // End loading
+        setIsLoading(true);
       }
     };
 
     fetchAccounts();
   }, []);
 
+  console.log("Selected accounts:", selectedAccounts);
   const handleSubmission = async () => {
-    if (!selectedAccounts["From"] || !selectedAccounts["To"]) {
-      setError("You must select both an account for spending and saving");
+    console.log("Selected accounts:", selectedAccounts);
+    if (!selectedAccounts.From || !selectedAccounts.To) {
+      setError("You must select both accounts for spending and saving");
       return;
     }
+
+    if (selectedAccounts.From.id === selectedAccounts.To.id) {
+      setError("You must select different accounts for spending and saving");
+      return;
+    }
+
     try {
-      console.log("Selected accounts:", selectedAccounts);
+      console.log("Selected accounts:", selectedAccounts.From.number);
 
       const response = await apiHandler("bank", "post", "/setAccounts", {
-        from: selectedAccounts["From"],
-        to: selectedAccounts["To"],
+        from: selectedAccounts.From.number,
+        to: selectedAccounts.To.number,
       });
 
       if (response.status === 200) {
