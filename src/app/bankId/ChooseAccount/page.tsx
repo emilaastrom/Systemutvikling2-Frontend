@@ -62,7 +62,7 @@ const ChooseAccount = () => {
     try {
       console.log("Selected accounts:", selectedAccounts.From.number);
 
-      const response = await apiHandler("bank", "post", "/setAccounts", {
+      const response = await apiHandler("bank", "post", "/addAccounts", {
         from: selectedAccounts.From.number,
         to: selectedAccounts.To.number,
       });
