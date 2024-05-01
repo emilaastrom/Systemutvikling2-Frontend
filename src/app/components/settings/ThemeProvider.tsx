@@ -11,7 +11,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   useEffect(() => {
     ThemeManager.initialize();
-
+  });
 
   return (
     <ThemeContext.Provider
