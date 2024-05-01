@@ -75,6 +75,7 @@ const Home: React.FC = () => {
   const [content, setContent] = useState<string>("Bruker");
 
   // Dynamic user data, initially fetched from the API
+  const [username, setUsername] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -84,6 +85,7 @@ const Home: React.FC = () => {
   const [selectedAccounts, setSelectedAccounts] = useState({});
 
   // Initial data to compare data before sending update request to API
+  const [initialUsername, setInitialUsername] = useState("");
   const [initialFirstName, setInitialFirstName] = useState("");
   const [initialLastName, setInitialLastName] = useState("");
   const [initialEmail, setInitialEmail] = useState("");
@@ -92,6 +94,7 @@ const Home: React.FC = () => {
   const [initialChallenges, setInitialChallenges] = useState<string[]>([]);
 
   interface UserData {
+    username: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -107,9 +110,7 @@ const Home: React.FC = () => {
 
   // Callback function to respond to changes in selected selectedChallenges
   const handleChallengesChange = (challenges) => {
-    console.log("page/Selected challenges: ", challenges);
     setSelectedChallenges(challenges);
-    // Call any other logic you need for handling challenges change
   };
 
   const apiHandler = useApiHandler();
@@ -166,7 +167,6 @@ const Home: React.FC = () => {
 
   const updateUserButton = async () => {
     if (difficultyLevel !== initialDifficultyLevel) {
-      console.warn("Updating difficulty level", difficultyLevel);
       try {
         await apiHandler("user", "put", "/updateUser", {
           defaultDifficulty: difficultyLevel,
@@ -213,10 +213,8 @@ const Home: React.FC = () => {
 
       // Calling the API to update only the user data lines that have been changed
       if (Object.keys(updates).length > 0) {
-        console.log("Updating fields: ", updates);
         try {
           await apiHandler("user", "put", "/updateUser", updates);
-          // location.reload();
         } catch (error) {
           console.error(error);
         }
@@ -231,6 +229,9 @@ const Home: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     switch (name) {
+      case "Brukernavn":
+        setUsername(value);
+        break;
       case "Fornavn":
         setFirstName(value);
         break;
@@ -266,6 +267,12 @@ const Home: React.FC = () => {
             <div className="font-semibold text-2xl text-center m-5">
               Brukerinformasjon
             </div>
+            <InputBox
+              label={"Brukernavn"}
+              placeholder={username}
+              onChange={handleChange}
+              aria-label="Inndatafelt for brukernavn"
+            />
             <InputBox
               label={"Fornavn"}
               placeholder={firstName}
