@@ -37,8 +37,9 @@ const ChooseAccount = () => {
         console.log("Fetched accounts:", response.data);
       } catch (error) {
         console.error("Failed to fetch accounts:", error);
+        setError("Failed to fetch accounts");
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     };
 
