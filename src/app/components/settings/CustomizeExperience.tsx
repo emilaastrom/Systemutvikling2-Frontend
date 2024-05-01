@@ -10,7 +10,7 @@ const languageMapping = {
 };
 
 const customNameMapping = {
-  Snus: "Tobakk",
+  Snus: "Snus",
   Brus: "Brus",
   Uteliv: "Uteliv",
   Klær: "Klær",
