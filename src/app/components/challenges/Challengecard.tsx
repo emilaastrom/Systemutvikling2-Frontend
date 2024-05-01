@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import ChallengecardModal from './ChallengecardModal';
 
 const Challengecard = ({
+    id,
     challenge,
     current,
     max,
     startDate,
     endDate
 }: {
+    id: string,
     challenge: string;
     current: number;
     max: number;
@@ -35,7 +37,7 @@ const Challengecard = ({
 
     return (
         <>
-            {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} />}
+            {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} id={id}/>}
             <div className="flex justify-end" onClick={handleCardClick}>
             <div 
                 className="w-80 m-4 rounded-lg overflow-hidden relative cursor-pointer" 

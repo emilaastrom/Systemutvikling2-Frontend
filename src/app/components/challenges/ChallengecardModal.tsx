@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import ChallengecardModalButton from './ChallengecardModalButton';
 import CustomIcon from '../icons/CustomIcon';
+import { useApiHandler } from '@/utils/api';
 
 type ChallengecardModalProps = {
     onClose: () => void;
     challengeText: string;
     challengeStartDate: Date;
     challengeEndDate: Date;
+    id: string;
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate }) => {
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate, id }) => {
     const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth()+1); 
     const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
+
+    const apiHandler = useApiHandler()
     
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
@@ -63,8 +67,17 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
         setCurrentYear(newYear);
     };
 
+    const deleteChallenge = () => {
+        apiHandler("challenge","post","/removeAssignedChallenge",{
+            id:id
+        })
+        setTimeout(function() {
+            location.reload();
+        }, 200); 
+    }
+
     return (
-        <div onClick={onClose} className="fixed h-screen w-screen inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50">
+        <div onClick={onClose} className="modal-container">
             <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto">
                 <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
                     <div className="flex-grow flex justify-center items-center">
@@ -139,7 +152,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
                 </div>
             </div>
             <div className="w-full flex justify-center">
-                <div className="border-2 bg-white border-red-600 text-red-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
+                <div onClick={deleteChallenge} className="border-2 bg-white border-red-600 text-red-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
                     Slett utfordring
                 </div>
             </div>
