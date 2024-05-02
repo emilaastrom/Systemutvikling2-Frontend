@@ -30,7 +30,16 @@ const BadgesPage: React.FC = () => {
       console.error(error);
     }
   };
-  //TODO: fetch challenges data
+  
+  const fetchChallenges = async () => {
+    console.log("Fetching challenge data");
+    try {
+      const response = await apiHandler("challenge", "get", "/getNumberOfCompletedChallenges");
+      setChallenges(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   let goalslevel = "";
   let goalslevelStroke = "";
@@ -40,6 +49,7 @@ const BadgesPage: React.FC = () => {
   let earnedlevelStroke = "";
   fetchEarned();
   fetchGoals();
+  fetchChallenges()
 
   switch (true) {
     case goals >= 5:

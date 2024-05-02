@@ -12,6 +12,7 @@ import ChallengecardModalCompleted from "./components/challenges/ChallengecardMo
 import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
 import { useApiHandler } from "../utils/api";
 import Goalpig from "./components/Goalpig"; // Move the import here
+import { error } from "console";
 
 export default function Home() {
   const [succeededChallenges, setSucceededChallenges] = useState([]);
@@ -51,7 +52,32 @@ export default function Home() {
       }
     }
   };
-
+  const fetchActiveChallenges = async () => {
+    const challenges = await apiHandler("challenge", "get", "/getActiveChallenges");
+    const today = new Date();
+    const completed = [];
+  
+    for (const challenge of challenges.data) {
+      const endDate = new Date(challenge.assignedChallenge.endDate);
+      if (endDate < today) {
+        completed.push(challenge);
+      }
+    }
+  
+    console.log(completed);
+    let anyCompleted = false;
+    let finished = []
+    let notFinished = []
+    for (const challenge of completed) {
+      anyCompleted = true
+      const response = await apiHandler("challenge","post","/finishChallenge",{id:challenge.assignedChallenge.id})
+      //TODO: finished array or not finished array
+  };
+  if(anyCompleted){
+    toggleCompletedPopup()
+  }
+}
+  
   useEffect(() => {
     fetchActiveGoal();
     const savedTheme =
@@ -87,7 +113,7 @@ export default function Home() {
         <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
           <div>
           <Challengecarousel />
-            <div className="md:h-72 h-48">
+            <div className="h-auto">
               <button
                 className="bg-white text-black border-2 border-black p-2 m-2 absolute right-0 z-10"
                 onClick={openCheckpointModal}
