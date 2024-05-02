@@ -39,9 +39,9 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
 }) => {
   return (
     <button
-      className={`h-10 text-black my-1 dark:text-white dark:bg-slate-500 dark:hover:bg-white dark:hover:text-black flex w-full justify-center rounded-lg items-center hover:bg-green-100 hover:cursor-pointer ${
+      className={`h-10 text-dark my-1 dark:text-white dark:bg-slate-500 dark:hover:bg-white dark:hover:text-dark flex w-full justify-center rounded-lg items-center hover:bg-primary-light hover:cursor-pointer hover:text-light ${
         isActive
-          ? "bg-green-200 hover:bg-green-200 dark:bg-slate-300 dark:text-black"
+          ? "bg-primary-light hover:bg-primary-light text-light dark:bg-slate-300 dark:text-dark"
           : ""
       }`}
       onClick={onClick}
@@ -63,7 +63,7 @@ const LogoutButton: React.FC = () => {
   return (
     <div className="bg-gray-100 md:col-span-1 mt-2 md:order-2 col-span-3 h-10 row-span-1 rounded-lg shadow-lg">
       <button
-        className=" max-h-10  bg-white rounded-md text-black h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 hover:font-semibold transition ease-in-out"
+        className=" max-h-10  bg-white rounded-md text-dark h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 hover:font-semibold transition ease-in-out"
         onClick={handleLogout}
       >
         Logg av
@@ -311,7 +311,7 @@ const Home: React.FC = () => {
             </span>
             <button
               onClick={updateUserButton}
-              className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 border-green-600 md:w-1/3 w-2/3"
+              className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark mt-8 text-white rounded-lg p-2 border-primary-dark md:w-1/3 w-2/3"
             >
               Lagre
             </button>
@@ -322,7 +322,7 @@ const Home: React.FC = () => {
         return (
           <div className="mx-10 my-6 md:w-fill">
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-2xl font-semibold mb-6 text-black">
+              <h1 className="text-2xl font-semibold mb-6 text-dark">
                 Velg bankkonto for sparing
               </h1>
               <h1 className="text-black text-3xl">
@@ -330,7 +330,7 @@ const Home: React.FC = () => {
               </h1>
             </div>
             <button
-              className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 w-full"
+              className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark mt-8 text-white rounded-lg p-2 w-full"
               onClick={() => console.log()}
             >
               Lagre
@@ -391,10 +391,10 @@ const Home: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-center space-x-4 pt-8">
-              <button className="bg-green-500 hover:bg-green-600 dark:bg-green-700 text-white rounded-lg p-2 border-green-600 w-1/3">
+              <button className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark text-white rounded-lg p-2 border-primary-dark w-1/3">
                 Lagre
               </button>
-              <button className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:text-white text-black rounded-lg p-2 border-gray-400 w-1/3">
+              <button className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:text-white text-dark rounded-lg p-2 border-gray-400 w-1/3">
                 Avbryt
               </button>
             </div>
@@ -408,7 +408,7 @@ const Home: React.FC = () => {
   return (
     <ThemeProvider>
       <main className="dark:bg-slate-700 w-fill min-h-screen pb-16 flex flex-col">
-        <div className="grid grid-cols-2 sm:grid-cols-3 text-black gap-8 pt-20 md:px-48 px-4 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 text-dark gap-8 pt-20 md:px-48 px-4 w-full">
           {/* Profile section */}
           <div className="flex justify-start items-center bg-white dark:bg-slate-200 bg-opacity-80 col-span-3 row-span-1 h-32 rounded-lg shadow-lg overflow-hidden">
             <Image
@@ -416,7 +416,7 @@ const Home: React.FC = () => {
               width={100}
               height={100}
               alt="Picture"
-              className="md:ml-10 ml-5 rounded-full border-2 border-green-200 dark:border-slate-700"
+              className="md:ml-10 ml-5 rounded-full border-2 border-primary-light dark:border-slate-700"
             ></Image>
             <div id="userInfo" className="flex-grow md:ml-10 ml-5">
               <h2 className="text-xl font-bold whitespace-nowrap">
@@ -426,11 +426,11 @@ const Home: React.FC = () => {
               <p className="text-sm">{initialPhone}</p>
             </div>
             <Image
-              src="/logo.png"
-              width={200}
-              height={200}
+              src="/gris.svg"
+              width={100}
+              height={100}
               alt="Picture"
-              className="hidden md:inline"
+              className="hidden md:inline mr-10"
             ></Image>
           </div>
 
