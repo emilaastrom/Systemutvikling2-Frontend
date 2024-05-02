@@ -44,7 +44,7 @@ export const useApiHandler = () => {
       url: string,
       data: any = null
     ): Promise<{ data: any; statusText: string; status: number }> => {
-      const path: string = `${protocol}${host}${serviceName}${url}`;
+      const path: string = `${protocol}${host}${serviceName}${url}/`;
 
       try {
         switch (method) {
