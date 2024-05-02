@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect, useCallback } from "react";
+import PathApiProvider from "@/app/hooks/PathApiProvider";
 import PathSection from "@/app/components/path/PathSection";
 import Challengecarousel from "./components/challenges/Challengecarousel";
 import { ThemeProvider } from "./components/settings/ThemeProvider";
@@ -8,7 +9,7 @@ import NewGoalModal from "./components/GoalModal";
 import ChallengecardModalCompleted from "./components/challenges/ChallengecardModalCompleted";
 import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
 import { useApiHandler } from "@/utils/api";
-import Goalpig from "./components/Goalpig"; // Move the import here
+import Goalpig from "./components/Goalpig";
 
 export default function Home() {
   const [succeededChallenges, setSucceededChallenges] = useState([]);
@@ -43,8 +44,8 @@ export default function Home() {
       if(error.response && error.response.status===400){
         setActive(0)
       } else{
-      setActive(-1)
-      console.error(error);
+        setActive(-1)
+        console.error(error);
       }
     }
   }, [apiHandler]);
@@ -84,16 +85,6 @@ export default function Home() {
         <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
           <div>
             <div className="md:h-72 h-48">
-              <button
-                className="bg-white text-black border-2 border-black p-2 m-2 absolute z-10"
-                onClick={openCheckpointModal}
-              >
-                TESTKNAPP FOR UTFORDRING PÅ STIEN <br />
-                <span className="text-xs">
-                  husk det lille problemet med at vi ikke kan trykke <br />
-                  checkpoints den om vi ikke bruker chrome
-                </span>
-              </button>
               {/* Render Goalpig only if 'active' is true and 'goal' is set */}
               {active===1 && (
                 <Goalpig current={current} max={max} goal={goal} />
@@ -111,7 +102,9 @@ export default function Home() {
             </div>
             <Challengecarousel />
           </div>
-          <PathSection />
+          <PathApiProvider>
+            <PathSection />
+          </PathApiProvider>
         </div>
       </main>
       {showGoalModal && <NewGoalModal closeModal={toggleGoalModal} />}

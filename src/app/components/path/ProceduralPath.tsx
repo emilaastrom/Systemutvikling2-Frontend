@@ -50,7 +50,7 @@ export default function ProceduralPath({ dimensions, stepLength, width }: Proced
             <defs>
                 <linearGradient id="gradient" x1="0%" y1="100%" x2="0%" y2="0%">
                     <stop offset="0%" style={{stopColor: colors.path.dark, stopOpacity: 1}}/>
-                    <stop offset="70%" style={{stopColor: colors.path.dark, stopOpacity: 0.5}}/>
+                    <stop offset="70%" style={{stopColor: colors.path.dark, stopOpacity: 1}}/>
                     <stop offset="95%" style={{stopColor: colors.path.dark, stopOpacity: 0}}/>
                 </linearGradient>
             </defs>

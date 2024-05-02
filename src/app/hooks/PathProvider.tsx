@@ -83,7 +83,7 @@ const PathProvider: React.FC<PathProviderProps> = (
     }, [amplitude, period]);
 
     return (
-        <PathContext.Provider value={{ scale: scale, bounds: bounds, worldToScreen, pathFunction, }}>
+        <PathContext.Provider value={{ scale, bounds, worldToScreen, pathFunction }}>
             {children}
         </PathContext.Provider>
     );

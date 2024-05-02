@@ -22,6 +22,11 @@ export const useApiService = (): AxiosInstance => {
       config.headers = config.headers || {};
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        const token = localStorage.getItem("token");
+        if (token) {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        }
       }
 
       return config;
