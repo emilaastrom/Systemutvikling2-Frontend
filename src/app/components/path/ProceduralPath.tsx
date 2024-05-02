@@ -4,61 +4,61 @@ import { colors } from "../../../../tailwind.config";
 import { Vector } from "@/util/types/vector";
 import { PathContext } from "@/app/hooks/PathProvider";
 
-export default function ProceduralPath(
-    {
-        dimensions,
-        stepLength,
-        width,
-    }: {
-        dimensions: Vector;
-        stepLength: number;
-        width: number;
-    }) {
+interface ProceduralPathProps {
+    dimensions: Vector;
+    stepLength: number;
+    width: number;
+}
 
+export default function ProceduralPath({ dimensions, stepLength, width }: ProceduralPathProps) {
     const { scale, bounds, pathFunction, worldToScreen } = useContext(PathContext);
-    const [pathData, setPathData] = useState("");
 
-    const generatePathData = useCallback(() => {
-        const t0 = bounds.x;
-        const p0 = worldToScreen({x: pathFunction(t0), y: t0});
+    const getPathPoints = useCallback(() => {
+        const halfWidth = width / 2;
+        const points = [];
+        for (let t = bounds.x - halfWidth; t < bounds.y + halfWidth; t += stepLength) {
+            points.push({ x: pathFunction(t), y: t });
+        }
+        return points;
+    }, [bounds, stepLength, width, pathFunction]);
+
+    const getPathData = useCallback((pathPoints: Vector[]) => {
+        const p0 = worldToScreen(pathPoints[0]);
         let pathData = `M ${p0.x},${p0.y} `;
-        for (let t = t0 - (width / 2); t < bounds.y + (width / 2); t += stepLength) {
-            const p = worldToScreen({x: pathFunction(t), y: t});
-            pathData += `L ${p.x},${p.y} `;
+        for (let i = 0; i < pathPoints.length; i++) {
+            const p = worldToScreen(pathPoints[i]);
+          pathData += `L ${p.x},${p.y} `;
         }
         return pathData;
-    }, [bounds, pathFunction, worldToScreen, stepLength, width]);
+    }, [worldToScreen]);
 
+    // Calculate path data
+    const [pathData, setPathData] = useState("");
     useEffect(() => {
-        setPathData(generatePathData());
-    }, [generatePathData]);
+        const pathPoints = getPathPoints();
+        setPathData(getPathData(pathPoints));
+    }, [getPathPoints, getPathData]);
+
+    // Calculate stroke width
+    const [strokeWidth, setStrokeWidth] = useState(0);
+    useEffect(() => {
+      setStrokeWidth(width * scale);
+    }, [width, scale]);
 
     return (
         <motion.svg viewBox={`0 0 ${dimensions.x} ${dimensions.y}`}>
             <defs>
-                <linearGradient id="gradient-light" x1="0%" y1="100%" x2="0%" y2="0%">
-                    <stop offset="0%" style={{stopColor: colors.path.light, stopOpacity: 1}}/>
-                    <stop offset="70%" style={{stopColor: colors.path.light, stopOpacity: 0.5}}/>
-                    <stop offset="95%" style={{stopColor: colors.path.light, stopOpacity: 0}}/>
-                </linearGradient>
-                <linearGradient id="gradient-dark" x1="0%" y1="100%" x2="0%" y2="0%">
+                <linearGradient id="gradient" x1="0%" y1="100%" x2="0%" y2="0%">
                     <stop offset="0%" style={{stopColor: colors.path.dark, stopOpacity: 1}}/>
-                    <stop offset="70%" style={{stopColor: colors.path.dark, stopOpacity: 0.5}}/>
+                    <stop offset="72%" style={{stopColor: colors.path.dark, stopOpacity: 1}}/>
                     <stop offset="95%" style={{stopColor: colors.path.dark, stopOpacity: 0}}/>
                 </linearGradient>
             </defs>
             <motion.path
                 d={pathData}
                 fill={"none"}
-                stroke={"url(#gradient-light)"}
-                strokeWidth={width * scale * 1.5}
-                strokeLinecap={"round"}
-            />
-            <motion.path
-                d={pathData}
-                fill={"none"}
-                stroke={"url(#gradient-dark)"}
-                strokeWidth={width * scale}
+                stroke={"url(#gradient)"}
+                strokeWidth={strokeWidth}
                 strokeLinecap={"round"}
             />
         </motion.svg>
