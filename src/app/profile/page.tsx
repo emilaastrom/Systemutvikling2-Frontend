@@ -8,8 +8,8 @@ import ThemeProvider from "../components/settings/ThemeProvider";
 import InputBox from "../components/settings/InputBox";
 import CustomizeExperience from "../components/settings/CustomizeExperience";
 import AccountSelect from "../components/settings/AccountSelect";
-import GoalHistoryModule from "../components/settings/GoalHistoryModule";
 import { useApiHandler } from "../../utils/api";
+import GoalHistory from "../profile/GoalHistory";
 
 const accounts = [
   {
@@ -338,42 +338,7 @@ const Home: React.FC = () => {
           </div>
         );
       case "Maalhistorikk":
-        return (
-          <div className="flex flex-col justify-start gap-4 m-5 overflow-y-auto">
-            <div className="font-semibold text-center text-2xl">
-              Oversikt over tidligere mål
-            </div>
-            <div className="flex flex-col text-center items-center pb-12">
-              <GoalHistoryModule
-                goalDescription={"Nytt headset!"}
-                startedAt={new Date("2023-01-01")}
-                completedAt={new Date()}
-              />
-              <GoalHistoryModule
-                goalDescription={"Tur til Italia!"}
-                startedAt={new Date()}
-                completedAt={new Date()}
-              />
-              <GoalHistoryModule
-                goalDescription={
-                  "Ny telefon! Den er kjempefin og ny og dette er ikke placeholder tekst for å teste grenser på lengde av tekst i denne boksen."
-                }
-                startedAt={new Date()}
-                completedAt={new Date()}
-              />
-              <GoalHistoryModule
-                goalDescription={"Ny bil!"}
-                startedAt={new Date()}
-                completedAt={new Date()}
-              />
-              <GoalHistoryModule
-                goalDescription={"Nytt headset!"}
-                startedAt={new Date()}
-                completedAt={new Date()}
-              />
-            </div>
-          </div>
-        );
+        return <GoalHistory />;
       case "Preferanser":
         return (
           <div className="ml-8 m-8 w-fill dark:bg-slate-600 mt-12">
