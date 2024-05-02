@@ -2,17 +2,25 @@ import React, { useState } from 'react';
 import ChallengecardModal from './ChallengecardModal';
 
 const Challengecard = ({
+    id,
     challenge,
+    title,
     current,
     max,
     startDate,
-    endDate
+    endDate,
+    subStatus,
+    difficulty
 }: {
+    id: string,
     challenge: string;
+    title: string;
     current: number;
     max: number;
     startDate: Date;
     endDate: Date;
+    subStatus: boolean[];
+    difficulty: string;
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     
@@ -31,11 +39,23 @@ const Challengecard = ({
         return diffDays;
     };
 
-    const days = calculateDaysLeft(endDate);
+    var days = calculateDaysLeft(endDate);
+    if(difficulty==="HARD"){
+        max = (Math.floor(max/100*100))
+    } else if(difficulty==="MEDIUM"){
+        max = (Math.floor(max/100*80))
+    } else if(difficulty==="EASY"){
+        max = (Math.floor(max/100*50))
+    }
+
+    if(current>max){
+        current=max
+    } else {
+    }
 
     return (
         <>
-            {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={challenge} challengeStartDate={startDate} challengeEndDate={endDate} />}
+            {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={title} challengeStartDate={startDate} challengeEndDate={endDate} id={id} subStatus={subStatus}/>}
             <div className="flex justify-end" onClick={handleCardClick}>
             <div 
                 className="w-80 m-4 rounded-lg overflow-hidden relative cursor-pointer" 

@@ -1,37 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomIcon from '../icons/CustomIcon';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useApiHandler } from '@/utils/api';
 
 type ChallengecardModalProps = {
     onClose: () => void;
 };
 
 type Suggestion = {
-    title: string;
-    description: string;
-    category: string;
-    time: number;
-    
+    id: string,
+    name: string,
+    description: string,
+    durationDays: number,
+    type: string,
+    price: number
 };
 
 const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) => {
-    const [currentPage, setCurrentPage] = useState(0); // Zero-based index for the current page
+    const [currentPage, setCurrentPage] = useState(0);
     const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
+    const [difficultyDays, setDifficultyDays] = useState<number>(0);
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
+    const apiHandler = useApiHandler()
 
-    const suggestions: Suggestion[] = [
-        { 
-            title: 'Utfordring 1', 
-            description: 'Description for Utfordring 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sollicitudin ac orci phasellus egestas tellus rutrum. Quis enim lobortis scelerisque fermentum. Eget aliquet nibh praesent tristique magna. Ullamcorper sit amet risus nullam eget felis. Volutpat ac tincidunt vitae semper quis lectus nulla at volutpat.', 
-            category: 'kaffe', 
-            time: 15 
-        },
-        { title: 'Utfordring 2', description: 'Description for Utfordring 2', category: 'kaffe', time: 15 },
-        { title: 'Utfordring 3', description: 'Description for Utfordring 3', category: 'kaffe', time: 15 },
-        { title: 'Utfordring 4', description: 'Description for Utfordring 4', category: 'kaffe', time: 15 },
-        { title: 'Utfordring 5', description: 'Description for Utfordring 5', category: 'kaffe', time: 15 },
-        { title: 'Utfordring 6', description: 'Description for Utfordring 6', category: 'kaffe', time: 15 }
-    ];
+    const customNameMapping = {
+        SNUS: "Snus",
+        BRUS: "Brus",
+        UTELIV: "Uteliv",
+        KLÆR: "Klær",
+        KAFFE: "Kaffe",
+        TAKEOUT: "Mat",
+        GAMBLING: "Pengespill",
+        KINO: "Kino",
+        SNOP: "Snop",
+      };
+      const customDiffMapping = {
+        EASY: "Enkel",
+        MEDIUM: "Medium",
+        HARD: "Vanskelig",
+      };
+
+    const fetchSuggestions = async () => {
+        try {
+            const suggestionsData = await apiHandler("challenge", "get", "/getNewChallenges?number=3");
+            const user = await apiHandler("user", "get", "/getUser"); 
+            setSuggestions(suggestionsData.data)  
+            setIsLoading(false); 
+            setSelectedDifficulty(customDiffMapping[user.data.defaultDifficulty]); 
+            calculateDifficultyDays(customDiffMapping[user.data.defaultDifficulty], 0, suggestionsData.data)
+            
+        } catch (error) {
+            console.error("Error fetching suggestions:", error);
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchSuggestions();
+    }, [])
 
     const totalPages = suggestions.length;
 
@@ -44,7 +72,6 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
     
     const renderSuggestion = () => {
         const suggestion = suggestions[currentPage];
-
         return (
             <motion.div 
             key={currentPage} 
@@ -52,27 +79,64 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
             animate={{ opacity: 1, x: 0 }} 
             exit={{ opacity: 0, x: x2 }}
             transition={{ duration: 0.2 }}
-            className="border-2 rounded-md p-4  cursor-pointer overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
+            className="border-2 rounded-md p-4 overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
         >
            <span className="text-gray-500 text-sm text-start">
-                    <span className="font-semibold">Kategori: </span> {suggestion.category}
+                    <span className="font-semibold">Kategori: </span> {customNameMapping[suggestion.type]}
                     </span>
-                <div className="flex flex-col md:px-16 x-4 justify-center items-center mb-2 ">
-                    <h3 className="text-xl font-semibold text-center mb-5">{suggestion.title}</h3>
+                <div className="flex flex-col md:px-16 x-4 justify-center items-center my-4 ">
+                    <h3 className="text-xl font-semibold text-center mb-5">{suggestion.name}</h3>
                     <p className="text-md text-gray-700 text-center mb-2">{suggestion.description}</p>
                 </div>
                 
                 
-                <div className="text-center text-gray-600 text-sm mt-auto">
-                    <span className="font-semibold">Antall dager: </span> {suggestion.time}
+                <div className="text-center text-gray-600 text-md mt-auto">
+                    <span className="font-semibold">Antall dager: </span> {suggestion.durationDays}<br />
+                    <div className='mt-2'>
+                        <span className="font-semibold">Dager for fullført: </span> <span className='bg-primary-light p-1 font-semibold text-light rounded-md'>{difficultyDays}</span>
+                    </div>
                 </div>
             </motion.div> 
         );
     };
 
+    const calculateDifficultyDays = (difficulty:string, page:number, suggestions:Suggestion[]) => {
+    
+        if(difficulty==="Vanskelig"){
+        setDifficultyDays(suggestions[page].durationDays)
+    } else if(difficulty==="Medium"){
+        setDifficultyDays(Math.floor(suggestions[page].durationDays/100*80))
+    } else if(difficulty==="Enkel"){
+        setDifficultyDays(Math.floor(suggestions[page].durationDays/100*50))
+    }
+    }
+
+    const difficultyChange = (difficulty:string, currentPage:number) => {
+        setSelectedDifficulty(difficulty); 
+        calculateDifficultyDays(difficulty, currentPage, suggestions)
+    }
+
+    const submit = () => {
+        const difficultyLevel = Object.keys(customDiffMapping).find(
+            key => customDiffMapping[key] === selectedDifficulty
+          );
+          
+       apiHandler("challenge","put","/assignChallenge",{
+        challengeId:suggestions[currentPage].id,
+        difficulty:difficultyLevel
+    })
+    setTimeout(function() {
+        onClose();
+    }, 200); 
+    }
+
+    if (isLoading) {
+        return ;
+    }
+
     return (
         <div onClick={onClose} className="modal-container">
-            <div onClick={stopPropagation} className="modal-content">
+            <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto h-4/6">
             <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
             <div className="flex-grow flex justify-center items-center">
                 Ny utfordring?
@@ -87,51 +151,33 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                     }
                     />
             </button>
-        </div>
-
-
-             
-            <div className="flex justify-center m-4 text-lg ">
-                <div className="flex items-center mr-4">
-                    <input
-                        type="radio"
-                        id="easy"
-                        name="difficulty"
-                        value="easy"
-                        checked={selectedDifficulty === 'easy'}
-                        onChange={() => setSelectedDifficulty('easy')}
-                    />
-                    <label htmlFor="easy" className="ml-2">Easy</label>
-                </div>
-                <div className="flex items-center mr-4">
-                    <input
-                        type="radio"
-                        id="medium"
-                        name="difficulty"
-                        value="medium"
-                        checked={selectedDifficulty === 'medium'}
-                        onChange={() => setSelectedDifficulty('medium')}
-                    />
-                    <label htmlFor="medium" className="ml-2">Medium</label>
-                </div>
-                <div className="flex items-center">
-                    <input
-                        type="radio"
-                        id="hard"
-                        name="difficulty"
-                        value="hard"
-                        checked={selectedDifficulty === 'hard'}
-                        onChange={() => setSelectedDifficulty('hard')}
-                    />
-                    <label htmlFor="hard" className="ml-2">Hard</label>
-                </div>
+        </div>       
+            <div className="flex justify-center m-4 text-lg">
+            <div className="flex space-x-2 justify-center">
+            {["Enkel", "Medium", "Vanskelig"].map((difficulty) => (
+              <button
+                key={difficulty}
+                onClick={() => {
+                    difficultyChange(difficulty, currentPage)
+                }}
+                className={`py-2 px-4 rounded-xl font-mono ${
+                  selectedDifficulty === difficulty
+                    ? "bg-primary-light text-white "
+                    : "bg-gray-200"
+                }`}
+              >
+                {difficulty}
+              </button>
+            ))}
+          </div>
             </div>
 
-            <div className="flex justify-between h-2/3 mb-4 font-semibold">
+            <div className="flex justify-between h-1/2 mb-4">
                 <button 
                     onClick={() => {setCurrentPage(Math.max(0, currentPage - 1));
                         setX1(-100);
                         setX2(100);
+                        difficultyChange(selectedDifficulty, Math.max(0, currentPage - 1))
                         }} 
                     disabled={currentPage === 0}
                     className={`mx-1 md:px-4 py-2 font-bold ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -149,7 +195,8 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                 <button 
                     onClick={() => {setCurrentPage(Math.min(totalPages - 1, currentPage + 1));
                         setX1(100);
-                        setX2(-100);
+                        setX2(-100);    
+                        difficultyChange(selectedDifficulty, Math.min(totalPages - 1, currentPage + 1))
                     }}
                     disabled={currentPage === totalPages - 1}
                     className={`mx-1 md:px-4 py-2 font-bold ${currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -166,7 +213,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
             </div>
 
             <div className="flex justify-center items-center">
-                <button className="border-2 border-green-300 p-5">Legg til utfordring</button>
+                <button className="border-2 border-primary-light p-5" onClick={submit}>Legg til utfordring</button>
             </div>
 
         </div>
