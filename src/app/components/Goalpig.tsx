@@ -11,14 +11,11 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
     const [percentage, setPercentage] = useState<number>(0);
 
     useEffect(() => {
-        const calculatedPercentage = (10 / 60) * 100;
+        const calculatedPercentage = (current / max) * 100;
         setPercentage(calculatedPercentage);
     }, [current, max]);
 
     const clipPath = `polygon(0% 100%, 100% 100%, 100% ${100 - percentage}%, 0% ${100 - percentage}%)`;
-    goal="test"
-    current=10
-    max=60
     return (
         <div className="font-semibold h-auto items-center md:mt-5 mt-3 md:mb-5 mb-3 text-white text-center relative">
             <div className='md:text-4xl text-2xl font-custom1 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'>
