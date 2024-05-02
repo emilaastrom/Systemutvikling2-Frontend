@@ -6,7 +6,6 @@ import { Alumni_Sans_Collegiate_One } from "next/font/google";
 import SvgIcon from "../icons/CustomIcon";
 import { usePathname } from "next/navigation";
 
-
 const Navbar = () => {
   const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -16,7 +15,7 @@ const Navbar = () => {
 
   if (pathname === "/login") {
     // If the user is on the login page, the navbar should not be displayed
-    return
+    return;
   }
 
   return (
@@ -79,21 +78,23 @@ const Navbar = () => {
             <SvgIcon
               className={"h-5 w-5"}
               svg={
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  strokeWidth="1.5" 
-                  stroke="currentColor" 
-                  className="w-6 h-6">
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                  />
                 </svg>
               }
             />
-            <span className="px-2">Badges</span>
+            <span className="px-2">Bragder</span>
           </NavbarButton>
         </div>
 
@@ -183,14 +184,16 @@ const Navbar = () => {
                   </svg>
                 }
               />
-              <span className="flex justify-center text-xs pt-1 w-8">LOGIN</span>
+              <span className="flex justify-center text-xs pt-1 w-8">
+                LOGIN
+              </span>
             </NavbarButton>
           </div>
         </div>
 
         <div className="flex flex-col items-center">
           <div className="flex">
-            <NavbarButton to="/savings">
+            <NavbarButton to="/badges">
               <SvgIcon
                 className={"h-5 w-5"}
                 svg={
@@ -205,17 +208,14 @@ const Navbar = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+                      d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
                     />
                   </svg>
                 }
               />
-              <span className="flex justify-center text-xs pt-1 w-8">SPARING</span>
+              <span className="flex justify-center text-xs pt-1 w-8">
+                BRAGDER
+              </span>
             </NavbarButton>
           </div>
         </div>
@@ -242,7 +242,9 @@ const Navbar = () => {
                   </svg>
                 }
               />
-              <span className="flex justify-center text-xs pt-1 w-8">KONTO</span>
+              <span className="flex justify-center text-xs pt-1 w-8">
+                KONTO
+              </span>
             </NavbarButton>
           </div>
         </div>
