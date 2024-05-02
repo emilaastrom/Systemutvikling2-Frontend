@@ -77,13 +77,17 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
         })
         setTimeout(function() {
             location.reload();
-        }, 200); 
+        }, 300); 
     }
 
     const saveProgress = () => {
         const clickedStatusArray = Object.values(clickedStatus); 
-        apiHandler("challenge","patch","/updateProgress",{id:id,subStatus:clickedStatusArray})
-        
+        const body = {id:id, subStatus:clickedStatusArray}
+        console.log(body)
+        apiHandler("challenge","put","/updateProgress", body)
+        setTimeout(function() {
+            location.reload();
+        }, 300); 
     };
 
 const dates = generateDates(currentMonth, currentYear, challengeStartDate, challengeEndDate);
@@ -106,17 +110,19 @@ const handleClick = (uniqueId: string) => {
 };
 
 const initialStatus = () => {
-    const newClickedStatus = { ...clickedStatus }; // Create a copy of the current clickedStatus
-
-    for (let i = 0; i < subStatus.length; i++) {
-        if (subStatus[i]) {
-            // If subStatus at index i is true, set clickedStatus at index i to true
-            const uniqueId = dates[i].uniqueId; // Get the uniqueId corresponding to the index
+    const newClickedStatus = { ...clickedStatus };
+    let n = 0
+    for (let i = 0; i < dates.length; i++) {
+        if(dates[i].enabled){
+        if (subStatus[n]) {
+            const uniqueId = dates[i].uniqueId;
             newClickedStatus[uniqueId] = true;
         }
+        n++
+    }
     }
 
-    setClickedStatus(newClickedStatus); // Update clickedStatus with the modified values
+    setClickedStatus(newClickedStatus); 
 };
 
 useEffect(() => {

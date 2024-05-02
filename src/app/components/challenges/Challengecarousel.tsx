@@ -21,7 +21,8 @@ type AssignedChallenge = {
   subStatus: boolean[],
   completed: boolean,
   finished: boolean,
-  amountSaved: number
+  amountSaved: number,
+  difficulty: string
 }
 
 type ActiveChallenge = {
@@ -74,11 +75,13 @@ const Challengecarousel = () => {
       <Challengecard
         id={challenge.assignedChallenge.id}
         challenge={challenge.challenge.description}
+        title={challenge.challenge.name}
         current={numberOfTrue}
         max={challenge.assignedChallenge.subStatus.length}
         startDate={startDate}
         endDate={endDate}
         subStatus={challenge.assignedChallenge.subStatus}
+        difficulty={challenge.assignedChallenge.difficulty}
       />
     </div>
   );
