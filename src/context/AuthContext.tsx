@@ -9,14 +9,14 @@ import React, {
 import { AuthContextType, AuthState, Token, User } from "../context/UserType";
 import { useRouter } from "next/router";
 const AuthContext = createContext<AuthContextType | null>(null);
-
+import { jwtDecode } from "jwt-decode";
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthState>({ token: null });
 
   const login = async (username: string, password: string) => {
-    const response = await fetch("https://ep.sysdevservices.tech/auth/login", {
+    const response = await fetch(baseURL + "/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -36,6 +36,50 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const isTokenValid = () => {
+    try {
+      const token = auth.token;
+      if (!token) return false;
+
+      const { exp } = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      const buffer = 300;
+
+      if (exp < currentTime) {
+        return false;
+      } else if (exp - currentTime < buffer) {
+        refreshToken();
+      }
+      return true;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return false;
+    }
+  };
+
+  const refreshToken = async () => {
+    try {
+      const response = await fetch(`${baseURL}/auth/refresh`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to refresh token");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      setAuth({ token: data.token });
+    } catch (error) {
+      console.error("Failed to refresh token");
+      logout();
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -50,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     phone: string
   ) => {
-    const response = await fetch("https://ep.sysdevservices.tech/register", {
+    const response = await fetch(baseURL + "/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -101,7 +145,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ ...auth, login, logout, register, verifyEmail }}
+      value={{ ...auth, login, logout, register, verifyEmail, isTokenValid }}
     >
       {children}
     </AuthContext.Provider>
