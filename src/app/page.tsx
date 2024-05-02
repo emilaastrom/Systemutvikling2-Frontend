@@ -53,19 +53,10 @@ export default function Home() {
     }
   };
 
-  const fetchActiveChallenges = async () => {
-    console.log("fetching active challenges")
-    try{
-    const activeChallenges = await apiHandler("challenge", "get", "/getActiveChallenges")
-    console.log("active challenges:",activeChallenges.data)}
-    catch(error){
-      console.error(error)
-    }
-}
+
 
   useEffect(() => {
     fetchActiveGoal();
-    fetchActiveChallenges();
     const savedTheme =
       (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light";
     ThemeManager.setTheme(savedTheme);

@@ -184,26 +184,23 @@ useEffect(() => {
                         </div>
                     ))}
                     {dates.map((day, index) => (
-    <div key={day.uniqueId} className="flex-none sm:p-0 text-center">
-        <div className={day.enabled ? "" : "opacity-10 cursor-not-allowed pointer-events-none"}>
-            {day.date ? (
-                <div className="flex justify-center items-center">
-                    <div 
-                        className={`w-14 h-14 border-2 border-gray-300 rounded-lg shadow-lg cursor-pointer flex justify-center items-center ${clickedStatus[day.uniqueId] ? 'bg-green-200' : 'bg-white hover:bg-green-100'}`}
-                        onClick={() => handleClick(day.uniqueId)} 
-                    >
-                        {day.date}
-                    </div>
-                </div>
-            ) : (
-                <div className="opacity-0">{day.date}</div>
-            )}
-        </div>
-    </div>
-))}
-
-
-
+                        <div key={day.uniqueId} className="flex-none sm:p-0 text-center">
+                            <div className={day.enabled ? "" : "opacity-10 cursor-not-allowed pointer-events-none"}>
+                                {day.date ? (
+                                    <div className="flex justify-center items-center">
+                                        <div 
+                                            className={`w-14 h-14 border-2 border-gray-300 rounded-lg shadow-lg cursor-pointer flex justify-center items-center ${clickedStatus[day.uniqueId] ? 'bg-green-200' : 'bg-white hover:bg-green-100'}`}
+                                            onClick={() => handleClick(day.uniqueId)} 
+                                        >
+                                            {day.date}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="opacity-0">{day.date}</div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className="w-full flex justify-center">
