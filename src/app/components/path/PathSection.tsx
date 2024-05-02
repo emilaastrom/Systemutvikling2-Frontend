@@ -150,7 +150,6 @@ export default function PathSection() {
                 style={{
                     perspective: "1000px",
                     perspectiveOrigin: "50% 0",
-                    transformStyle: "preserve-3d",
                 }}
             >
                 <div
