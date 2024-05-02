@@ -38,11 +38,11 @@ const LoginForm = ({
       } else if (req.data.hasCustomizedGoals) {
         router.push("/customizeGoals");
       } else {
-        setErrorMessage("Invalid username or password.");
+        setErrorMessage("Feil brukernavn eller passord.");
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage("Invalid username or password.");
+      setErrorMessage("Feil brukernavn eller passord.");
       setIsLoading(false);
     }
   };

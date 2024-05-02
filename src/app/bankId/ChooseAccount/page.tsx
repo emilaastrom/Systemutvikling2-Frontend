@@ -37,7 +37,7 @@ const ChooseAccount = () => {
         console.log("Fetched accounts:", response.data);
       } catch (error) {
         console.error("Failed to fetch accounts:", error);
-        setError("Failed to fetch accounts");
+        setError("Feilmelding: Mislyktes med å hente kontoer");
       } finally {
         setIsLoading(false);
       }
@@ -50,12 +50,12 @@ const ChooseAccount = () => {
   const handleSubmission = async () => {
     console.log("Selected accounts:", selectedAccounts);
     if (!selectedAccounts.From || !selectedAccounts.To) {
-      setError("You must select both accounts for spending and saving");
+      setError("Feilmelding: Du må velge kontoer for både utgifter og sparing");
       return;
     }
 
     if (selectedAccounts.From.id === selectedAccounts.To.id) {
-      setError("You must select different accounts for spending and saving");
+      setError("Feilmelding: Du må velge ulike kontoer for utgifter og sparing");
       return;
     }
 
@@ -72,7 +72,7 @@ const ChooseAccount = () => {
         Router.push("/bankId/customizeexperience");
       } else {
         console.error("Failed to set accounts:", response.data);
-        setError("Failed to set accounts");
+        setError("Feilmelding: Klarte ikke å velge kontoer");
       }
     } catch (error) {
       console.error("Failed to set accounts:", error);
@@ -83,7 +83,7 @@ const ChooseAccount = () => {
     return (
       <div className="flex flex-col items-center justify-center bg-white min-h-screen">
         <h1 className="text-2xl font-semibold mb-6 text-black">
-          Loading Your Accounts...
+          Laster inn kontoer...
         </h1>
         <motion.div
           initial={{ scale: 0 }}
@@ -104,12 +104,12 @@ const ChooseAccount = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-white min-h-screen">
       <div className="w-2/3 text-center mt-12">
-        <h1 className="text-2xl font-semibold mb-3 text-black">
-          Choose Your Account
+        <h1 className="text-3xl font-bold mb-3 text-black py-8">
+          På tide å konfigurere kontoer:
         </h1>
-        <p className="text-lg font-mono text-gray-700 mb-3 ">
-          Her kan du velge hvilke kontoer du ønsker å bruke. Velg en konto for
-          overføring, og en konto for sparing
+        <p className="text-xl text-gray-700 mb-3 ">
+          Velg en konto du vil overføre penger fra, <br /> og en hvor du ønsker
+          å spare pengene.
         </p>
       </div>
       <AccountSelect
