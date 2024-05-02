@@ -1,96 +1,94 @@
 import Challengecard from "./Challengecard";
 import ChallengecardAddButton from "./ChallengecardAddButton";
+import { useApiHandler } from "@/utils/api";
+import { useEffect, useState } from "react";
+
+type Challenge = {
+  id: string,
+  name: string,
+  description: string,
+  durationDays: number,
+  type: string,
+  price: number
+};
+
+type AssignedChallenge = {
+  id: string,
+  userId: string,
+  challengeId: string,
+  startDate: string,
+  endDate: string,
+  subStatus: boolean[],
+  completed: boolean,
+  finished: boolean,
+  amountSaved: number,
+  difficulty: string
+}
+
+type ActiveChallenge = {
+  challenge: Challenge,
+  assignedChallenge: AssignedChallenge,
+}
 
 const Challengecarousel = () => {
-  const challenges = [
-    {
-      name: "Drikk kun 4 kopper kaffe på sit kafeen denne uka",
-      current: 1,
-      max: 4,
-      startDate: new Date(2024, 5, 25),
-      endDate: new Date(2024, 6, 3),
-    },
-    {
-      name: "Challenge 2",
-      current: 2,
-      max: 10,
-      startDate: new Date(2024, 4, 5),
-      endDate: new Date(2024, 5, 1),
-    },
-    {
-      name: "Challenge 3",
-      current: 7,
-      max: 10,
-      startDate: new Date(2024, 4, 15),
-      endDate: new Date(2024, 6, 22),
-    },
-    {
-      name: "Challenge 4",
-      current: 4,
-      max: 10,
-      startDate: new Date(2024, 3, 20),
-      endDate: new Date(2024, 3, 27),
-    },
-    {
-      name: "Challenge 5",
-      current: 5,
-      max: 10,
-      startDate: new Date(2024, 4, 25),
-      endDate: new Date(2024, 5, 3),
-    },
-    {
-      name: "Challenge 6",
-      current: 6,
-      max: 10,
-      startDate: new Date(2024, 4, 25),
-      endDate: new Date(2024, 5, 3),
-    },
-    {
-      name: "Challenge 7",
-      current: 7,
-      max: 10,
-      startDate: new Date(2024, 4, 25),
-      endDate: new Date(2025, 5, 3),
-    },
-    {
-      name: "Challenge 8",
-      current: 8,
-      max: 10,
-      startDate: new Date(2024, 4, 25),
-      endDate: new Date(2024, 5, 3),
-    },
-    {
-      name: "Challenge 9",
-      current: 9,
-      max: 10,
-      startDate: new Date(2024, 4, 25),
-      endDate: new Date(2024, 5, 3),
-    },
-    {
-      name: "Challenge 10",
-      current: 10,
-      max: 10,
-      startDate: new Date(2024, 4, 25),
-      endDate: new Date(2024, 5, 3),
-    },
-  ];
+  const [activeChallenges, setActiveChallenges] = useState<ActiveChallenge[]>([]);
+
+  const apiHandler = useApiHandler();
+
+  const fetchChallenges = async () => {
+    try {
+      const challenges = await apiHandler("challenge", "get", "/getActiveChallenges");
+      setActiveChallenges(challenges.data)
+    } catch (error) {
+        console.error("Error fetching suggestions:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchChallenges();
+}, [])
+  
   return (
     <div
-      className="flex z-10 self-start w-screen text-black overflow-x-scroll md:pl-48 overflow-y-auto no-scrollbar"
+      className="flex z-10 self-start w-screen text-black overflow-x-scroll overflow-y-auto no-scrollbar"
     >
-      {challenges.map((challenge, index) => (
-        <div key={index} className="flex-none md:relative md:block">
-          <Challengecard
-            challenge={challenge.name}
-            current={challenge.current}
-            max={challenge.max}
-            startDate={challenge.startDate}
-            endDate={challenge.endDate}
-          />
-        </div>
-      ))}
+      {activeChallenges.map((challenge, index) => {
+  var startDateParts = challenge.assignedChallenge.startDate.split('-');
+  var startYear = parseInt(startDateParts[0], 10);
+  var startMonth = parseInt(startDateParts[1], 10) - 1; 
+  var startDay = parseInt(startDateParts[2], 10);
+  var startDate = new Date(startYear, startMonth, startDay);
+
+  var endDateParts = challenge.assignedChallenge.endDate.split('-');
+  var endYear = parseInt(endDateParts[0], 10);
+  var endMonth = parseInt(endDateParts[1], 10) - 1; 
+  var endDay = parseInt(endDateParts[2], 10);
+  var endDate = new Date(endYear, endMonth, endDay);
+
+  var numberOfTrue = challenge.assignedChallenge.subStatus.filter(function(value) {
+    return value === true;
+}).length;
+
+
+  return (
+    <div key={index} className="flex-none md:relative md:block">
+      <Challengecard
+        id={challenge.assignedChallenge.id}
+        challenge={challenge.challenge.description}
+        title={challenge.challenge.name}
+        current={numberOfTrue}
+        max={challenge.assignedChallenge.subStatus.length}
+        startDate={startDate}
+        endDate={endDate}
+        subStatus={challenge.assignedChallenge.subStatus}
+        difficulty={challenge.assignedChallenge.difficulty}
+      />
+    </div>
+  );
+})}
+
       <div className="m-4">
-        <ChallengecardAddButton />
+      <ChallengecardAddButton reloadFunction={fetchChallenges} />
       </div>
     </div>
   );

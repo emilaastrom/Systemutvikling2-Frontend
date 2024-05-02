@@ -19,10 +19,10 @@ const NavbarButton = ({ to, children, ariaLabel }: NavbarButtonProps) => {
     ? "Naviger til hjemmesiden"
     : `Naviger til ${to.slice(1)} siden`;
 
-  const pathname = usePathname(); // Declare the correct type for the pathname object
+  const pathname = usePathname();
 
   const baseStyles =
-    "flex md:flex-row md:min-w-32 flex-col py-2 px-4 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)]";
+    "flex md:flex-row md:min-w-32 flex-col py-2 px-4 md:pl-4 rounded-md md:rounded-lg  shadow-[0_3px_10px_rgb(0,0,0,0.2)]";
   const activeStyles =
     "bg-white border-black text-black dark:bg-slate-900 dark:border-white dark:text-white";
   const inactiveStyles =

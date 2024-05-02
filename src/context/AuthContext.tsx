@@ -7,7 +7,7 @@ import React, {
   useEffect,
 } from "react";
 import { AuthContextType, AuthState, Token, User } from "../context/UserType";
-
+import { useRouter } from "next/router";
 const AuthContext = createContext<AuthContextType | null>(null);
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw new Error("Failed to login");
     }
   };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -61,10 +62,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         phone,
       }),
     });
-    console.log("------------------------------------");
-
-    console.log("aaa", username, firstName, lastName, password, email, phone);
-    console.log("------------------------------------");
 
     if (response.ok) {
       const data = await response.json();

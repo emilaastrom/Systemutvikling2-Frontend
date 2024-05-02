@@ -16,7 +16,7 @@ const VolumeControl = () => {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center" data-testid="volumeSlider">
       <div className="dark:text-white text-center">
         Volum på lydeffekter:
         <input
@@ -67,6 +67,7 @@ const VolumeControl = () => {
             value={volumeValue}
             step={5}
             onChange={handleSliderChange}
+            data-testid="volumeSliderInput"
           />
         </div>
       </div>
