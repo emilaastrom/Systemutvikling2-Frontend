@@ -4,9 +4,9 @@ import React, {
   useMemo,
   useEffect,
 } from "react";
-
-import Milestone from "./Milestone";
 import Checkpoint from "@/app/components/path/Checkpoint";
+import Milestone from "./Milestone";
+import ChallengesFinishedPopup from "@/app/components/ChallengesFinishedPopup";
 import { PathContext } from "@/app/hooks/PathProvider";
 import {PathApiContext} from "@/app/hooks/PathApiProvider";
 import { Vector } from "@/util/types/vector";
@@ -17,11 +17,15 @@ export default function PathElements() {
 
   const [size, setSize] = useState(40);
   const [borderWidth, setBorderWidth] = useState(4);
-
   useEffect(() => {
     setSize(40 * scale);
     setBorderWidth(4 * scale);
   }, [scale]);
+
+  const checkpointClicked = (id: number) => {
+    console.log("Checkpoint clicked: ", id);
+    alert("Checkpoint clicked: " + id)
+  }
 
   type PathElement = {
     type: "checkpoint" | "milestone";
@@ -73,6 +77,8 @@ export default function PathElements() {
       const challenge = challenges.find((challenge) => challenge.assignedChallenge.id === id).assignedChallenge;
       return <Checkpoint
         key={index}
+        checkpointClicked={checkpointClicked}
+        id={id}
         passed={challenge.completed}
         coords={worldToScreen(worldPos)}
         scale={scale}
@@ -107,6 +113,7 @@ export default function PathElements() {
 
   return (
     <div>
+      {/*<ChallengesFinishedPopup closePopup={} />*/}
       {getPathElements()}
     </div>
   );
