@@ -122,11 +122,11 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
           );
           
        apiHandler("challenge","put","/assignChallenge",{
-        id:suggestions[currentPage].id,
+        challengeId:suggestions[currentPage].id,
         difficulty:difficultyLevel
     })
     setTimeout(function() {
-        location.reload();
+        onClose();
     }, 200); 
     }
 
@@ -136,7 +136,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
 
     return (
         <div onClick={onClose} className="modal-container">
-            <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto h-5/6">
+            <div onClick={stopPropagation} className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto h-4/6">
             <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
             <div className="flex-grow flex justify-center items-center">
                 Ny utfordring?
@@ -172,7 +172,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
           </div>
             </div>
 
-            <div className="flex justify-between h-2/3 mb-4">
+            <div className="flex justify-between h-1/2 mb-4">
                 <button 
                     onClick={() => {setCurrentPage(Math.max(0, currentPage - 1));
                         setX1(-100);
