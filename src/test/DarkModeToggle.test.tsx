@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import DarkModeToggle from './DarkModeToggle';
-import ThemeManager from './ThemeManager'; // Import ThemeManager if it's needed for testing
+import DarkModeToggle from '../app/components/settings/DarkModeToggle';
+import ThemeManager from '../app/components/settings/ThemeManager'; // Import ThemeManager if it's needed for testing
 
 // Mock window.matchMedia before rendering the component
 beforeAll(() => {
