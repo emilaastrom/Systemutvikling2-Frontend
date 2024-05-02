@@ -44,7 +44,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
 
     const fetchSuggestions = async () => {
         try {
-            const suggestionsData = await apiHandler("challenge", "get", "/getNewChallenges?number=3");
+            const suggestionsData = await apiHandler("challenge", "get", "/getNewChallenges?number=5");
             const user = await apiHandler("user", "get", "/getUser"); 
             setSuggestions(suggestionsData.data)  
             setIsLoading(false); 

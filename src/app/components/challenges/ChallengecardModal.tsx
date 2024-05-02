@@ -99,7 +99,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
             id:id
         })
         setTimeout(function() {
-            location.reload();
+            onClose()
         }, 300); 
     }
 
@@ -109,7 +109,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
         console.log(body)
         apiHandler("challenge","put","/updateProgress", body)
         setTimeout(function() {
-            location.reload();
+            onClose()
         }, 300); 
     };
 
