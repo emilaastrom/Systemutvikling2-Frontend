@@ -1,13 +1,11 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
+import PathApiProvider from "@/app/hooks/PathApiProvider";
 import PathSection from "@/app/components/path/PathSection";
 import Challengecarousel from "./components/challenges/Challengecarousel";
 import { ThemeProvider } from "./components/settings/ThemeProvider";
 import ThemeManager from "./components/settings/ThemeManager";
 import NewGoalModal from "./components/GoalModal";
-import { progress } from "framer-motion";
-import ChallengecardModal from "./components/challenges/ChallengecardModal";
-import ChallengecardAddModal from "./components/challenges/ChallengecardAddModal";
 import ChallengecardModalCompleted from "./components/challenges/ChallengecardModalCompleted";
 import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
 import { useApiHandler } from "../utils/api";
@@ -144,17 +142,7 @@ export default function Home() {
                     <div>
                         <Challengecarousel />
                         <div className="h-auto">
-                            <button
-                                className="bg-white text-black border-2 border-black p-2 m-2 absolute right-0 z-10"
-                                onClick={openCheckpointModal}
-                            >
-                                TESTKNAPP FOR UTFORDRING PÅ STIEN <br />
-                                <span className="text-xs">
-                                    husk det lille problemet med at vi ikke kan
-                                    trykke <br />
-                                    checkpoints den om vi ikke bruker chrome
-                                </span>
-                            </button>
+                            {/* Render Goalpig only if 'active' is true and 'goal' is set */}
                             {active === 1 && (
                                 <Goalpig
                                     current={current}
@@ -174,7 +162,9 @@ export default function Home() {
                             )}
                         </div>
                     </div>
-                    <PathSection />
+                    <PathApiProvider>
+                      <PathSection />
+                    </PathApiProvider>
                 </div>
             </main>
             {showGoalModal && <NewGoalModal closeModal={toggleGoalModal} />}

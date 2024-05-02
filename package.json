@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "node server.js",
     "lint": "next lint",
-    "test": "jest --verbose" 
+    "test": "jest --verbose"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.3",
     "alea": "^1.0.1",
     "axios": "^1.6.8",
     "framer-motion": "^11.0.28",
+    "jwt-decode": "^4.0.0",
     "next": "14.2.1",
     "react": "^18",
     "react-confetti": "^6.1.0",
