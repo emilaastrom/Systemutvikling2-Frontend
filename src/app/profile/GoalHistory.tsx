@@ -6,7 +6,7 @@ import { useApiHandler } from "@/utils/api";
 const GoalHistory = () => {
     return (
         <div className="flex flex-col justify-start gap-4 m-5 overflow-y-auto">
-            <div className="font-semibold text-center text-2xl">
+            <div className="font-semibold text-center text-2xl dark:text-white">
                 Oversikt over tidligere mål
             </div>
             <div className="flex flex-col text-center items-center pb-12">

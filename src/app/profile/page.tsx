@@ -39,9 +39,9 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
 }) => {
   return (
     <button
-      className={`h-10 text-dark my-1 dark:text-white dark:bg-slate-500 dark:hover:bg-white dark:hover:text-dark flex w-full justify-center rounded-lg items-center hover:bg-primary-light hover:cursor-pointer hover:text-light ${
+      className={`h-10 text-black my-1 dark:bg-slate-500 dark:hover:bg-white dark:hover:text-black flex w-full justify-center rounded-lg items-center hover:bg-primary-light hover:cursor-pointer hover:text-light ${
         isActive
-          ? "bg-primary-light hover:bg-primary-light text-light dark:bg-slate-300 dark:text-dark"
+          ? "bg-primary-light hover:bg-primary-light text-white dark:bg-white dark:text-black"
           : ""
       }`}
       onClick={onClick}
@@ -63,7 +63,7 @@ const LogoutButton: React.FC = () => {
   return (
     <div className="bg-gray-100 md:col-span-1 mt-2 md:order-2 col-span-3 h-10 row-span-1 rounded-lg shadow-lg">
       <button
-        className=" max-h-10  bg-white rounded-md text-dark h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 hover:font-semibold transition ease-in-out"
+        className=" max-h-10  bg-white dark:bg-slate-500 dark:text-white rounded-md text-dark h-10 w-full border-2 hover:scale-105 hover:text-white hover:bg-red-600 dark:hover:bg-red-800 hover:font-semibold transition ease-in-out"
         onClick={handleLogout}
       >
         Logg av
@@ -267,7 +267,7 @@ const Home: React.FC = () => {
             id="nameBox"
             className="mb-6 my-10 md:w-11/12 w-auto flex flex-col items-center overflow-y-auto overflow-x-hidden "
           >
-            <div className="font-semibold text-2xl text-center m-5">
+            <div className="font-semibold text-2xl text-center m-5 dark:text-white">
               Brukerinformasjon
             </div>
             <InputBox
@@ -322,10 +322,10 @@ const Home: React.FC = () => {
         return (
           <div className="mx-10 my-6 md:w-fill">
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-2xl font-semibold mb-6 text-dark">
+              <h1 className="text-2xl font-semibold mb-6 text-dark dark:text-white">
                 Velg bankkonto for sparing
               </h1>
-              <h1 className="text-black text-3xl">
+              <h1 className="text-black text-3xl dark:text-white">
                 ADD ACCOUNT HERE ASWELL!!!
               </h1>
             </div>
@@ -342,7 +342,7 @@ const Home: React.FC = () => {
       case "Preferanser":
         return (
           <div className="ml-8 m-8 w-fill dark:bg-slate-600 mt-12">
-            <div className="font-semibold text-center text-2xl mt-5 mx-5">
+            <div className="font-semibold text-center text-2xl mt-5 mx-5 dark:text-white">
               Dine preferanser
             </div>
             <div className="flex flex-col items-center justify-center">
