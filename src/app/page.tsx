@@ -70,7 +70,7 @@ export default function Home() {
         for (const challenge of challenges.data) {
             const endDate = new Date(challenge.assignedChallenge.endDate);
             if (endDate < today) {
-                completed.push(challenge.challenge);
+                completed.push(challenge);
             }
         }
         let anyCompleted = false;
@@ -78,21 +78,21 @@ export default function Home() {
         let unfinished = []
         for (const challenge of completed) {
             anyCompleted = true;
-            /* const response = await apiHandler(
+            const response = await apiHandler(
                 "challenge",
                 "post",
                 "/finishChallenge",
                 { id:challenge.assignedChallenge.id }
             ); 
+            
             if(response.data.completed){
                 finished.push(response.data)
             }else{
                 unfinished.push(response.data)
-            }*/
+            }
         }
         setFinishedChallenges(finished)  
-        setUnFinishedChallenges(unfinished)  
-        setShowCompletedPopup(true);
+        setUnFinishedChallenges(unfinished) 
          if (anyCompleted===true) {
              setShowCompletedPopup(true); 
         }  
@@ -163,7 +163,7 @@ export default function Home() {
                                 />
                             )}
                             {active === 0 && (
-                                <div className="justify-center h-full items-center flex">
+                                <div className="justify-center h-60 items-center flex">
                                     <button
                                         className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2"
                                         onClick={toggleGoalModal}
@@ -190,7 +190,7 @@ export default function Home() {
                     }
                 />
             )}
-            {finishedChallenges.length > 0 && showCompletedPopup && (
+            {(finishedChallenges.length > 0 || unfinishedChallenges.length > 0 )&& showCompletedPopup && (
                 <ChallengesFinishedPopup
                     closePopup={toggleCompletedPopup}
                     finished={finishedChallenges}
