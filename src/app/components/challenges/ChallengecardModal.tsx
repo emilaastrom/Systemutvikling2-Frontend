@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ChallengecardModalButton from './ChallengecardModalButton';
 import CustomIcon from '../icons/CustomIcon';
 import { useApiHandler } from '@/utils/api';
 
