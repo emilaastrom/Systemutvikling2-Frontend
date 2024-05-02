@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthState>({ token: null });
 
   const login = async (username: string, password: string) => {
-    const response = await fetch("https://ep.sysdevservices.tech/auth/login", {
+    const response = await fetch(baseURL + "auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     phone: string
   ) => {
-    const response = await fetch("https://ep.sysdevservices.tech/register", {
+    const response = await fetch(baseURL + "register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const verifyEmail = async (code: string) => {
     const response = await fetch(
-      `https://ep.sysdevservices.tech/auth/auth/verify?token=${code}`,
+      baseURL + `auth/verify?token=${code}`,
       {
         method: "GET",
       }
