@@ -104,34 +104,32 @@ const CustomizeExperience = ({
 
     const toggleChallenge = (item) => {
         console.log("TempOptions initial state:", tempOptions);
-
-        // Find the index of the item in the tempOptions array
+    
         let temp = item.toUpperCase();
         const index = tempOptions.indexOf(temp);
         const indexParent = parentSelectedChallenges.indexOf(temp);
-
-        // Toggle the presence of 'item' in tempOptions
+    
+        if (index !== -1 && tempOptions.length === 1) {
+            console.log("At least one option must be clicked.");
+            return;
+        }
+    
         if (index !== -1) {
-            // If item is found in tempOptions, remove it
             tempOptions.splice(index, 1);
         } else {
             console.log(item, "is not in the tempOptions, adding it now");
             tempOptions.push(temp);
         }
-
-        // Toggle the presence of 'item' in parentSelectedChallenges
+    
         if (indexParent !== -1) {
-            // If item is found in parentSelectedChallenges, remove it
             parentSelectedChallenges.splice(indexParent, 1);
         } else {
-            // If the item is not in parentSelectedChallenges, add it (assuming it should be added)
             parentSelectedChallenges.push(temp);
         }
-
-        // Update the parent state with the modified tempOptions array
+    
         handleSetChallenges([...tempOptions]);
     };
-
+    
     const handleSetChallenges = (challenges) => {
         if (setSelectedChallenges) {
             setSelectedChallenges(challenges);
