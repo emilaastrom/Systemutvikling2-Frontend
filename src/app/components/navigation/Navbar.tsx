@@ -25,7 +25,7 @@ const Navbar = () => {
         <div>
             {/* Desktop Navbar */}
 
-            <div className="fixed left-0 top-1/2 z-10 hidden md:flex transform -translate-y-1/2 h-70 flex-col gap-4 text-black p-5 border-r-2 border-slate-200">
+            <div className="fixed left-0 top-1/2 z-30 hidden md:flex transform -translate-y-1/2 h-70 flex-col gap-4 text-black p-5 border-r-2 border-slate-200">
                 <div className="flex flex-row">
                     <NavbarButton to="/">
                         <SvgIcon

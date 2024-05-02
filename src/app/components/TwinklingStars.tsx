@@ -36,7 +36,7 @@ const TwinklingStars = () => {
             ...generateRandomCoordinates(),
           }}
           animate={{
-            opacity: [0.5, 1, 0.5],
+            opacity: [0.3, 1, 0.3],
             transition: { duration: Math.random() * 1 + 0.5, repeat: Infinity }
           }}
         />
