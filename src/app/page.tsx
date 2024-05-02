@@ -5,12 +5,9 @@ import Challengecarousel from "./components/challenges/Challengecarousel";
 import { ThemeProvider } from "./components/settings/ThemeProvider";
 import ThemeManager from "./components/settings/ThemeManager";
 import NewGoalModal from "./components/GoalModal";
-import { progress } from "framer-motion";
-import ChallengecardModal from "./components/challenges/ChallengecardModal";
-import ChallengecardAddModal from "./components/challenges/ChallengecardAddModal";
 import ChallengecardModalCompleted from "./components/challenges/ChallengecardModalCompleted";
 import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
-import { useApiHandler } from "../utils/api";
+import { useApiHandler } from "@/utils/api";
 import Goalpig from "./components/Goalpig"; // Move the import here
 
 export default function Home() {
@@ -25,7 +22,7 @@ export default function Home() {
   const [active, setActive] = useState<number>(-1);
 
   const apiHandler = useApiHandler();
-  const fetchActiveGoal = async () => {
+  const fetchActiveGoal = useCallback(async () => {
     console.log("Fetching active goal data");
     try {
       const goal = await apiHandler("goal", "get", "/getActiveGoal");
@@ -38,7 +35,7 @@ export default function Home() {
       else if(goal.data===null || goal.status===400){
         setActive(0)
       }
-      else{
+      else {
         setActive(-1)
         console.error(goal.data);
       }
@@ -50,7 +47,7 @@ export default function Home() {
       console.error(error);
       }
     }
-  };
+  }, [apiHandler]);
 
   useEffect(() => {
     fetchActiveGoal();
@@ -61,7 +58,7 @@ export default function Home() {
     if (showModal) {
       document.body.style.overflow = "hidden";
     }
-  }, [fetchActiveGoal()]);
+  }, [fetchActiveGoal, showModal]);
 
 
   // Function to toggle modal visibility

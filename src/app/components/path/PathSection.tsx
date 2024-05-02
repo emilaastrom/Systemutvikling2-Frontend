@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Vector } from "@/util/types/vector";
 import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
@@ -6,19 +6,19 @@ import PathElements from "@/app/components/path/PathElements";
 
 export default function PathSection() {
   const sectionRef = useRef<HTMLDivElement | null>(null)
-  const positionRef = useRef(0);
-  const velocityRef = useRef(0);
+  const positionRef = useRef<number>(0);
+  const velocityRef = useRef<number>(0);
+  const lastYRef = useRef<number>(0);
+  const lastTimeRef = useRef<number>(0);
+  const animationFrameIdRef = useRef<number>(0);
 
   const [dimensions, setDimensions] = useState<Vector>({ x: 1, y: 1 });
-  const [position, setPosition] = useState(0)
-
-  const [lastY, setLastY] = useState(0);
-  const [lastTime, setLastTime] = useState(0);
-  const [animationFrameId, setAnimationFrameId] = useState(0);
+  const [position, setPosition] = useState<number>(0);
 
   useEffect(() => {
     const section = sectionRef.current;
 
+    // Handle resize
     const resizeObserver = new ResizeObserver((entries) => {
       if (!Array.isArray(entries) || !entries.length) {
         return;
@@ -32,104 +32,91 @@ export default function PathSection() {
       setDimensions(newDimensions);
     });
 
-    if (section) {
-      resizeObserver.observe(section);
-    }
-
-    return () => {
-      if (section) {
-        resizeObserver.unobserve(section);
-      }
-    };
-  }, [sectionRef]);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-
+    // Handle wheel scroll
     const handleWheel = (event: WheelEvent) => {
       event.preventDefault();
       const currentTime = event.timeStamp;
       const deltaY = event.deltaY;
 
-      velocityRef.current = (deltaY / (currentTime - lastTime)) * 12;
+      velocityRef.current = (deltaY / (currentTime - lastTimeRef.current));
       positionRef.current += deltaY;
 
+      lastTimeRef.current = currentTime;
       setPosition(positionRef.current);
-      setLastTime(currentTime);
     };
 
-    if (section) {
-      section.addEventListener("wheel", handleWheel);
-    }
-
-    return () => {
-      if (section) {
-        section.removeEventListener("wheel", handleWheel);
-      }
-    };
-  }, [sectionRef, lastTime]);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-
+    // Handle touch scroll
     const handleTouchStart = (event: TouchEvent) => {
-      setLastY(event.touches[0].clientY);
-      setLastTime(event.timeStamp);
+      lastYRef.current = event.touches[0].clientY;
+      lastTimeRef.current = event.timeStamp;
     };
-
     const handleTouchMove = (event: TouchEvent) => {
       if (event.cancelable) event.preventDefault();
       const currentY = event.touches[0].clientY;
       const currentTime = event.timeStamp;
 
-      const deltaY = lastY - currentY;
-      velocityRef.current = (deltaY / (currentTime - lastTime)) * 12;
+      const deltaY = lastYRef.current - currentY;
+      velocityRef.current = (deltaY / (currentTime - lastTimeRef.current)) * 3;
       positionRef.current += deltaY;
 
+      lastYRef.current = currentY;
+      lastTimeRef.current = currentTime;
       setPosition(positionRef.current);
-      setLastY(currentY);
-      setLastTime(currentTime);
     };
-
     const handleTouchEnd = () => {
-      const friction = 0.95;
+      const friction = 0.97;
       const threshold = 0.01;
 
       const applyMomentum = () => {
         positionRef.current += velocityRef.current;
-
         velocityRef.current *= friction;
 
         if (Math.abs(velocityRef.current) > threshold) {
           setPosition(positionRef.current);
-          setAnimationFrameId(requestAnimationFrame(applyMomentum));
+          animationFrameIdRef.current = requestAnimationFrame(applyMomentum);
         }
       };
 
-      setAnimationFrameId(requestAnimationFrame(applyMomentum));
+      animationFrameIdRef.current = requestAnimationFrame(applyMomentum);
     };
 
     if (section) {
+      // Add resize observer
+      resizeObserver.observe(section);
+
+      // Add wheel event listener
+      section.addEventListener("wheel", handleWheel);
+
+      // Add touch event listeners
       section.addEventListener("touchstart", handleTouchStart, {
         passive: false,
       });
       section.addEventListener("touchmove", handleTouchMove, {
         passive: false,
       });
-      section.addEventListener("touchend", handleTouchEnd, { passive: false });
+      section.addEventListener("touchend", handleTouchEnd, {
+        passive: false
+      });
     }
 
     return () => {
       if (section) {
+        // Remove resize observer
+        resizeObserver.unobserve(section);
+
+        // Remove wheel event listener
+        section.removeEventListener("wheel", handleWheel);
+
+        // Remove touch event listeners
         section.removeEventListener("touchstart", handleTouchStart);
         section.removeEventListener("touchmove", handleTouchMove);
         section.removeEventListener("touchend", handleTouchEnd);
       }
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
       }
     };
-  }, [sectionRef, velocityRef, lastY, lastTime, animationFrameId]);
+  }, [sectionRef]);
 
   return (
     <section
@@ -139,7 +126,6 @@ export default function PathSection() {
       <div ref={sectionRef} className="w-full h-full" style={{
         perspective: "1000px",
         perspectiveOrigin: "50% 0",
-        transformStyle: "preserve-3d",
       }}
       >
         <div style={{
@@ -147,9 +133,9 @@ export default function PathSection() {
           transformOrigin: "center bottom",
         }}>
           <PathProvider
-              seed={"seed"}
               dimensions={dimensions}
               position={position}
+              seed={"seed"}
               amplitude={150}
               period={1 / 400}
           >

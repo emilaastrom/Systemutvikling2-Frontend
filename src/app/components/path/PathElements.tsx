@@ -1,81 +1,80 @@
+'use client'
 import React, {
   useContext,
   useState,
   useMemo,
-  useCallback,
-  useEffect,
+  useEffect, useRef,
 } from "react";
 
 import Milestone from "./Milestone";
 import Checkpoint from "@/app/components/path/Checkpoint";
 import { PathContext } from "@/app/hooks/PathProvider";
 import { Vector } from "@/util/types/vector";
+import { useApiHandler } from "@/utils/api";
 
 export default function PathElements() {
+  const apiHandler = useApiHandler();
+  const goalsRef = useRef([]);
 
-  const goals = useMemo(
-    () => [
-      {
-        "id": 1,
-        "name": "Goal 1",
-        "completionTime": "2024-03-30T07:45:30Z",
-        "amount": 2000,
-      },
-      {
-        "id": 2,
-        "name": "Goal 2",
-        "completionTime": "2024-06-30T07:45:30Z",
-        "amount": 5500,
-      },
-      {
-        "id": 3,
-        "name": "Goal 3",
-        "completionTime": "2024-09-30T07:45:30Z",
-        "amount": 8000,
-      },
-      {
-        "id": 4,
-        "name": "Goal 4",
-        "completionTime": "2024-12-30T07:45:30Z",
-        "amount": 10000,
-      },
-    ], []
-  );
+  const fetchGoals = async () => {
+    return await apiHandler("goal", "get", "/getAllGoals");
+  }
+  // fetchGoals().then((response) => {
+  //   goalsRef.current = response.data;
+  // }).catch((error) => {
+  //   console.log(error)
+  // });
 
-  const challenges = useMemo(
-    () => [
-      {
-        "id": 0,
-        "endDate": "2024-01-30T07:45:30Z",
-        "completed": true,
-      },
-      {
-        "id": 1,
-        "endDate": "2024-02-30T07:45:30Z",
-        "completed": false,
-      },
-      {
-        "id": 2,
-        "endDate": "2024-04-28T07:45:30Z",
-        "completed": true,
-      },
-      {
-        "id": 3,
-        "endDate": "2024-04-29T07:45:30Z",
-        "completed": true,
-      },
-      {
-        "id": 4,
-        "endDate": "2024-05-30T07:45:30Z",
-        "completed": false,
-      },
-      {
-        "id": 5,
-        "endDate": "2024-07-30T07:45:30Z",
-        "completed": true,
-      },
-    ], []
-  );
+  const goals = [
+    {
+      "id": 0,
+      "name": "Become a better person",
+      "completionTime": "2024-02-01T07:45:30Z",
+    },
+    {
+      "id": 1,
+      "name": "Get a job",
+      "completionTime": "2024-03-05T07:45:30Z",
+    },
+    {
+      "id": 2,
+      "name": "Get a life",
+      "completionTime": "2025-06-21T07:45:30Z",
+    },
+  ]
+
+  const challenges = [
+    {
+      "id": 0,
+      "endDate": "2024-01-05T07:45:30Z",
+      "completed": true,
+    },
+    {
+      "id": 1,
+      "endDate": "2024-01-19T07:45:30Z",
+      "completed": false,
+    },
+    {
+      "id": 2,
+      "endDate": "2024-02-01T07:45:30Z",
+      "completed": true,
+    },
+    {
+      "id": 3,
+      "endDate": "2024-02-13T07:45:30Z",
+      "completed": true,
+    },
+    {
+      "id": 4,
+      "endDate": "2024-03-01T07:45:30Z",
+      "completed": false,
+    },
+    {
+      "id": 5,
+      "endDate": "2024-07-30T07:45:30Z",
+      "completed": true,
+    },
+  ];
 
   const { scale, bounds, pathFunction, worldToScreen } =
     useContext(PathContext);
@@ -96,15 +95,17 @@ export default function PathElements() {
 
   const pathElements = useMemo(
     () => {
+      console.log("Entered useMemo")
       const pathElements: PathElement[] = [];
       let i = 0, j = 0;
 
-      while (i < challenges.length || j < goals.length) {
+      while (i < challenges.length || j < goalsRef.current.length) {
+        console.log("i: ", i, "j: ", j);
         const t = (i + j) * 80;
         const worldPos = { x: pathFunction(t), y: t }
 
         const challenge = challenges[i];
-        const goal = goals[j];
+        const goal = goalsRef.current[j];
 
         if (i === challenges.length) {
           pathElements.push({ type: "milestone", id: goal.id, worldPos: worldPos });
@@ -112,7 +113,7 @@ export default function PathElements() {
           continue;
         }
 
-        if (j === goals.length) {
+        if (j === goalsRef.current.length) {
           pathElements.push({ type: "checkpoint", id: challenge.id, worldPos: worldPos });
           i++;
           continue;
@@ -121,7 +122,7 @@ export default function PathElements() {
         const challengeTime = new Date(challenge.endDate);
         const goalTime = new Date(goal.completionTime);
 
-        if (challengeTime < goalTime) {
+        if (challengeTime <= goalTime) {
           pathElements.push({ type: "checkpoint", id: challenge.id, worldPos: worldPos });
           i++;
         } else {
@@ -130,7 +131,7 @@ export default function PathElements() {
         }
       }
       return pathElements;
-    }, [goals, challenges, pathFunction]
+    }, [pathFunction]
   );
 
   const getCheckpoint = (index: number, id: number, worldPos: Vector) => {
@@ -149,7 +150,7 @@ export default function PathElements() {
 
   const getMilestone = (index: number, id: number, worldPos: Vector) => {
     if (worldPos.y > bounds.x && worldPos.y < bounds.y) {
-      const goal = goals.find((goal) => goal.id === id);
+      const goal = goalsRef.current.find((goal) => goal.id === id);
       return <Milestone
         key={index}
         goalName={goal.name}
