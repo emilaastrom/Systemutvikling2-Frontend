@@ -14,7 +14,14 @@ const config: Config = {
   moduleNameMapper: {
     // Map components using '@/components' to their actual path
     '^@/components/(.*)$': '<rootDir>/components/$1',
-  }
+  },
+  "testPathIgnorePatterns": [
+    "<rootDir>/.next/",
+    "<rootDir>/node_modules/"
+  ],
+  "roots": [
+    "<rootDir>/src/test/"
+  ]
 }
  
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
