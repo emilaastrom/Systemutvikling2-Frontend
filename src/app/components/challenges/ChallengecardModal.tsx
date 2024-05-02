@@ -12,44 +12,68 @@ type ChallengecardModalProps = {
     subStatus: boolean[];
 };
 
-const generateDates = (month: number, year: number, startDate: Date, endDate: Date) => {
-    const startDay = new Date(year, month - 1, 1);
-    const endDay = new Date(year, month, 0);
-    const startOffset = startDay.getDay(); 
-    const endOffset = endDay.getDay(); 
-
+const generateDates = (currentMonth: number, currentYear: number, startDate: Date, endDate: Date) => {
     const dates = [];
+    const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1);
+    const startOffset = (firstDayOfMonth.getDay() + 6) % 7; // Calculate start offset, starting from Monday (0-based index)
+    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    for (let i = 1; i <= endDay.getDate(); i++) {
-        const currentDate = new Date(year, month - 1, i);
-
-        let uniqueId = `${year}-${month}-${i}`; 
-
-        let isEnabled = currentDate >= startDate && currentDate < endDate;
-
-        dates.push({ 
-            date: i, 
-            enabled: isEnabled, 
-            uniqueId: uniqueId 
-        });
-    }
-
+    // Add empty dates for days before the start of the month
     for (let i = 0; i < startOffset; i++) {
-        dates.unshift({ date: 0, enabled: false, uniqueId: `${year}-${month}-0-${i}` });
+        dates.push({ date: 0, enabled: false, uniqueId: `${currentYear}-${currentMonth}-0-${i}` });
     }
 
-    for (let i = endOffset; i < 6; i++) {
-        dates.push({ date: 0, enabled: false, uniqueId: `${year}-${month}-0-${i}` });
+    // Add dates for each day in the month
+    for (let i = 1; i <= daysInMonth; i++) {
+        const currentDate = new Date(currentYear, currentMonth - 1, i);
+        const uniqueId = `${currentYear}-${currentMonth}-${i}`;
+        const isEnabled = currentDate >= startDate && currentDate < endDate;
+
+        dates.push({
+            date: i,
+            enabled: isEnabled,
+            uniqueId: uniqueId
+        });
     }
 
     return dates;
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate, id, subStatus }) => {
-    const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth()+1); 
-    const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
+const generateEnabledDates = (startDate: Date, endDate: Date) => {
+    const enabledDates = [];
 
-    const apiHandler = useApiHandler()
+    // Iterate through each month between start and end dates
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+        const daysInMonth = new Date(year, month, 0).getDate();
+
+        // Generate enabled dates for the current month
+        for (let i = 1; i <= daysInMonth; i++) {
+            const currentDay = new Date(year, month - 1, i);
+            enabledDates.push({
+                date: i,
+                enabled: currentDay >= startDate && currentDay < endDate,
+                uniqueId: `${year}-${month}-${i}`
+            });
+        }
+
+        // Move to the next month
+        currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+
+    return enabledDates;
+};
+
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challengeText, challengeStartDate, challengeEndDate, id, subStatus }) => {
+    const [currentMonth, setCurrentMonth] = useState<number>(challengeStartDate.getMonth() + 1); 
+    const [currentYear, setCurrentYear] = useState<number>(challengeStartDate.getFullYear());
+
+    const apiHandler = useApiHandler();
+
+    // Function to generate enabled dates
+    const enabledDates = generateEnabledDates(challengeStartDate, challengeEndDate);
     
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
         event.stopPropagation();
@@ -93,7 +117,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
 const dates = generateDates(currentMonth, currentYear, challengeStartDate, challengeEndDate);
 
 const initialClickedStatus = {};
-dates.forEach(date => {
+enabledDates.forEach(date => {
     if (date.enabled) {
         initialClickedStatus[date.uniqueId] = false;
     }
@@ -112,14 +136,12 @@ const handleClick = (uniqueId: string) => {
 const initialStatus = () => {
     const newClickedStatus = { ...clickedStatus };
     let n = 0
-    for (let i = 0; i < dates.length; i++) {
-        if(dates[i].enabled){
+    for (let i = 0; i < enabledDates.length; i++) {
         if (subStatus[n]) {
-            const uniqueId = dates[i].uniqueId;
+            const uniqueId = enabledDates[i+1].uniqueId;
             newClickedStatus[uniqueId] = true;
         }
         n++
-    }
     }
 
     setClickedStatus(newClickedStatus); 
