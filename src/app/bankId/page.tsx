@@ -4,13 +4,11 @@ import { motion } from "framer-motion";
 import AccountSelect from "@/app/components/settings/AccountSelect";
 import BankIdLogin from "../components/bankId/BankIdLogin";
 import CustomizeExperience from "../components/bankId/CustomizeExperience";
-import ChooseAccount from "../components/bankId/ChooseAccount";
 function Page() {
   const [nr, setNr] = useState(1);
   return (
     <div>
       {nr === 1 && <BankIdLogin />}
-      {nr === 2 && <ChooseAccount />}
       {nr === 3 && <CustomizeExperience />}
 
       <button onClick={() => setNr(nr - 1)}>prev</button>

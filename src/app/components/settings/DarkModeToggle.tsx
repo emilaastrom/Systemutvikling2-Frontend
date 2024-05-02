@@ -5,7 +5,7 @@ const DarkModeToggle = () => {
 
   
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center" data-testid="darkmodetoggle">
       <ul className="items-center w-2/3 md:w-auto text-sm font-medium border-green-400 text-gray-900 bg-white border rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600 overflow-hidden ">
           <label className="flex items-center ps-3 w-full cursor-pointer">

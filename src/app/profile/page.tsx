@@ -17,12 +17,13 @@ const accounts = [
     number: "123456789",
     balance: 1000,
     type: "Sparekonto",
+    ownerName: "Ola Nordmann",
   },
   {
     id: 2,
     number: "987654321",
-    balance: 5000,
     type: "Brukskonto",
+    ownerName: "Kari Nordmann",
   },
 ];
 
@@ -220,7 +221,9 @@ const Home: React.FC = () => {
         }
         FetchUser();
       } else {
-        console.log("No text fields have been updated, did not send request to API.");
+        console.log(
+          "No text fields have been updated, did not send request to API."
+        );
       }
     }
     location.reload();
@@ -322,11 +325,9 @@ const Home: React.FC = () => {
               <h1 className="text-2xl font-semibold mb-6 text-black">
                 Velg bankkonto for sparing
               </h1>
-              <AccountSelect
-                accounts={accounts}
-                selectedAccounts={selectedAccounts}
-                setSelectedAccounts={setSelectedAccounts}
-              />
+              <h1 className="text-black text-3xl">
+                ADD ACCOUNT HERE ASWELL!!!
+              </h1>
             </div>
             <button
               className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 mt-8 text-white rounded-lg p-2 w-full"

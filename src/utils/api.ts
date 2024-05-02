@@ -12,7 +12,7 @@ export const useApiService = (): AxiosInstance => {
     headers: {
       "Content-Type": "application/json",
     },
-    timeout: 2000,
+    timeout: 5000,
   });
 
   service.interceptors.request.use(
