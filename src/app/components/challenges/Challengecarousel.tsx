@@ -28,7 +28,6 @@ return (
   >
     {activeChallenges
       .filter(challenge => {
-        // Filter out only the challenges that have end dates after today
         const endDate = new Date(challenge.assignedChallenge.endDate);
         const today = new Date();
         return endDate > today;

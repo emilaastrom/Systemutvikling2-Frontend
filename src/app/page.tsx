@@ -11,15 +11,16 @@ import ChallengecardAddModal from "./components/challenges/ChallengecardAddModal
 import ChallengecardModalCompleted from "./components/challenges/ChallengecardModalCompleted";
 import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
 import { useApiHandler } from "../utils/api";
-import Goalpig from "./components/Goalpig"; // Move the import here
+import Goalpig from "./components/Goalpig"; 
 import { error } from "console";
 import { userInfo } from "os";
 import Image from "next/image";
 import TwinklingStars from "./components/TwinklingStars";
+import { ActiveChallenge } from "@/util/types/Challenge";
 
 export default function Home() {
-    const [succeededChallenges, setSucceededChallenges] = useState([]);
-    const [notSucceededChallenges, setNotSucceededChallenges] = useState([]);
+    const [finishedChallenges, setFinishedChallenges] = useState<ActiveChallenge[]>([]);
+    const [unfinishedChallenges, setUnFinishedChallenges] = useState<ActiveChallenge[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [showGoalModal, setShowGoalModal] = useState(false);
     const [showCompletedPopup, setShowCompletedPopup] = useState(false);
@@ -64,35 +65,41 @@ export default function Home() {
             "/getActiveChallenges"
         );
         const today = new Date();
-        const completed = [];
+        const completed:ActiveChallenge[] = [];
 
         for (const challenge of challenges.data) {
             const endDate = new Date(challenge.assignedChallenge.endDate);
             if (endDate < today) {
-                completed.push(challenge);
+                completed.push(challenge.challenge);
             }
         }
-
-        console.log(completed);
         let anyCompleted = false;
-        let finished = [];
-        let notFinished = [];
+        let finished = []
+        let unfinished = []
         for (const challenge of completed) {
             anyCompleted = true;
-            const response = await apiHandler(
+            /* const response = await apiHandler(
                 "challenge",
                 "post",
                 "/finishChallenge",
-                { id: challenge.assignedChallenge.id }
-            );
-            //TODO: finished array or not finished array
+                { id:challenge.assignedChallenge.id }
+            ); 
+            if(response.data.completed){
+                finished.push(response.data)
+            }else{
+                unfinished.push(response.data)
+            }*/
         }
-        if (anyCompleted) {
-            toggleCompletedPopup();
-        }
+        setFinishedChallenges(finished)  
+        setUnFinishedChallenges(unfinished)  
+        setShowCompletedPopup(true);
+         if (anyCompleted===true) {
+             setShowCompletedPopup(true); 
+        }  
     };
 
     useEffect(() => {
+        fetchActiveChallenges()
         fetchActiveGoal();
         const savedTheme =
             (localStorage.getItem("theme") as "light" | "dark" | "auto") ||
@@ -102,9 +109,8 @@ export default function Home() {
         if (showModal) {
             document.body.style.overflow = "hidden";
         }
-    }, [fetchActiveGoal()]);
+    }, []);
 
-    // Function to toggle modal visibility
     const toggleModal = () => {
         setShowModal(!showModal);
     };
@@ -149,7 +155,6 @@ export default function Home() {
                                     checkpoints den om vi ikke bruker chrome
                                 </span>
                             </button>
-                            {/* Render Goalpig only if 'active' is true and 'goal' is set */}
                             {active === 1 && (
                                 <Goalpig
                                     current={current}
@@ -185,11 +190,11 @@ export default function Home() {
                     }
                 />
             )}
-            {showCompletedPopup && (
+            {finishedChallenges.length > 0 && showCompletedPopup && (
                 <ChallengesFinishedPopup
                     closePopup={toggleCompletedPopup}
-                    succeeded={succeededChallenges}
-                    failed={notSucceededChallenges}
+                    finished={finishedChallenges}
+                    unfinished={unfinishedChallenges}
                 />
             )}
         </ThemeProvider>
