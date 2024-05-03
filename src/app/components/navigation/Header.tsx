@@ -13,20 +13,25 @@ const CustomHeader = () => {
     const apiHandler = useApiHandler();
     const [goalData, setGoalData] = useState<any>();
     const [themeData, setThemeData] = useState<any>();
+
+    const isServer = typeof window === "undefined";
+
     let theme: string | null;
-    if (!themeData) {
+
+    if (isServer) {
+        theme = "light";
+    } else {
         theme = localStorage.getItem("theme") || null;
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            if (
-                theme === null ||
-                theme === ""
-            ) {
+            if (theme === null || theme === "") {
                 apiHandler("user", "get", "/getUser")
                     .then((res) => {
-                        localStorage.setItem("theme", res.data.theme);
+                        if (!isServer) {
+                            localStorage.setItem("theme", res.data.theme);
+                        }
                     })
                     .catch((error) => {
                         console.error("Fetching data failed:", error);
@@ -55,7 +60,9 @@ const CustomHeader = () => {
 
                     if (themeData.status === 200) {
                         setCurrentTheme(themeData.data.theme);
-                        localStorage.setItem("theme", themeData.data.theme);
+                        if (!isServer) {
+                            localStorage.setItem("theme", themeData.data.theme);
+                        }
                     }
                 } catch (error) {
                     console.error("Fetching data failed:", error);
@@ -71,8 +78,7 @@ const CustomHeader = () => {
             document.body.classList.toggle("dark", newTheme === "dark");
         };
 
-        const theme = localStorage.getItem("theme");
-        setCurrentTheme(theme);
+        setCurrentTheme(theme ?? "");
         handleThemeChange(theme);
     }, []);
 
@@ -81,7 +87,9 @@ const CustomHeader = () => {
         try {
             await apiHandler("user", "put", "/updateUser", themeData);
             setCurrentTheme(theme);
-            localStorage.setItem("theme", theme);
+            if (!isServer) {
+                localStorage.setItem("theme", theme);
+            }
             document.body.classList.toggle("dark", theme === "dark");
         } catch (error) {
             console.error("Setting theme failed:", error);
@@ -90,7 +98,7 @@ const CustomHeader = () => {
 
     const handleThemeChange = (event: React.MouseEvent<HTMLButtonElement>) => {
         let newTheme = "";
-        if (localStorage.getItem("theme") !== "") {
+        if (theme !== "") {
             newTheme = currentTheme === "light" ? "dark" : "light";
         } else {
             newTheme = "dark";
@@ -98,7 +106,6 @@ const CustomHeader = () => {
         localStorage.setItem("theme", newTheme);
         setThemeAPI(newTheme);
     };
-
 
     return (
         <header>
