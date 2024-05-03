@@ -39,10 +39,10 @@ const SidebarItem: React.FC<SidebarItemProps & { isActive: boolean }> = ({
 }) => {
   return (
     <button
-      className={`h-10 text-black my-1 dark:bg-slate-500 dark:hover:bg-white dark:hover:text-black flex w-full justify-center rounded-lg items-center hover:bg-primary-light hover:cursor-pointer hover:text-light ${
+      className={`h-10 text-black my-1 dark:bg-slate-500 dark:hover:bg-white dark:hover:text-black flex w-full justify-center rounded-lg items-center hover:bg-primary-light hover:cursor-pointer hover:text-white ${
         isActive
           ? "bg-primary-light hover:bg-primary-light text-white dark:bg-white dark:text-black"
-          : ""
+          : " dark:text-white"
       }`}
       onClick={onClick}
     >
@@ -311,7 +311,7 @@ const Home: React.FC = () => {
             </span>
             <button
               onClick={updateUserButton}
-              className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark mt-8 text-white rounded-lg p-2 border-primary-dark md:w-1/3 w-2/3"
+              className="bg-primary-light font-bold text-xl hover:bg-primary-dark dark:bg-primary-dark mt-8 text-white rounded-lg p-2 border-primary-dark md:w-1/3 w-2/3"
             >
               Lagre
             </button>
@@ -356,17 +356,17 @@ const Home: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-center space-x-4 pt-8">
-              <button className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark text-white rounded-lg p-2 border-primary-dark w-1/3">
+              <button className="bg-primary-light hover:bg-primary-dark dark:bg-green-700 dark:hover:bg-primary-light text-white font-semibold rounded-lg p-2 border-primary-dark w-1/3">
                 Lagre
               </button>
-              <button className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:text-white text-dark rounded-lg p-2 border-gray-400 w-1/3">
+              <button className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white text-dark rounded-lg p-2 border-gray-400 w-1/3">
                 Avbryt
               </button>
             </div>
           </div>
         );
       default:
-        return <div>No content</div>;
+        return <div>Oi, her har det oppstått en feil!</div>;
     }
   };
 
