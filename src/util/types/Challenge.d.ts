@@ -1,12 +1,26 @@
 export type Challenge = {
-    id: number,
-    timeLimit: Date,
+    id: string,
     name: string,
     description: string,
-    completionTime: Date,
-    userSucceeded: boolean,
+    durationDays: number,
+    type: string,
+    price: number
+  };
+  
+export type AssignedChallenge = {
+    id: string,
+    userId: string,
+    challengeId: string,
+    startDate: string,
+    endDate: string,
+    subStatus: boolean[],
+    completed: boolean,
     finished: boolean,
-    price: number,
-    subchallenges: List<Challenge>
-    parent_id: number,
+    amountSaved: number,
+    difficulty: string
 }
+  
+export type ActiveChallenge = {
+    challenge: Challenge,
+    assignedChallenge: AssignedChallenge,
+  }
