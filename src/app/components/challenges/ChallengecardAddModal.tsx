@@ -44,7 +44,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
 
     const fetchSuggestions = async () => {
         try {
-            const suggestionsData = await apiHandler("challenge", "get", "/getNewChallenges?number=3");
+            const suggestionsData = await apiHandler("challenge", "get", "/getNewChallenges?number=5");
             const user = await apiHandler("user", "get", "/getUser"); 
             setSuggestions(suggestionsData.data)  
             setIsLoading(false); 
@@ -152,27 +152,8 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                     />
             </button>
         </div>       
-            <div className="flex justify-center m-4 text-lg">
-            <div className="flex space-x-2 justify-center">
-            {["Enkel", "Medium", "Vanskelig"].map((difficulty) => (
-              <button
-                key={difficulty}
-                onClick={() => {
-                    difficultyChange(difficulty, currentPage)
-                }}
-                className={`py-2 px-4 rounded-xl font-mono ${
-                  selectedDifficulty === difficulty
-                    ? "bg-primary-light text-white "
-                    : "bg-gray-200"
-                }`}
-              >
-                {difficulty}
-              </button>
-            ))}
-          </div>
-            </div>
-
-            <div className="flex justify-between h-1/2 mb-4">
+            
+            <div className="flex justify-between h-1/2 mb-4 mt-8">
                 <button 
                     onClick={() => {setCurrentPage(Math.max(0, currentPage - 1));
                         setX1(-100);
@@ -210,6 +191,25 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({ onClose }) =
                         }
                         />
                 </button>
+            </div>
+            <div className="flex justify-center m-4 text-lg">
+            <div className="flex space-x-2 justify-center">
+            {["Enkel", "Medium", "Vanskelig"].map((difficulty) => (
+              <button
+                key={difficulty}
+                onClick={() => {
+                    difficultyChange(difficulty, currentPage)
+                }}
+                className={`py-2 px-4 rounded-xl font-mono ${
+                  selectedDifficulty === difficulty
+                    ? "bg-primary-light text-white "
+                    : "bg-gray-200"
+                }`}
+              >
+                {difficulty}
+              </button>
+            ))}
+          </div>
             </div>
 
             <div className="flex justify-center items-center">

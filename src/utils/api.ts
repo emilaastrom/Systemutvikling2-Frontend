@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { useAuth } from "@/context/AuthContext";
 import { useMemo } from "react";
-const protocol: string = "https://";
-const host: string = "ep.sysdevservices.tech/";
+const protocol: string = "";
+const host: string = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const useApiService = (): AxiosInstance => {
   const { token } = useAuth();
