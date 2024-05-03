@@ -162,13 +162,17 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
 
   const initialStatus = () => {
     const newClickedStatus = { ...clickedStatus };
-    let n = 0;
+    let n = 0
+    let daysToFirstEnabled = 0
     for (let i = 0; i < enabledDates.length; i++) {
-      if (subStatus[n]) {
-        const uniqueId = enabledDates[i + 1].uniqueId;
-        newClickedStatus[uniqueId] = true;
-      }
-      n++;
+        if(daysToFirstEnabled===0 && enabledDates[i].enabled){
+            daysToFirstEnabled=n
+            }
+        if (subStatus[n]) {
+            const uniqueId = enabledDates[i+daysToFirstEnabled].uniqueId;
+            newClickedStatus[uniqueId] = true;
+        }
+        n++
     }
 
     setClickedStatus(newClickedStatus);
