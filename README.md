@@ -1,53 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Frontend
+
+## Overview
+
+Dette er frontende. Den er bygd med Nextjs 14, tailwind css og Framer motion. Vi bruker også Jest og Cypress til testing.
+
+- **Endpoint til production**: `https://sparesti.tech/`
+- **Endpoint til Docker**: `http://localhost:80`
+- **Endpoint til Standalone / dev**: `http://localhost:3000`
 
 ## Getting Started
 
-OK, git clone prosjektet
-cd inn i prosjektmappen
+# NB! Husk å endre .env fil.
 
-skriv "npm i" i terminalen
-dette gjør at du innstallerer alle pakkene i packages.json.
-kommandoen "npm install" fungerer også
+.env filen bestemmer endepunktet frontenden skal bruke for å kontakte backend. For å kontakte prod backend bruk:`https://api.sparesti.tech`
+og for lokal docker-compose / api-gateway bruk: `http://localhost:8080`
 
-kjør så serveren med kommandoen "npm run dev"
+#### Standalone
 
-First, run the development server:
+- NodeJS 20
+- Git (to clone the repository)
 
-EXTENTIONS
+#### Running as Docker
 
-prettier
-Auto Rename Tag
-Better Comments
-Tailwind CSS IntelliSense
-ES7+ React/Redux/React-Native snippetss
+- Docker
+
+#### Running Everything
+
+> This is for running the whole project with the architecture that is intended for production.
+> This is for running all servises as well as the frontend
+
+- Docker
+- Docker Compose
+
+### Cloning the Repository
+
+To clone the repository and navigate into the frontend directory, run:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@gitlab.stud.idi.ntnu.no:idatt2106_2024_11/frontend.git
+
+
+cd frontend
+
+#Remember to have valid SSH Keys to gitlab!
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running dev server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install //for installing
+npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
 
-## Learn More
+### Building and Running Locally
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run build
+npm run start
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Docker Compose
 
-## Deploy on Vercel
+To run AuthService as part of the full architecture localy, ensure you have Docker Compose installed and use the following command in the `Local` directory containing the `docker-compose.yml` file:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+docker-compose up
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To run the docker-compose in the backgroun use this command:
+
+```bash
+docker-compose up -d
+```
+
+The docker compose setup includes a MySql database that spins up test data. This data and this database will be different for the production database.
