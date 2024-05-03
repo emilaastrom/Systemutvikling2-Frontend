@@ -3,85 +3,150 @@ import React, { useEffect, useState } from "react";
 import { colors } from "../../../../tailwind.config";
 import SvgIcon from "../icons/CustomIcon";
 import { useApiHandler } from "../../../utils/api";
+import { get } from "http";
 
 const CustomHeader = () => {
     const [progress, setProgress] = useState<number>();
     const [max, setMax] = useState<number>();
-    const [currentTheme, setCurrentTheme] = useState<string>("light"); // Default to 'light'
+
+    const [currentTheme, setCurrentTheme] = useState<string>();
     const apiHandler = useApiHandler();
+    const [goalData, setGoalData] = useState<any>();
+    const [themeData, setThemeData] = useState<any>();
+    let theme: string | null;
+    if (!themeData) {
+        theme = localStorage.getItem("theme") || null;
+    }
 
     useEffect(() => {
-        // Fetch goal and theme data only on mount or when apiHandler changes
         const fetchData = async () => {
-            console.log("Fetching data");
-            try {
-                const [goalData, themeData] = await Promise.all([
-                    apiHandler("goal", "get", "/getActiveGoal"),
-                    apiHandler("user", "get", "/getUser"),
-                ]);
+            if (
+                theme === null ||
+                theme === ""
+            ) {
+                apiHandler("user", "get", "/getUser")
+                    .then((res) => {
+                        localStorage.setItem("theme", res.data.theme);
+                    })
+                    .catch((error) => {
+                        console.error("Fetching data failed:", error);
+                    });
+            }
 
-                if (goalData.status === 200) {
-                    setProgress(goalData.data.progress);
-                    setMax(goalData.data.amount);
-                }
+            if (
+                !goalData ||
+                themeData === "" ||
+                themeData === null ||
+                themeData === undefined
+            ) {
+                try {
+                    const [goalData, themeData] = await Promise.all([
+                        apiHandler("goal", "get", "/getActiveGoal"),
+                        apiHandler("user", "get", "/getUser"),
+                    ]);
+                    setGoalData(goalData);
+                    setThemeData(themeData);
+                    setCurrentTheme(themeData.data);
+                    console.log("Goal data:", goalData);
+                    console.log("Theme data:", themeData);
 
-                if (themeData.status === 200) {
-                    setCurrentTheme(themeData.data.theme);
+                    if (goalData.status === 200) {
+                        setProgress(goalData.data.progress);
+                        setMax(goalData.data.amount);
+                    }
+
+                    if (themeData.status === 200) {
+                        setCurrentTheme(themeData.data.theme);
+                        localStorage.setItem("theme", themeData.data.theme);
+                    }
+                } catch (error) {
+                    console.error("Fetching data failed:", error);
                 }
-            } catch (error) {
-                console.error("Fetching data failed:", error);
             }
         };
 
         fetchData();
-    }, [apiHandler]);
+    }, [apiHandler, currentTheme, goalData, themeData]);
+
+    useEffect(() => {
+        const handleThemeChange = (newTheme) => {
+            document.body.classList.toggle("dark", newTheme === "dark");
+        };
+
+        const theme = localStorage.getItem("theme");
+        setCurrentTheme(theme);
+        handleThemeChange(theme);
+    }, []);
 
     const setThemeAPI = async (theme: string) => {
-        const string = theme.toUpperCase();
-        let themeData = { theme: string };
+        const themeData = { theme: theme.toUpperCase() };
         try {
             await apiHandler("user", "put", "/updateUser", themeData);
             setCurrentTheme(theme);
             localStorage.setItem("theme", theme);
+            document.body.classList.toggle("dark", theme === "dark");
         } catch (error) {
             console.error("Setting theme failed:", error);
         }
     };
 
     const handleThemeChange = (event: React.MouseEvent<HTMLButtonElement>) => {
-        const newTheme = currentTheme === "light" ? "dark" : "light";
+        let newTheme = "";
+        if (localStorage.getItem("theme") !== "") {
+            newTheme = currentTheme === "light" ? "dark" : "light";
+        } else {
+            newTheme = "dark";
+        }
+        localStorage.setItem("theme", newTheme);
         setThemeAPI(newTheme);
     };
 
-    // Regular header for all other pages
+
     return (
         <header>
             <div className="fixed top-0 w-screen h-10 text-center bg-background-50 dark:bg-slate-600 dark:text-white z-20 drop-shadow-lg">
                 <div className="fixed flex align-middle left-5 w-auto  h-auto m-2 px-2 rounded-xl">
-                    <button onClick={handleThemeChange}>
+                    <button
+                        onClick={handleThemeChange}
+                        className="transition-opacity duration-500"
+                    >
                         <SvgIcon
                             className="h-5 w-5"
                             svg={
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    className="w-6 h-6"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                                    />
-                                </svg>
+                                currentTheme === "dark" ? (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="w-6 h-6"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+                                        />
+                                    </svg>
+                                ) : (
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth="1.5"
+                                        stroke="currentColor"
+                                        className="w-6 h-6"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                                        />
+                                    </svg>
+                                )
                             }
                         />
                     </button>
-                    {/* <h2 className="text-xl text-dark dark:text-white ml-2 align-text-top leading-tight">
-                        {currentTheme}
-                    </h2> */}
                 </div>
                 <div className="fixed flex right-5 w-auto h-fill align-middle text-black h-auto m-2 px-2 rounded-xl">
                     <SvgIcon
