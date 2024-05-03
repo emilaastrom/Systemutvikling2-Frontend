@@ -37,8 +37,8 @@ const CustomHeader = () => {
     // Regular header for all other pages
     return (
         <header>
-            <div className="fixed top-0 w-screen h-10 text-center bg-background-50 z-20 drop-shadow-lg">
-                <div className="fixed flex align-middle left-5 w-auto text-dark h-auto m-2 px-2 rounded-xl">
+            <div className="fixed top-0 w-screen h-10 text-center bg-background-50 dark:bg-slate-600 dark:text-white z-20 drop-shadow-lg">
+                <div className="fixed flex align-middle left-5 w-auto  h-auto m-2 px-2 rounded-xl">
                     <SvgIcon
                         className="h-5 w-5"
                         svg={
@@ -63,7 +63,7 @@ const CustomHeader = () => {
                             </svg>
                         }
                     />
-                    <h2 className="text-xl text-dark ml-2 align-text-top leading-tight">
+                    <h2 className="text-xl text-dark dark:text-white ml-2 align-text-top leading-tight">
                         31
                     </h2>
                 </div>
@@ -87,7 +87,7 @@ const CustomHeader = () => {
                             </svg>
                         }
                     />
-                    <span className="text-xl text-dark ml-2 align-text-top leading-tight">
+                    <span className="text-xl text-dark dark:text-white  ml-2 align-text-top leading-tight">
                         {progress} / {max} kr
                     </span>
                 </div>

@@ -165,8 +165,8 @@ const CustomizeExperience = ({
                             onClick={() => handleSetDifficulty(difficulty)}
                             className={`py-2 px-4 rounded-xl font-mono ${
                                 parentSelectedDifficulty === `${difficulty}`
-                                    ? "bg-green-500 text-white" // Active button styling
-                                    : "bg-gray-200" // Inactive button styling
+                                    ? "bg-green-500 text-white dark:text-black" // Active button styling
+                                    : "bg-gray-200 font-normal" // Inactive button styling
                             }`}
                         >
                             {languageMapping[difficulty]}
