@@ -65,7 +65,7 @@ const PathProvider: React.FC<PathProviderProps> = (
 
     // Create noise function
     const prng = alea(seed);
-    let noise = useRef(createNoise2D(prng));
+    const noise = createNoise2D(prng);
 
     // Define wave function
     const waveFunction = (
@@ -79,8 +79,8 @@ const PathProvider: React.FC<PathProviderProps> = (
 
     // Define path function
     const pathFunction = useCallback((t: number) => {
-      return waveFunction(noise.current, t, amplitude, period, 0, 0);
-    }, [amplitude, period]);
+      return waveFunction(noise, t, amplitude, period, 0, 0);
+    }, [noise, amplitude, period]);
 
     return (
         <PathContext.Provider value={{ scale, bounds, worldToScreen, pathFunction }}>
