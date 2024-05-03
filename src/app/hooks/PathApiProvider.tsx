@@ -1,11 +1,12 @@
 import React, { useEffect, useState} from "react";
 import { useApiHandler } from "@/utils/api";
-import { ActiveChallenge, AssignedChallenge } from "@/util/types/Challenge";
+import { ActiveChallenge } from "@/util/types/Challenge";
 import { Goal } from "@/util/types/Goal";
 
 interface PathApiContextType {
   goals: Goal[];
   activeChallenges: ActiveChallenge[];
+  startPosition: number;
 }
 
 interface PathApiProviderProps {
@@ -15,6 +16,7 @@ interface PathApiProviderProps {
 export const PathApiContext = React.createContext<PathApiContextType>({
   goals: [],
   activeChallenges: [],
+  startPosition: -200,
 });
 
 const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
@@ -44,8 +46,13 @@ const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
     fetchChallenges();
   }, []);
 
+  const [startPosition, setStartPosition] = useState(-200);
+  useEffect(() => {
+    setStartPosition(((goals.length + activeChallenges.length) * 80) - 200);
+  }, [goals, activeChallenges]);
+
   return (
-    <PathApiContext.Provider value={{goals, activeChallenges}}>
+    <PathApiContext.Provider value={{goals, activeChallenges, startPosition}}>
       {children}
     </PathApiContext.Provider>
   );

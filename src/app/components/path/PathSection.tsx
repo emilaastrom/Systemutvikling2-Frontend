@@ -1,21 +1,24 @@
-import React, { useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { Vector } from "@/util/types/vector";
 import { ActiveChallenge } from "@/util/types/Challenge";
 import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
 import PathElements from "@/app/components/path/PathElements";
+import { PathApiContext } from "@/app/hooks/PathApiProvider";
 
 type PathSectionProps = {
   openCheckpointModal: (activeChallenge: ActiveChallenge | null) => void;
 };
 
 export default function PathSection({ openCheckpointModal }: PathSectionProps) {
+    const { startPosition } = useContext(PathApiContext);
+
     const sectionRef = useRef<HTMLDivElement | null>(null);
-    const positionRef = useRef(-250);
+    const positionRef = useRef(startPosition);
     const velocityRef = useRef(0);
 
     const [dimensions, setDimensions] = useState<Vector>({ x: 1, y: 1 });
-    const [position, setPosition] = useState(-250);
+    const [position, setPosition] = useState(startPosition);
 
     const [lastY, setLastY] = useState(0);
     const [lastTime, setLastTime] = useState(0);
