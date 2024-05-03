@@ -63,8 +63,9 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
         suggestionsData.data
       );
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
+      console.error("Error fetching suggestions because found no preferences");
       setIsLoading(false);
+      onClose()
     }
   };
 
@@ -166,7 +167,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
   }
 
   return (
-    <div onClick={onClose} className="modal-container">
+    <div onClick={onClose} className="modal-container" data-testid="challengecard-add-modal">
       <div
         onClick={stopPropagation}
         className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto h-[75%]"
