@@ -45,14 +45,14 @@ export default function Home() {
         setCurrent(goal.data.progress);
         setMax(goal.data.amount);
         setActive(1);
-      } else if (goal.data === null || goal.status === 400) {
+      } else if (goal.data === null || goal.status === 204) {
         setActive(0);
       } else {
         setActive(-1);
         console.error(goal.data);
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
+      if (error.response && error.response.status === 204) {
         setActive(0);
       } else {
         setActive(-1);
