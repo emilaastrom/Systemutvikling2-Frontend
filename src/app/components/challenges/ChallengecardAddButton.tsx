@@ -27,6 +27,7 @@ const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadF
         <>
             <div className="flex h-36 justify-center items-center">
                 <div
+                    id="add-challenge-button"
                     className="w-80 m-4 h-36 rounded-lg overflow-hidden relative cursor-pointer"
                     style={{
                         background: "url('cloudpinkhover.svg')",
