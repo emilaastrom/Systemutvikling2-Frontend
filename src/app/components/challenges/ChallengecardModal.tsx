@@ -134,9 +134,14 @@ const initialStatus = () => {
     let n = 0
     let daysToFirstEnabled = 0
     for (let i = 0; i < enabledDates.length; i++) {
-        if(daysToFirstEnabled===0 && enabledDates[i].enabled){
-            daysToFirstEnabled=n
-            }
+      if(daysToFirstEnabled===0 && enabledDates[i].enabled){
+          daysToFirstEnabled=n;
+          break
+          }
+        n++
+        }
+        n=0
+    for (let i = 0; i < enabledDates.length; i++) {
         if (subStatus[n]) {
             console.log(daysToFirstEnabled)
             const uniqueId = enabledDates[i+daysToFirstEnabled].uniqueId;
