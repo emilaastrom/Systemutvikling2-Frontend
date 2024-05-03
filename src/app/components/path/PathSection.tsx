@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Vector } from "@/util/types/vector";
+import { ActiveChallenge } from "@/util/types/Challenge";
 import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
 import PathElements from "@/app/components/path/PathElements";
 
-export default function PathSection() {
+type PathSectionProps = {
+  openCheckpointModal: (activeChallenge: ActiveChallenge | null) => void;
+};
+
+export default function PathSection({ openCheckpointModal }: PathSectionProps) {
     const sectionRef = useRef<HTMLDivElement | null>(null);
     const positionRef = useRef(0);
     const velocityRef = useRef(0);
@@ -135,7 +140,7 @@ export default function PathSection() {
 
     return (
         <section
-            className="h-[600px] bg-gradient-to-b from-grass-light to-grass-dark overflow-hidden relative parent z-20"
+            className="h-[600px] bg-gradient-to-b from-[#0d8c50] to-[#076639] dark:from-grass-light dark:to-grass-dark overflow-hidden relative parent z-20"
             style={{
                 width: "200%",
                 borderTopLeftRadius: "50%",
@@ -165,7 +170,7 @@ export default function PathSection() {
                         amplitude={150}
                         period={1 / 400}
                     >
-                        <PathElements />
+                        <PathElements openCheckpointModal={openCheckpointModal} />
                         <ProceduralPath
                             dimensions={dimensions}
                             stepLength={5}

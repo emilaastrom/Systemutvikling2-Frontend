@@ -90,7 +90,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: x2 }}
         transition={{ duration: 0.2 }}
-        className="border-2 rounded-md p-4 overflow-y-auto bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
+        className="border-2 rounded-md p-4 overflow-y-scroll bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
       >
         <span className="text-gray-500 text-sm text-start">
           <span className="font-semibold">Kategori: </span>{" "}

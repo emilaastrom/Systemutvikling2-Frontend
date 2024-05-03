@@ -1,27 +1,35 @@
 import React, { useContext, useState, useMemo, useEffect } from "react";
 
-import Milestone from "./Milestone";
 import Checkpoint from "@/app/components/path/Checkpoint";
+import Milestone from "./Milestone";
 import { PathContext } from "@/app/hooks/PathProvider";
 import { PathApiContext } from "@/app/hooks/PathApiProvider";
 import { Vector } from "@/util/types/vector";
+import {ActiveChallenge} from "@/util/types/Challenge";
 
-export default function PathElements() {
+type PathElementsProps = {
+  openCheckpointModal: (activeChallenge: ActiveChallenge | null) => void;
+};
+
+export default function PathElements({ openCheckpointModal }: PathElementsProps) {
   const { scale, bounds, pathFunction, worldToScreen } =
     useContext(PathContext);
-  const { goals, challenges } = useContext(PathApiContext);
+  const { goals, activeChallenges } = useContext(PathApiContext);
 
   const [size, setSize] = useState(40);
   const [borderWidth, setBorderWidth] = useState(4);
-
   useEffect(() => {
     setSize(40 * scale);
     setBorderWidth(4 * scale);
   }, [scale]);
 
+  const checkpointClicked = (activeChallenge: ActiveChallenge) => {
+    openCheckpointModal(activeChallenge);
+  }
+
   type PathElement = {
     type: "checkpoint" | "milestone";
-    id: number;
+    id: string;
     worldPos: Vector;
   };
 
@@ -30,11 +38,11 @@ export default function PathElements() {
     let i = 0,
       j = 0;
 
-    while (i < challenges.length || j < goals.length) {
+    while (i < activeChallenges.length || j < goals.length) {
       const t = (i + j) * 80;
       const worldPos = { x: pathFunction(t), y: t };
 
-      if (i === challenges.length) {
+      if (i === activeChallenges.length) {
         const goal = goals[j];
         pathElements.push({
           type: "milestone",
@@ -46,26 +54,26 @@ export default function PathElements() {
       }
 
       if (j === goals.length) {
-        const challenge = challenges[i].assignedChallenge;
+        const assignedChallenge = activeChallenges[i].assignedChallenge;
         pathElements.push({
           type: "checkpoint",
-          id: challenge.id,
+          id: assignedChallenge.id,
           worldPos: worldPos,
         });
         i++;
         continue;
       }
 
-      const challenge = challenges[i].assignedChallenge;
+      const assignedChallenge = activeChallenges[i].assignedChallenge;
       const goal = goals[j];
 
-      const challengeTime = new Date(challenge.endDate);
+      const challengeTime = new Date(assignedChallenge.endDate);
       const goalTime = new Date(goal.completionTime);
 
       if (challengeTime <= goalTime) {
         pathElements.push({
           type: "checkpoint",
-          id: challenge.id,
+          id: assignedChallenge.id,
           worldPos: worldPos,
         });
         i++;
@@ -79,17 +87,16 @@ export default function PathElements() {
       }
     }
     return pathElements;
-  }, [pathFunction, goals, challenges]);
+  }, [pathFunction, goals, activeChallenges]);
 
-  const getCheckpoint = (index: number, id: number, worldPos: Vector) => {
+  const getCheckpoint = (index: number, id: string, worldPos: Vector) => {
     if (worldPos.y + size > bounds.x && worldPos.y - size < bounds.y) {
-      const challenge = challenges.find(
-        (challenge) => challenge.assignedChallenge.id === id,
-      ).assignedChallenge;
+      const activeChallenge = activeChallenges.find((activeChallenge) => activeChallenge.assignedChallenge.id === id);
       return (
         <Checkpoint
           key={index}
-          passed={challenge.completed}
+          checkpointClicked={checkpointClicked}
+          activeChallenge={activeChallenge}
           coords={worldToScreen(worldPos)}
           scale={scale}
           size={size}
@@ -97,9 +104,9 @@ export default function PathElements() {
         />
       );
     }
-  };
+  }
 
-  const getMilestone = (index: number, id: number, worldPos: Vector) => {
+  const getMilestone = (index: number, id: string, worldPos: Vector) => {
     if (worldPos.y > bounds.x && worldPos.y < bounds.y) {
       const goal = goals.find((goal) => goal.id === id);
       return (

@@ -1,5 +1,5 @@
 export type Goal = {
-    id: number, 
+    id: string,
     name: string,
     description: string,
     amount: number,

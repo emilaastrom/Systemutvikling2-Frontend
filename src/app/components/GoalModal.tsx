@@ -50,8 +50,8 @@ const NewGoalModal = ({ closeModal }) => {
 
   return (
     <div className="modal-container flex justify-center items-center" onClick={closeModal}>
-      <div className="modal-content bg-white p-6 rounded-lg shadow-md" onClick={handleContentClick}>
-        <h2 className="text-2xl font-bold mb-4 text-center">Lag et nytt sparemål</h2>
+      <div className="modal-content bg-white text-black p-6 rounded-lg shadow-md" onClick={handleContentClick}>
+        <h2 className="text-2xl text-black font-bold mb-4 text-center">Lag et nytt sparemål</h2>
         <div className="text-center text-red-500" id="error"></div>
         <div className="mb-4 flex justify-center">
           <InputBox label='Tittel' onChange={handleChange} aria-label="Inndatafelt for mål" placeholder='f.eks. "Ny mobil"'/>

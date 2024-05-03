@@ -17,16 +17,20 @@ const Challengecarousel = () => {
   const [activeChallenges, setActiveChallenges] = useState<ActiveChallenge[]>([]);
   const [forceUpdateFlag, setForceUpdateFlag] = useState(false); // State to force update
 
-  const apiHandler = useApiHandler();
+    const apiHandler = useApiHandler();
 
-  const fetchChallenges = async () => {
-    try {
-      const challenges = await apiHandler("challenge", "get", "/getActiveChallenges");
-      setActiveChallenges(challenges.data)
-    } catch (error) {
-        console.error("Error fetching suggestions:", error);
-    }
-  }
+    const fetchChallenges = async () => {
+        try {
+            const challenges = await apiHandler(
+                "challenge",
+                "get",
+                "/getActiveChallenges"
+            );
+            setActiveChallenges(challenges.data);
+        } catch (error) {
+            console.error("Error fetching suggestions:", error);
+        }
+    };
 
   useEffect(() => {
     fetchChallenges();
@@ -41,7 +45,7 @@ const Challengecarousel = () => {
   return (
     <div
       key={forceUpdateFlag ? 'reload' : 'no-reload'} // Key to trigger re-render
-      className="flex z-10 self-start w-screen text-black overflow-x-scroll overflow-y-auto no-scrollbar"
+      className="flex z-10 self-start w-screen text-black overflow-x-auto overflow-y-auto customized-scrollbar"
     >
       {activeChallenges
         .filter(challenge => {

@@ -42,13 +42,18 @@ const CustomizeExperience = ({
     const [isMounted, setIsMounted] = useState(false);
     const apiHandler = useApiHandler();
     const [tempOptions, setTempOptions] = useState([]);
+    const [tempDifficulty, setTempDifficulty] = useState("");
 
     const putDifficulty = async (difficulty) => {
+        const diffJSON = JSON.stringify({
+            defaultDifficulty: difficulty,
+        });
         try {
-            console.log("Updating difficulty to: ", difficulty);
+            console.log("Updating difficulty YIPPIIII: ", difficulty);
             await apiHandler("user", "put", "/updateUser", {
                 defaultDifficulty: difficulty,
             });
+            setTempDifficulty(difficulty);
         } catch (error) {
             console.error(error);
         }
@@ -74,15 +79,13 @@ const CustomizeExperience = ({
                 const userOptions = userData.data.options;
                 setTempOptions([...userOptions]);
 
-                if (setSelectedDifficulty) {
-                    setSelectedDifficulty(userData.data.defaultDifficulty);
-                } else {
+                if (!tempDifficulty) {
+                    setTempDifficulty(userData.data.defaultDifficulty);
                     putDifficulty(userData.data.defaultDifficulty);
                 }
 
-                if (setSelectedChallenges) {
-                    setSelectedChallenges([...userOptions]);
-                } else {
+                if (!tempOptions) {
+                    setTempOptions([...userOptions]);
                     putChallengeOptions([...userOptions]);
                 }
             } catch (error) {
@@ -105,30 +108,28 @@ const CustomizeExperience = ({
     const toggleChallenge = (item) => {
         console.log("TempOptions initial state:", tempOptions);
 
-        // Find the index of the item in the tempOptions array
         let temp = item.toUpperCase();
         const index = tempOptions.indexOf(temp);
         const indexParent = parentSelectedChallenges.indexOf(temp);
 
-        // Toggle the presence of 'item' in tempOptions
+        if (index !== -1 && tempOptions.length === 1) {
+            console.log("At least one option must be clicked.");
+            return;
+        }
+
         if (index !== -1) {
-            // If item is found in tempOptions, remove it
             tempOptions.splice(index, 1);
         } else {
             console.log(item, "is not in the tempOptions, adding it now");
             tempOptions.push(temp);
         }
 
-        // Toggle the presence of 'item' in parentSelectedChallenges
         if (indexParent !== -1) {
-            // If item is found in parentSelectedChallenges, remove it
             parentSelectedChallenges.splice(indexParent, 1);
         } else {
-            // If the item is not in parentSelectedChallenges, add it (assuming it should be added)
             parentSelectedChallenges.push(temp);
         }
 
-        // Update the parent state with the modified tempOptions array
         handleSetChallenges([...tempOptions]);
     };
 
@@ -141,40 +142,21 @@ const CustomizeExperience = ({
     };
 
     const handleSetDifficulty = (difficulty) => {
-        if (setSelectedDifficulty) {
-            setSelectedDifficulty(difficulty);
-        } else {
-            putDifficulty(difficulty);
-        }
+        putDifficulty(difficulty);
     };
 
     return (
-        <div className="flex flex-col items-center justify-center text-black p-4">
+        <div className="flex flex-col items-center justify-center text-black px-4 ">
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: isMounted ? 1 : 0 }}
                 transition={{ duration: 0.5 }}
                 className="text-center"
             >
-                <h1 className="font-semibold text-2xl mb-4 dark:text-white">
-                    Sparepreferanser
+                <h1 className="font-regular text-lg text-black mb-4 dark:text-white">
+                    Hva slags utfordringer ønsker du?
                 </h1>
-                {/* Selected Difficulty Buttons */}
-                <div className="flex space-x-2 justify-center mb-8">
-                    {["EASY", "MEDIUM", "HARD"].map((difficulty) => (
-                        <button
-                            key={difficulty}
-                            onClick={() => handleSetDifficulty(difficulty)}
-                            className={`py-2 px-4 rounded-xl font-mono ${
-                                parentSelectedDifficulty === `${difficulty}`
-                                    ? "bg-green-500 text-white" // Active button styling
-                                    : "bg-gray-200" // Inactive button styling
-                            }`}
-                        >
-                            {languageMapping[difficulty]}
-                        </button>
-                    ))}
-                </div>
+
                 {/* Challenge Selection */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {challenges.map((challenge) => (
@@ -198,6 +180,23 @@ const CustomizeExperience = ({
                                 {customNameMapping[challenge.name]}
                             </span>
                         </motion.div>
+                    ))}
+                </div>
+                {/* Selected Difficulty Buttons */}
+                <p className="pt-8 text-lg pb-4 dark:text-white">Nivå på nye utfordringer:</p>
+                <div className="flex space-x-2 justify-center">
+                    {["EASY", "MEDIUM", "HARD"].map((difficulty) => (
+                        <button
+                            key={difficulty}
+                            onClick={() => handleSetDifficulty(difficulty)}
+                            className={`py-2 px-4 rounded-xl font-mono ${
+                                tempDifficulty === `${difficulty}`
+                                    ? "bg-green-500 text-white dark:text-black" // Active button styling
+                                    : "bg-gray-200 font-normal" // Inactive button styling
+                            }`}
+                        >
+                            {languageMapping[difficulty]}
+                        </button>
                     ))}
                 </div>
             </motion.div>

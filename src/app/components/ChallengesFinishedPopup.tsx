@@ -10,7 +10,7 @@ const ChallengesFinishedPopup = ({ closePopup, finished, unfinished}) => {
 
   return (
     <div className="modal-container flex justify-center items-center" onClick={closePopup}>
-      <div className="modal-content bg-white p-6 rounded-lg shadow-md" onClick={handleContentClick}>
+      <div className="modal-content bg-white text-black p-6 rounded-lg shadow-md" onClick={handleContentClick}>
         <h2 className="text-2xl font-bold mb-4 text-center">Siden sist du logget inn:</h2>
         {finished && finished.length > 0 && (
           <>
