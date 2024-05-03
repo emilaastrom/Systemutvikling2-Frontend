@@ -1,15 +1,19 @@
 "use client";
 import React from "react";
 import CustomizeExperience from "../../components/settings/CustomizeExperience";
-function Page() {
+function Customize() {
   return (
-    <div>
-      <CustomizeExperience
-        setSelectedDifficulty={undefined}
-        setSelectedChallenges={undefined}
-      />
+    <div className="h-screen bg-white">
+      <div className="h-2/3 ">
+        <div className="pt-48">
+          <CustomizeExperience
+            setSelectedDifficulty={undefined}
+            setSelectedChallenges={undefined}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
-export default Page;
+export default Customize;
