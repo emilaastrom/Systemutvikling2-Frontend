@@ -58,7 +58,7 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
 
 
             <div className="text-2xl font-custom1 relative drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                {current} / {max} kr
+                {Math.floor(current)} / {max} kr
             </div>
         </div>
     );
