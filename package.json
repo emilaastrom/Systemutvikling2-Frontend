@@ -19,6 +19,7 @@
     "react": "^18",
     "react-confetti": "^6.1.0",
     "react-dom": "^18",
+    "sharp": "^0.33.3",
     "simplex-noise": "^4.0.1"
   },
   "devDependencies": {

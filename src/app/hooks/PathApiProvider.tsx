@@ -4,7 +4,6 @@ import { ActiveChallenge, AssignedChallenge } from "@/util/types/Challenge";
 import { Goal } from "@/util/types/Goal";
 
 interface PathApiContextType {
-  pathLength: number;
   goals: Goal[];
   activeChallenges: ActiveChallenge[];
 }
@@ -14,7 +13,6 @@ interface PathApiProviderProps {
 }
 
 export const PathApiContext = React.createContext<PathApiContextType>({
-  pathLength: 0,
   goals: [],
   activeChallenges: [],
 });
@@ -41,19 +39,13 @@ const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
     });
   };
 
-  const [pathLength, setPathLength] = useState(0);
-
   useEffect(() => {
     fetchGoals();
     fetchChallenges();
   }, []);
 
-  useEffect(() => {
-    setPathLength((goals.length + activeChallenges.length) * 80);
-  }, [goals, activeChallenges]);
-
   return (
-    <PathApiContext.Provider value={{pathLength, goals, activeChallenges}}>
+    <PathApiContext.Provider value={{goals, activeChallenges}}>
       {children}
     </PathApiContext.Provider>
   );
