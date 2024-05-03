@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import ChallengecardModalButton from "./ChallengecardModalButton";
 import CustomIcon from "../icons/CustomIcon";
+import { ActiveChallenge, AssignedChallenge, Challenge } from "@/util/types/Challenge";
 
 type ChallengecardModalProps = {
   onClose: () => void;
-  challengeText: string;
-  challengeStartDate: Date;
-  challengeEndDate: Date;
+  activeChallenge: ActiveChallenge;
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
-  onClose,
-  challengeText,
-  challengeStartDate,
-  challengeEndDate,
-}) => {
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, activeChallenge }) => {
+  const assignedChallenge: AssignedChallenge = activeChallenge.assignedChallenge;
+  const challenge: Challenge = activeChallenge.challenge;
+
+  const challengeText = challenge.description;
+  const challengeStartDate = new Date(assignedChallenge.startDate);
+  const challengeEndDate = new Date(assignedChallenge.endDate);
+
   const [currentMonth, setCurrentMonth] = useState<number>(
     challengeStartDate.getMonth() + 1
   );

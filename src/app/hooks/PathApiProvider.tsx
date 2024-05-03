@@ -1,9 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, { useEffect, useState} from "react";
 import { useApiHandler } from "@/utils/api";
+import { ActiveChallenge, AssignedChallenge } from "@/util/types/Challenge";
+import { Goal } from "@/util/types/Goal";
 
 interface PathApiContextType {
-  goals: any[];
-  challenges: any[];
+  goals: Goal[];
+  challenges: AssignedChallenge[];
 }
 
 interface PathApiProviderProps {
@@ -21,7 +23,7 @@ const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
   const [goals, setGoals] = useState([]);
   const fetchGoals = async () => {
     await apiHandler("goal", "get", "/getAllGoals").then((response) => {
-      const goals = response.data.filter(goal => !goal.active);
+      const goals: Goal[] = response.data.filter((goal: Goal) => !goal.active);
       setGoals(goals);
     }).catch((error) => {
       console.log(error);
@@ -31,7 +33,7 @@ const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
   const [challenges, setChallenges] = useState([]);
   const fetchChallenges = async () => {
     await apiHandler("challenge", "get", "/getFinishedChallenges").then((response) => {
-      const challenges = response.data.map((challenge) => challenge.assignedChallenge);
+      const challenges: AssignedChallenge[] = response.data.map((challenge: ActiveChallenge) => challenge.assignedChallenge);
       setChallenges(challenges);
     }).catch((error) => {
       console.log(error);

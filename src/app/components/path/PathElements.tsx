@@ -19,14 +19,14 @@ export default function PathElements() {
     setBorderWidth(4 * scale);
   }, [scale]);
 
-  const checkpointClicked = (id: number) => {
+  const checkpointClicked = (id: string) => {
     console.log("Checkpoint clicked: ", id);
     alert("Checkpoint clicked: " + id)
   }
 
   type PathElement = {
     type: "checkpoint" | "milestone";
-    id: number;
+    id: string;
     worldPos: Vector;
   };
 
@@ -51,7 +51,7 @@ export default function PathElements() {
       }
 
       if (j === goals.length) {
-        const challenge = challenges[i].assignedChallenge;
+        const challenge = challenges[i];
         pathElements.push({
           type: "checkpoint",
           id: challenge.id,
@@ -61,11 +61,11 @@ export default function PathElements() {
         continue;
       }
 
-        const challenge = challenges[i]
-        const goal = goals[j];
+      const challenge = challenges[i]
+      const goal = goals[j];
 
-        const challengeTime = new Date(challenge.endDate);
-        const goalTime = new Date(goal.completionTime);
+      const challengeTime = new Date(challenge.endDate);
+      const goalTime = new Date(goal.completionTime);
 
       if (challengeTime <= goalTime) {
         pathElements.push({
@@ -86,7 +86,7 @@ export default function PathElements() {
     return pathElements;
   }, [pathFunction, goals, challenges]);
 
-  const getCheckpoint = (index: number, id: number, worldPos: Vector) => {
+  const getCheckpoint = (index: number, id: string, worldPos: Vector) => {
     if (worldPos.y + size > bounds.x && worldPos.y - size < bounds.y) {
       const challenge = challenges.find((challenge) => challenge.id === id);
       return (
@@ -104,7 +104,7 @@ export default function PathElements() {
     }
   }
 
-  const getMilestone = (index: number, id: number, worldPos: Vector) => {
+  const getMilestone = (index: number, id: string, worldPos: Vector) => {
     if (worldPos.y > bounds.x && worldPos.y < bounds.y) {
       const goal = goals.find((goal) => goal.id === id);
       return (
