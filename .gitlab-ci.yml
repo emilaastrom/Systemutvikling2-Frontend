@@ -15,6 +15,14 @@ buildDocker:
     DOCKER_HOST: "tcp://docker:2375"
     DOCKER_TLS_CERTDIR: ""
   script:
+<<<<<<< HEAD
     - docker build -t reg.sysdevservices.tech/frontend:local .
     - docker tag reg.sysdevservices.tech/frontend:local reg.sysdevservices.tech/frontend:local
     - docker push reg.sysdevservices.tech/frontend:local
+=======
+    - docker build -t reg.sysdevservices.tech/frontend:latest .
+    - docker tag reg.sysdevservices.tech/frontend:latest reg.sysdevservices.tech/frontend:latest
+    - docker push reg.sysdevservices.tech/frontend:latest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "dev"
+>>>>>>> db913a13ca27f0a70d0a2a838ed4c5909c39a020
