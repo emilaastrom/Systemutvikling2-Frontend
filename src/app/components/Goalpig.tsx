@@ -31,6 +31,7 @@ const Goalpig: React.FC<GoalpigProps> = ({ current, max, goal }) => {
     <circle cx="50" cy="50" r="40" fill="none" stroke="#ccc" strokeWidth="8" />
     {/* Progress Circle */}
     <circle
+        data-testid="progress-circle"
         cx="50"
         cy="50"
         r="40"
