@@ -59,7 +59,7 @@ const Challengecard = ({
     return (
         <>
             {isModalOpen && <ChallengecardModal onClose={handleCloseModal} challengeText={title} challengeStartDate={startDate} challengeEndDate={endDate} id={id} subStatus={subStatus} max={max}/>}
-            <div className="flex justify-end" onClick={handleCardClick}>
+            <div className="flex justify-end" onClick={handleCardClick} data-testid="challenge-card">
             <div 
                 className="w-80 m-4 rounded-lg overflow-hidden relative cursor-pointer" 
                 style={{ 
