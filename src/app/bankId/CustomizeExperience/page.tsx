@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import CustomizeExperience from "../../components/settings/CustomizeExperience";
 function Page() {
