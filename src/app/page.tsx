@@ -99,7 +99,7 @@ const StartPage = () => {
               </button>
             </div>
           </div>
-          <div className="bg-slate-800 rounded-xl border-4 border-gray-4 00 w-full md:w-52 p-2  relative overflow-hidden">
+          <div className="bg-slate-800 rounded-xl border-4 border-gray-4 00 w-full md:w-52 p-2 hidden md:inline relative overflow-hidden">
             <Image
               src="/sr.png"
               layout="fill"
