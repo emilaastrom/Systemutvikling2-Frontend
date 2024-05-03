@@ -92,7 +92,7 @@ const Challengecarousel = () => {
           );
         })}
       <div className="m-4">
-        <ChallengecardAddButton reloadFunction={handleReloadChallenges} />
+        <ChallengecardAddButton reloadFunction={handleReloadChallenges} amount={activeChallenges.length}/>
       </div>
     </div>
   );

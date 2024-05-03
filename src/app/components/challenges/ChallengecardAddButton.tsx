@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import ChallengecardAddModal from './ChallengecardAddModal';
 interface ChallengecardAddButtonProps {
     reloadFunction: () => void;
+    amount: number
 }
 
-const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadFunction }) => {
+const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadFunction, amount }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleCloseModal = () => {
@@ -13,7 +14,11 @@ const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadF
     };
 
     const handleAddClick = () => {
+        if(amount>=6){
+            alert("Du kan ikke ha flere enn 6 utfordringer")
+        } else{
         setIsModalOpen(true);
+        }
     };
 
     return (
