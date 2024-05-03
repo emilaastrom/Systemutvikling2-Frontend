@@ -34,10 +34,10 @@ const LoginForm = ({
       console.log(req.data);
       if (req.data.firstLogin) {
         router.push("/bankId");
-      } else if (req.data.hasConnectedBankAccount) {
-        router.push("/connectBankAccount");
+      } else if (!req.data.hasConnectedBankAccount) {
+        router.push("/bankId/chooseAccount");
       } else if (req.data.hasCustomizedGoals) {
-        router.push("/customizeGoals");
+        router.push("/bankId/CustomizeExperience");
       } else {
         router.push("/dashboard");
       }

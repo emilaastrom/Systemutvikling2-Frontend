@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import CustomIcon from "../icons/CustomIcon";
+import { ActiveChallenge, AssignedChallenge, Challenge } from "@/util/types/Challenge";
 
 type ChallengecardModalProps = {
   onClose: () => void;
-  challengeText: string;
-  challengeStartDate: Date;
-  challengeEndDate: Date;
+  activeChallenge: ActiveChallenge;
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
-  onClose,
-  challengeText,
-  challengeStartDate,
-  challengeEndDate,
-}) => {
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, activeChallenge }) => {
+  const assignedChallenge: AssignedChallenge = activeChallenge.assignedChallenge;
+  const challenge: Challenge = activeChallenge.challenge;
+
+  const challengeText = challenge.description;
+  const challengeStartDate = new Date(assignedChallenge.startDate);
+  const challengeEndDate = new Date(assignedChallenge.endDate);
+
   const [currentMonth, setCurrentMonth] = useState<number>(
     challengeStartDate.getMonth() + 1
   );
@@ -84,7 +85,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
         onClick={stopPropagation}
         className="bg-white md:h-1/3 min-h-80 rounded-lg w-screen md:w-1/2 m-5 overflow-auto"
       >
-        <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
+        <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center text-black relative font-semibold overflow-auto">
           <div className="flex-grow flex justify-center items-center">
             Utfordringshistorikk
           </div>
@@ -110,23 +111,15 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
             />
           </button>
         </div>
-        <div className="flex flex-col m-4 items-center font-semibold space-y-2">
+        <div className="flex flex-col m-4 items-center font-semibold space-y-2 text-black">
           <h1 className="py-12">
             Beskrivelse: <span className="font-normal">{challengeText}</span>
           </h1>
           <p>
-            Startet:{" "}
-            <span className="font-normal">
-              {" "}
-              {challengeStartDate.toLocaleString()}{" "}
-            </span>
+            Startet: <span className="font-normal">{challengeStartDate.toDateString()}</span>
           </p>
-          <p className="flex">
-            Ferdig:{" "}
-            <span className="font-normal">
-              {" "}
-              {challengeEndDate.toLocaleString()}{" "}
-            </span>{" "}
+          <p>
+            Ferdig: <span className="font-normal">{challengeEndDate.toDateString()}</span>
           </p>
         </div>
       </div>
