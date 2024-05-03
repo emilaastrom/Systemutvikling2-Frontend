@@ -3,6 +3,13 @@ import { motion } from "framer-motion";
 import { useApiHandler } from "../../../utils/api";
 import { Fira_Sans_Extra_Condensed } from "next/font/google";
 
+interface CustomizeExperienceProps {
+  selectedDifficulty: string; // Assuming it should be a string
+  setSelectedDifficulty: (difficulty: string) => void; // Assuming it sets a string
+  selectedChallenges: string[]; // Already seems to be in use
+  setSelectedChallenges: (challenges: string[]) => void; // Assuming it sets an array of strings
+}
+
 const languageMapping = {
   EASY: "Enkel",
   MEDIUM: "Medium",
@@ -21,7 +28,7 @@ const customNameMapping = {
   Snop: "Snop",
 };
 
-const CustomizeExperience = ({
+const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
   selectedDifficulty: parentSelectedDifficulty = "EASY",
   setSelectedDifficulty,
   selectedChallenges: parentSelectedChallenges = [],
@@ -41,8 +48,8 @@ const CustomizeExperience = ({
 
   const [isMounted, setIsMounted] = useState(false);
   const apiHandler = useApiHandler();
-  const [tempOptions, setTempOptions] = useState([]);
-  const [tempDifficulty, setTempDifficulty] = useState("");
+  const [tempOptions, setTempOptions] = useState<string[]>([]);
+  const [tempDifficulty, setTempDifficulty] = useState<string>("");
 
   const putDifficulty = async (difficulty) => {
     const diffJSON = JSON.stringify({
@@ -81,7 +88,6 @@ const CustomizeExperience = ({
 
         if (!tempDifficulty) {
           setTempDifficulty(userData.data.defaultDifficulty);
-          putDifficulty(userData.data.defaultDifficulty);
         }
 
         if (!tempOptions) {

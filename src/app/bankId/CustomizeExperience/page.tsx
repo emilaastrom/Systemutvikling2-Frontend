@@ -4,6 +4,12 @@ import CustomizeExperience from "../../components/settings/CustomizeExperience";
 import { useApiHandler } from "../../../utils/api";
 import { useRouter } from "next/navigation";
 
+interface CustomizeExperienceProps {
+  selectedDifficulty: string;
+  setSelectedDifficulty: (difficulty: string) => void;
+  selectedChallenges: string[];
+  setSelectedChallenges: (challenges: string[]) => void;
+}
 
 function Customize() {
     const [difficultyLevel, setDifficultyLevel] = useState<string>("");
@@ -45,30 +51,20 @@ function Customize() {
         }
     });
 
-
-
     const router = useRouter();
 
     const handleStartClick = () => {
       router.push("/dashboard");
     };
 
-
     return (
         <div className="flex p-4 h-screen justify-center items-center content-center bg-white w-screen">
             <div className="flex flex-col h-2/3 justify-center items-center">
                 <div className="pt-48">
-                    {/* <CustomizeExperience
-                        selectedDifficulty={`${difficultyLevel}`}
-                        setSelectedDifficulty={handleDifficultyChange}
-                        selectedChallenges={selectedChallenges}
-                        setSelectedChallenges={setSelectedChallenges}
-                    /> */}
-
                     <CustomizeExperience
                         selectedDifficulty={`${difficultyLevel}`}
                         setSelectedDifficulty={handleDifficultyChange}
-                        selectedChallenges={undefined}
+                        selectedChallenges={selectedChallenges}
                         setSelectedChallenges={undefined}
                     />
                 </div>
