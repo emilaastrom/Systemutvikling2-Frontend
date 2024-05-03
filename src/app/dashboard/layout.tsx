@@ -13,18 +13,13 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <body>
-          <ProtectedRoutes>
-            <CustomHeader />
-            <div className=" bg-gradient-to-b from-background-100 to-background-200 dark:bg-slate-700">
-              <Navbar />
-              <div> {children}</div>
-            </div>
-          </ProtectedRoutes>
-        </body>
-      </html>
+      <ProtectedRoutes>
+        <CustomHeader />
+        <div className=" bg-gradient-to-b from-background-100 to-background-200 dark:bg-slate-700">
+          <Navbar />
+          <div> {children}</div>
+        </div>
+      </ProtectedRoutes>
     </AuthProvider>
   );
 }
