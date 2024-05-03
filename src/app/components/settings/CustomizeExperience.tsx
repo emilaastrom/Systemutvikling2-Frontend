@@ -92,6 +92,9 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
                     if (!tempDifficulty) {
                         setTempDifficulty(userData.data.defaultDifficulty);
                     }
+                    if (userOptions.defaultDifficulty === null || userOptions.defaultDifficulty === undefined || userOptions.defaultDifficulty === "") {
+                        putDifficulty("EASY");
+                    }
 
                     if (!tempOptions) {
                         setTempOptions([...userOptions]);
@@ -113,7 +116,7 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
 
         setIsMounted(true);
         return () => setIsMounted(false);
-    }, [parentSelectedDifficulty, apiHandler]);
+    }, [parentSelectedDifficulty, parentSelectedChallenges, apiHandler]);
 
     const toggleChallenge = (item) => {
         let temp = item.toUpperCase();
@@ -139,6 +142,7 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
             parentSelectedChallenges.push(temp);
         }
 
+        setTempOptions([...tempOptions]);
         handleSetChallenges([...tempOptions]);
     };
 
