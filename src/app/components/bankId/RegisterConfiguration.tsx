@@ -4,10 +4,14 @@ import React, { useEffect, useState } from "react";
 import CustomizeExperience from "../settings/CustomizeExperience";
 
 const newUserConfig = () => {
+
+
     return (
-        <CustomizeExperience
-            setSelectedDifficulty={undefined}
-            setSelectedChallenges={undefined}
+        <CustomizeExperience selectedDifficulty={""} setSelectedDifficulty={function (difficulty: string): void {
+            throw new Error("Function not implemented.");
+        } } selectedChallenges={[]} setSelectedChallenges={function (challenges: string[]): void {
+            throw new Error("Function not implemented.");
+        } }            
         />
     );
 };
