@@ -9,15 +9,20 @@ import NewGoalModal from "../components/GoalModal";
 import ChallengecardModalCompleted from "../components/challenges/ChallengecardModalCompleted";
 import ChallengesFinishedPopup from "../components/ChallengesFinishedPopup";
 import { useApiHandler } from "../../utils/api";
-import Goalpig from "../components/Goalpig"; // Move the import here
+import Goalpig from "../components/Goalpig";
 import { error } from "console";
 import { userInfo } from "os";
 import Image from "next/image";
 import TwinklingStars from "../components/TwinklingStars";
+import { ActiveChallenge } from "@/util/types/Challenge";
 
 export default function Home() {
-  const [succeededChallenges, setSucceededChallenges] = useState([]);
-  const [notSucceededChallenges, setNotSucceededChallenges] = useState([]);
+  const [finishedChallenges, setFinishedChallenges] = useState<
+    ActiveChallenge[]
+  >([]);
+  const [unfinishedChallenges, setUnFinishedChallenges] = useState<
+    ActiveChallenge[]
+  >([]);
   const [showModal, setShowModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [showCompletedPopup, setShowCompletedPopup] = useState(false);
@@ -62,7 +67,7 @@ export default function Home() {
       "/getActiveChallenges"
     );
     const today = new Date();
-    const completed = [];
+    const completed: ActiveChallenge[] = [];
 
     for (const challenge of challenges.data) {
       const endDate = new Date(challenge.assignedChallenge.endDate);
@@ -70,11 +75,9 @@ export default function Home() {
         completed.push(challenge);
       }
     }
-
-    console.log(completed);
     let anyCompleted = false;
     let finished = [];
-    let notFinished = [];
+    let unfinished = [];
     for (const challenge of completed) {
       anyCompleted = true;
       const response = await apiHandler(
@@ -83,14 +86,22 @@ export default function Home() {
         "/finishChallenge",
         { id: challenge.assignedChallenge.id }
       );
-      //TODO: finished array or not finished array
+
+      if (response.data.completed) {
+        finished.push(response.data);
+      } else {
+        unfinished.push(response.data);
+      }
     }
-    if (anyCompleted) {
-      toggleCompletedPopup();
+    setFinishedChallenges(finished);
+    setUnFinishedChallenges(unfinished);
+    if (anyCompleted === true) {
+      setShowCompletedPopup(true);
     }
   };
 
   useEffect(() => {
+    fetchActiveChallenges();
     fetchActiveGoal();
     const savedTheme =
       (localStorage.getItem("theme") as "light" | "dark" | "auto") || "light";
@@ -99,9 +110,8 @@ export default function Home() {
     if (showModal) {
       document.body.style.overflow = "hidden";
     }
-  }, [fetchActiveGoal()]);
+  }, []);
 
-  // Function to toggle modal visibility
   const toggleModal = () => {
     setShowModal(!showModal);
   };
@@ -139,7 +149,7 @@ export default function Home() {
                 <Goalpig current={current} max={max} goal={goal} />
               )}
               {active === 0 && (
-                <div className="justify-center h-full items-center flex">
+                <div className="justify-center h-60 items-center flex">
                   <button
                     className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2"
                     onClick={toggleGoalModal}
@@ -164,13 +174,14 @@ export default function Home() {
           challengeEndDate={new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)}
         />
       )}
-      {showCompletedPopup && (
-        <ChallengesFinishedPopup
-          closePopup={toggleCompletedPopup}
-          succeeded={succeededChallenges}
-          failed={notSucceededChallenges}
-        />
-      )}
+      {(finishedChallenges.length > 0 || unfinishedChallenges.length > 0) &&
+        showCompletedPopup && (
+          <ChallengesFinishedPopup
+            closePopup={toggleCompletedPopup}
+            finished={finishedChallenges}
+            unfinished={unfinishedChallenges}
+          />
+        )}
     </ThemeProvider>
   );
 }
