@@ -258,32 +258,36 @@ const Home: React.FC = () => {
         if (!email) {
             FetchUser();
         }
+        
         const fetchAccounts = async () => {
             setIsLoading(true); // Start loading
             try {
-              const response = await apiHandler("bank", "get", "/getAccounts");
-              if (response.data) {
-                console.log("response.data", response.data);
-                setAccounts(
-                  response.data.map((account) => ({
-                    id: account.bban,
-                    number: account.bban,
-                    name: account.name,
-                    ownerName: account.ownerName,
-                    type: account.type,
-                  }))
-                );
-              }
-              console.log("Fetched accounts:", response.data);
+                const response = await apiHandler("bank", "get", "/getAccounts");
+                if (response.data) {
+                    console.log("response.data", response.data);
+                    setAccounts(
+                        response.data.map((account) => ({
+                            id: account.bban,
+                            number: account.bban,
+                            name: account.name,
+                            ownerName: account.ownerName,
+                            type: account.type,
+                        }))
+                    );
+                }
+                console.log("Fetched accounts:", response.data);
             } catch (error) {
-              console.error("Failed to fetch accounts:", error);
+                console.error("Failed to fetch accounts:", error);
             } finally {
-              setIsLoading(false);
+                setIsLoading(false);
             }
-          };
-      
-          fetchAccounts();
-    });
+        };
+    
+        if (email) {
+            fetchAccounts();
+        }
+    }, [email]); // Dependency added here
+    
     const handleSubmission = async () => {
         console.log("Selected accounts:", selectedAccounts);
         if (!selectedAccounts.From || !selectedAccounts.To) {
@@ -382,39 +386,31 @@ const Home: React.FC = () => {
     );
   }
 
-  return (
-    <div className="flex flex-col items-center justify-center bg-white min-h-screen">
-      <div className="w-2/3 text-center mt-12">
-        <h1 className="text-3xl font-bold mb-3 text-black py-8">
-          Dine kontoer:
-        </h1>
-        <p className="text-xl text-gray-700 mb-3 ">
-          Velg en konto du vil overføre penger fra, <br /> og en hvor du ønsker
-          å spare pengene.
-        </p>
-      </div>
-      <AccountSelect
-        accounts={accounts}
-        selectedAccounts={selectedAccounts}
-        setSelectedAccounts={setSelectedAccounts}
-      />
-      <div className="mb-24 text-center">
-        <button
-          className="mt-6 bg-primary-light text-white font-semibold px-4 py-2  mb-3 rounded-lg"
-          onClick={handleSubmission}
-        >
-          Velg kontoer
-        </button>
-     
-  
-
+        return (
+            <div className="flex flex-col items-center justify-center bg-white min-h-screen">
+            <div className="w-2/3 text-center mt-12">
+                <h1 className="text-3xl font-bold mb-3 text-black py-8">
+                Dine kontoer:
+                </h1>
+                <p className="text-xl text-gray-700 mb-3 ">
+                Velg en konto du vil overføre penger fra, <br /> og en hvor du ønsker
+                å spare pengene.
+                </p>
+            </div>
+            <AccountSelect
+                accounts={accounts}
+                selectedAccounts={selectedAccounts}
+                setSelectedAccounts={setSelectedAccounts}
+            />
+            <div className="mb-24 text-center">
+                <button
+                className="mt-6 bg-primary-light text-white font-semibold px-4 py-2  mb-3 rounded-lg"
+                onClick={handleSubmission}
+                >
+                Velg kontoer
+                </button>
                         </div>
-                        <button
-                            className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark mt-8 text-white rounded-lg p-2 w-full"
-                            onClick={() => console.log()}
-                        >
-                            Lagre
-                        </button>
+                        
                     </div>
                 );
             case "Maalhistorikk":
