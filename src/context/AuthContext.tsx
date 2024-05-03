@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const response = await fetch(baseURL + "auth/login", {
+    const response = await fetch(baseURL + "/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshToken = async () => {
     try {
-      const response = await fetch(`${baseURL}auth/refresh`, {
+      const response = await fetch(`${baseURL}/auth/refresh`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const forgotPassword = async (email: string) => {
-    const response = await fetch(baseURL + "auth/forgotPassword", {
+    const response = await fetch(baseURL + "/auth/forgotPassword", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const resetPassword = async (password: string, token: string) => {
-    const response = await fetch(baseURL + "auth/resetPassword", {
+    const response = await fetch(baseURL + "/auth/resetPassword", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password, token }),
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     phone: string
   ) => {
-    const response = await fetch(baseURL + "auth/register", {
+    const response = await fetch(baseURL + "/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -160,7 +160,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const verifyEmail = async (code: string) => {
-    const response = await fetch(baseURL + `auth/verify?token=${code}`, {
+    const response = await fetch(baseURL + `/auth/verify?token=${code}`, {
       method: "GET",
     });
     console.log(code);
