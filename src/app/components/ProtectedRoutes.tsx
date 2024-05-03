@@ -6,11 +6,12 @@ import { useAuth } from "../../context/AuthContext";
 const ProtectedRoutes = ({ children }) => {
   const { isTokenValid } = useAuth();
   const router = useRouter();
+
   useEffect(() => {
     if (!isTokenValid()) {
       router.push("/login");
     }
-  }, []);
+  }, [isTokenValid]);
 
   return <div>{children}</div>;
 };
