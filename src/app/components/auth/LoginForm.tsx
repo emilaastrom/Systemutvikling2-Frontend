@@ -31,7 +31,7 @@ const LoginForm = ({
       await login(username, password);
 
       const req = await apiHandler("user", "get", "/getUserStatus");
-      console.log;
+      console.log(req.data);
       if (req.data.firstLogin) {
         router.push("/bankId");
       } else if (req.data.hasConnectedBankAccount) {
@@ -39,7 +39,7 @@ const LoginForm = ({
       } else if (req.data.hasCustomizedGoals) {
         router.push("/customizeGoals");
       } else {
-        router.push("/");
+        router.push("/dashboard");
       }
     } catch (error) {
       console.error(error);
