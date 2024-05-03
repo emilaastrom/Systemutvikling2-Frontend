@@ -90,7 +90,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: x2 }}
         transition={{ duration: 0.2 }}
-        className="border-2 rounded-md p-4 overflow-y-scroll bg-white hover:bg-[#fff] flex flex-col justify-between w-3/4 h-full"
+        className="border-2 rounded-md p-4 overflow-y-scroll bg-white flex flex-col justify-between w-3/4 h-full"
       >
         <span className="text-gray-500 text-sm text-start">
           <span className="font-semibold">Kategori: </span>{" "}
@@ -106,9 +106,13 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
         </div>
 
         <div className="text-center text-gray-600 text-md mt-auto">
+        <span className="font-semibold">Sparing per dag: </span>{" "}
+          {suggestion.price}{" kr"}
+          <br />
+          <div className="mt-2">
           <span className="font-semibold">Antall dager: </span>{" "}
           {suggestion.durationDays}
-          <br />
+          </div>
           <div className="mt-2">
             <span className="font-semibold">Dager for fullført: </span>{" "}
             <span className="bg-primary-light p-1 font-semibold text-light rounded-md">
@@ -165,7 +169,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
     <div onClick={onClose} className="modal-container">
       <div
         onClick={stopPropagation}
-        className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto h-4/6"
+        className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto h-[75%]"
       >
         <div className="bg-fuchsia-200 p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
           <div className="flex-grow flex justify-center items-center">
@@ -194,7 +198,7 @@ const ChallengecardAddModal: React.FC<ChallengecardModalProps> = ({
           </button>
         </div>
 
-        <div className="flex justify-between h-1/2 mb-4 mt-8">
+        <div className="flex justify-between h-[60%] mb-4 mt-8">
           <button
             onClick={() => {
               setCurrentPage(Math.max(0, currentPage - 1));

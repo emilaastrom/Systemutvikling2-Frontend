@@ -51,6 +51,9 @@ const BadgesPage: React.FC = () => {
   let challengeslevelStroke = "";
   let earnedlevel = "";
   let earnedlevelStroke = "";
+  let goalsName = ""
+  let challengeName = ""
+  let earnedName = ""
   fetchEarned();
   fetchGoals();
   fetchChallenges();
@@ -59,42 +62,51 @@ const BadgesPage: React.FC = () => {
     case goals >= 5:
       goalslevel = "#edc02b";
       goalslevelStroke = "#9e7d10";
+      goalsName="Gull"
       break;
     case goals >= 2:
       goalslevel = "#C0C0C0";
       goalslevelStroke = "grey";
+      goalsName="Sølv"
       break;
     default:
       goalslevel = "#CD7F32";
       goalslevelStroke = "#b5691d";
+      goalsName="Bronse"
       break;
   }
   switch (true) {
     case earned >= 10000:
       earnedlevel = "#edc02b";
       earnedlevelStroke = "#9e7d10";
+      earnedName="Gull"
       break;
     case earned >= 1000:
       earnedlevel = "#C0C0C0";
       earnedlevelStroke = "grey";
+      earnedName="Sølv"
       break;
     default:
       earnedlevel = "#CD7F32";
       earnedlevelStroke = "#b5691d";
+      earnedName="Bronse"
       break;
   }
   switch (true) {
     case challenges >= 20:
       challengeslevel = "#edc02b";
       challengeslevelStroke = "#9e7d10";
+      challengeName="Gull"
       break;
     case challenges >= 5:
       challengeslevel = "#C0C0C0";
       challengeslevelStroke = "grey";
+      challengeName="Sølv"
       break;
     default:
       challengeslevel = "#CD7F32";
       challengeslevelStroke = "#b5691d";
+      challengeName="Bronse"
       break;
   }
   return (
@@ -121,8 +133,13 @@ const BadgesPage: React.FC = () => {
                   </svg>
                 }
               />
+              <span className="font-bold text-lg">
+              {earnedName}
+              </span>
+              <div className="mt-4">
               Totalt spart: <br />
               {earned} kr
+              </div>
             </div>
             <div className="items-center flex-col flex text-center">
               <CustomIcon
@@ -143,9 +160,14 @@ const BadgesPage: React.FC = () => {
                   </svg>
                 }
               />
+              <span className="font-bold text-lg">
+              {challengeName}
+              </span>
+              <div className="mt-4">
               Antall utfordringer:
               <br />
               {challenges}
+              </div>
             </div>
             <div className="items-center flex-col flex text-center">
               <CustomIcon
@@ -166,8 +188,13 @@ const BadgesPage: React.FC = () => {
                   </svg>
                 }
               />
+              <span className="font-bold text-lg">
+              {goalsName}
+              </span>
+              <div className="mt-4">
               Antall mål: <br />
               {goals}
+              </div>
             </div>
           </div>
         </div>
