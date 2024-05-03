@@ -26,7 +26,7 @@ const NavbarButton = ({ to, children, ariaLabel }: NavbarButtonProps) => {
   const activeStyles =
     "bg-white border-black text-black dark:bg-slate-900 dark:border-white dark:text-white";
   const inactiveStyles =
-    "bg-slate-100 border-slate-300 text-slate-700 dark:bg-opacity-100 dark:bg-slate-500 dark:border-slate-800 dark:text-slate-200";
+    "bg-slate-100 border-slate-300 text-slate-700 dark:bg-opacity-100 dark:bg-slate-800 dark:border-slate-800 dark:text-slate-200";
   const hoverStyles =
     "hover:border-black hover:text-slate-700 hover:scale-110 hover:bg-white dark:hover:bg-slate-900 transition-all duration-300 ease-in-out border-2 dark:hover:border-white";
 

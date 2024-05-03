@@ -140,7 +140,7 @@ export default function PathSection({ openCheckpointModal }: PathSectionProps) {
 
     return (
         <section
-            className="h-[600px] bg-gradient-to-b from-grass-light to-grass-dark overflow-hidden relative parent z-20"
+            className="h-[600px] bg-gradient-to-b from-[#0d8c50] to-[#076639] dark:from-grass-light dark:to-grass-dark overflow-hidden relative parent z-20"
             style={{
                 width: "200%",
                 borderTopLeftRadius: "50%",
