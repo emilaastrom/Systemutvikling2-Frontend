@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ChallengecardModalButton from "./ChallengecardModalButton";
 import CustomIcon from "../icons/CustomIcon";
 
 type ChallengecardModalProps = {
