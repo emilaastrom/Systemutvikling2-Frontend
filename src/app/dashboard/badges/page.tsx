@@ -25,7 +25,7 @@ const BadgesPage: React.FC = () => {
     console.log("Fetching earned data");
     try {
       const data = await apiHandler("goal", "get", "/getTotalSaved");
-      setEarned(data.data.totalSaved);
+      setEarned(Math.floor(data.data.totalSaved));
     } catch (error) {
       console.error(error);
     }
@@ -122,7 +122,7 @@ const BadgesPage: React.FC = () => {
                 }
               />
               Totalt spart: <br />
-              {earned}
+              {earned} kr
             </div>
             <div className="items-center flex-col flex text-center">
               <CustomIcon

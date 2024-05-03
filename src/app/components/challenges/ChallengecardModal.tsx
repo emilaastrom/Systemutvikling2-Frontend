@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ChallengecardModalButton from './ChallengecardModalButton';
 import CustomIcon from '../icons/CustomIcon';
 import { useApiHandler } from '@/utils/api';
 
@@ -15,15 +14,13 @@ type ChallengecardModalProps = {
 const generateDates = (currentMonth: number, currentYear: number, startDate: Date, endDate: Date) => {
     const dates = [];
     const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1);
-    const startOffset = (firstDayOfMonth.getDay() + 6) % 7; // Calculate start offset, starting from Monday (0-based index)
+    const startOffset = (firstDayOfMonth.getDay() + 6) % 7; 
     const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    // Add empty dates for days before the start of the month
     for (let i = 0; i < startOffset; i++) {
         dates.push({ date: 0, enabled: false, uniqueId: `${currentYear}-${currentMonth}-0-${i}` });
     }
 
-    // Add dates for each day in the month
     for (let i = 1; i <= daysInMonth; i++) {
         const currentDate = new Date(currentYear, currentMonth - 1, i);
         const uniqueId = `${currentYear}-${currentMonth}-${i}`;
@@ -49,7 +46,6 @@ const generateEnabledDates = (startDate: Date, endDate: Date) => {
         const month = currentDate.getMonth() + 1;
         const daysInMonth = new Date(year, month, 0).getDate();
 
-        // Generate enabled dates for the current month
         for (let i = 1; i <= daysInMonth; i++) {
             const currentDay = new Date(year, month - 1, i);
             enabledDates.push({
@@ -59,7 +55,6 @@ const generateEnabledDates = (startDate: Date, endDate: Date) => {
             });
         }
 
-        // Move to the next month
         currentDate.setMonth(currentDate.getMonth() + 1);
     }
 
@@ -72,7 +67,6 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
 
     const apiHandler = useApiHandler();
 
-    // Function to generate enabled dates
     const enabledDates = generateEnabledDates(challengeStartDate, challengeEndDate);
     
     const stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -96,13 +90,16 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
     };
 
     const deleteChallenge = () => {
-        apiHandler("challenge","post","/removeAssignedChallenge",{
-            id:id
-        })
-        setTimeout(function() {
-            location.reload();
-        }, 300); 
-    }
+        const confirmation = window.confirm("Er du sikker på at du vil slette denne utfordingen? ");
+        if (confirmation) {
+            apiHandler("challenge","post","/removeAssignedChallenge",{
+                id:id
+            });
+            setTimeout(function() {
+                onClose();
+            }, 300);
+        }
+    };
 
     const saveProgress = () => {
         const clickedStatusArray = Object.values(clickedStatus); 
@@ -110,7 +107,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
         console.log(body)
         apiHandler("challenge","put","/updateProgress", body)
         setTimeout(function() {
-            location.reload();
+            onClose()
         }, 300); 
     };
 
@@ -236,7 +233,7 @@ useEffect(() => {
                     Slett utfordring
                 </div>
                 <div onClick={saveProgress} className="border-2 bg-white border-green-600 text-green-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2">
-                    lagre fremgang
+                    Lagre fremgang
                 </div>
             </div>
         </div>
