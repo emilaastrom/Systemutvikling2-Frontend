@@ -56,7 +56,6 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
       defaultDifficulty: difficulty,
     });
     try {
-      console.log("Updating difficulty YIPPIIII: ", difficulty);
       await apiHandler("user", "put", "/updateUser", {
         defaultDifficulty: difficulty,
       });
@@ -72,7 +71,6 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
     });
 
     try {
-      console.log("Updating options to: ", options);
       await apiHandler("user", "put", "/updateUser", optionsJSON);
     } catch (error) {
       console.error(error);
@@ -112,25 +110,25 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({
   }, [parentSelectedDifficulty, apiHandler]);
 
   const toggleChallenge = (item) => {
-    console.log("TempOptions initial state:", tempOptions);
 
     let temp = item.toUpperCase();
     const index = tempOptions.indexOf(temp);
     const indexParent = parentSelectedChallenges.indexOf(temp);
 
     if (index !== -1 && tempOptions.length === 1) {
-      console.log("At least one option must be clicked.");
+      console.error("At least one option must be clicked.");
       return;
     }
 
     if (index !== -1) {
       tempOptions.splice(index, 1);
     } else {
-      console.log(item, "is not in the tempOptions, adding it now");
+      console.log(item, "not added, adding it now");
       tempOptions.push(temp);
     }
 
     if (indexParent !== -1) {
+      console.log(item, "already added, removing it now");
       parentSelectedChallenges.splice(indexParent, 1);
     } else {
       parentSelectedChallenges.push(temp);
