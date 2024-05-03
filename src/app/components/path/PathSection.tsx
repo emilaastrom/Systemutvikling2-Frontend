@@ -11,14 +11,14 @@ type PathSectionProps = {
 };
 
 export default function PathSection({ openCheckpointModal }: PathSectionProps) {
-    const { username, startPosition } = useContext(PathApiContext);
+    const { username } = useContext(PathApiContext);
 
     const sectionRef = useRef<HTMLDivElement | null>(null);
-    const positionRef = useRef(startPosition);
+    const positionRef = useRef(-200);
     const velocityRef = useRef(0);
 
     const [dimensions, setDimensions] = useState<Vector>({ x: 1, y: 1 });
-    const [position, setPosition] = useState(startPosition);
+    const [position, setPosition] = useState(-200);
 
     const [lastY, setLastY] = useState(0);
     const [lastTime, setLastTime] = useState(0);
