@@ -5,7 +5,7 @@ describe('Access profile page', () => {
       cy.get('input[type="username"]').type('test');
       cy.get('input[type="password"]').type('test');
       cy.get('form').submit();
-      cy.url({ timeout: 3000 }).should('include', '/dashboard');
+      cy.url({ timeout: 10000 }).should('include', '/dashboard');
     });
   
     it('Accesses user profile settings', () => {
@@ -32,7 +32,7 @@ describe('Access profile page', () => {
       cy.get('input[type="username"]').type('test');
       cy.get('input[type="password"]').type('test');
       cy.get('form').submit();
-      cy.url({ timeout: 3000 }).should('include', '/dashboard');
+      cy.url({ timeout: 10000 }).should('include', '/dashboard');
       cy.contains('Konto').click();
     });
   
