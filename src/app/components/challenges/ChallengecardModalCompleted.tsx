@@ -85,7 +85,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, active
         onClick={stopPropagation}
         className="bg-white md:h-1/3 min-h-80 rounded-lg w-screen md:w-1/2 m-5 overflow-auto"
       >
-        <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center relative font-semibold overflow-auto">
+        <div className="bg-[#b0f4ff] p-4 rounded-t-lg w-full max-h-1/4 text-center text-black relative font-semibold overflow-auto">
           <div className="flex-grow flex justify-center items-center">
             Utfordringshistorikk
           </div>
@@ -111,7 +111,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, active
             />
           </button>
         </div>
-        <div className="flex flex-col m-4 items-center font-semibold space-y-2">
+        <div className="flex flex-col m-4 items-center font-semibold space-y-2 text-black">
           <h1 className="py-12">
             Beskrivelse: <span className="font-normal">{challengeText}</span>
           </h1>
