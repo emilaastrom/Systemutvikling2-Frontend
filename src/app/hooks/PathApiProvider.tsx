@@ -21,7 +21,8 @@ const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
   const [goals, setGoals] = useState([]);
   const fetchGoals = async () => {
     await apiHandler("goal", "get", "/getAllGoals").then((response) => {
-      setGoals(response.data);
+      const goals = response.data.filter(goal => !goal.active);
+      setGoals(goals);
     }).catch((error) => {
       console.log(error);
     });
@@ -30,7 +31,8 @@ const PathApiProvider: React.FC<PathApiProviderProps> = ({children}) => {
   const [challenges, setChallenges] = useState([]);
   const fetchChallenges = async () => {
     await apiHandler("challenge", "get", "/getFinishedChallenges").then((response) => {
-      setChallenges(response.data);
+      const challenges = response.data.map((challenge) => challenge.assignedChallenge);
+      setChallenges(challenges);
     }).catch((error) => {
       console.log(error);
     });

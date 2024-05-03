@@ -42,20 +42,22 @@ export default function PathElements() {
         const t = (i + j) * 80;
         const worldPos = { x: pathFunction(t), y: t }
 
-        const challenge = challenges[i].assignedChallenge
-        const goal = goals[j];
-
         if (i === challenges.length) {
+          const goal = goals[j];
           pathElements.push({ type: "milestone", id: goal.id, worldPos: worldPos });
           j++;
           continue;
         }
 
         if (j === goals.length) {
+          const challenge = challenges[i]
           pathElements.push({ type: "checkpoint", id: challenge.id, worldPos: worldPos });
           i++;
           continue;
         }
+
+        const challenge = challenges[i]
+        const goal = goals[j];
 
         const challengeTime = new Date(challenge.endDate);
         const goalTime = new Date(goal.completionTime);
@@ -74,7 +76,7 @@ export default function PathElements() {
 
   const getCheckpoint = (index: number, id: number, worldPos: Vector) => {
     if (worldPos.y + size > bounds.x && worldPos.y - size < bounds.y) {
-      const challenge = challenges.find((challenge) => challenge.assignedChallenge.id === id).assignedChallenge;
+      const challenge = challenges.find((challenge) => challenge.id === id);
       return <Checkpoint
         key={index}
         checkpointClicked={checkpointClicked}
