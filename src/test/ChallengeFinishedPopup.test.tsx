@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import ChallengesFinishedPopup from '@/app/components/ChallengesFinishedPopup';
 
 describe('ChallengesFinishedPopup', () => {
-  const closePopup = jest.fn(); // Mocking the closePopup function
+  const closePopup = jest.fn(); 
   const finished = [
     { id: 1, name: 'Challenge 1', description: 'Description 1' },
     { id: 2, name: 'Challenge 2', description: 'Description 2' },

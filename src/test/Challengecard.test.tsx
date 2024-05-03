@@ -5,12 +5,6 @@ import { AuthContext, useMockedAuthContext } from './mocks';
 
 describe('Challengecard', () => {
   it('renders challenge details correctly', () => {
-    // Mocked AuthProvider context value
-    const authContextValue = {
-      /* Define your mocked auth context value here */
-    };
-
-    // Mocked onClose function
     const onCloseMock = jest.fn();
 
     const props = {
@@ -26,15 +20,14 @@ describe('Challengecard', () => {
       onClose: onCloseMock,
     };
 
-    // Render Challengecard within mocked AuthProvider context
     const { getByText } = render(
-      <AuthContext.Provider value={authContextValue}>
+      <AuthContext.Provider value={null}>
         <Challengecard {...props} />
       </AuthContext.Provider>
     );
     
     expect(getByText('Challenge 1')).toBeInTheDocument();
     expect(getByText('5/10')).toBeInTheDocument();
-    expect(getByText('7 dager igjen')).toBeInTheDocument(); // Days left based on mocked dates
+    expect(getByText('7 dager igjen')).toBeInTheDocument(); 
   });
 });
