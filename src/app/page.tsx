@@ -7,8 +7,11 @@ import { useRouter } from "next/navigation";
 const StartPage = () => {
   const [circleProps, setCircleProps] = useState([]);
 
-  const handleClick = () => {
+  const handleLogin = () => {
     router.push("/login");
+  };
+  const handleReg = () => {
+    router.push("/login?form=register");
   };
 
   useEffect(() => {
@@ -83,14 +86,14 @@ const StartPage = () => {
             </p>
             <div className="md:space-x-4 text-center mx-auto  bg-gray-800 w-4/5 rounded-xl p-4">
               <button
-                onClick={handleClick}
+                onClick={handleLogin}
                 className="bg-primary-light text-white mb-3 md:mb-0  py-2 px-6 rounded-lg hover:bg-green-300 transition-colors duration-300"
               >
                 Logg Inn
               </button>
               <button
                 className="bg-black text-white py-2 px-6 rounded-lg hover:bg-gray-700 transition-colors duration-300"
-                onClick={handleClick}
+                onClick={handleReg}
               >
                 Registrer Deg
               </button>
