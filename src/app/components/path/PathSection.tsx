@@ -1,15 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { Vector } from "@/util/types/vector";
 import { ActiveChallenge } from "@/util/types/Challenge";
 import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
 import PathElements from "@/app/components/path/PathElements";
+import { PathApiContext } from "@/app/hooks/PathApiProvider";
 
 type PathSectionProps = {
   openCheckpointModal: (activeChallenge: ActiveChallenge | null) => void;
 };
 
 export default function PathSection({ openCheckpointModal }: PathSectionProps) {
+    const { pathLength } = useContext(PathApiContext);
     const sectionRef = useRef<HTMLDivElement | null>(null);
     const positionRef = useRef(0);
     const velocityRef = useRef(0);
@@ -59,6 +61,8 @@ export default function PathSection({ openCheckpointModal }: PathSectionProps) {
             velocityRef.current = (deltaY / (currentTime - lastTime)) * 12;
             positionRef.current += deltaY;
 
+            positionRef.current = Math.max(Math.min(positionRef.current, -dimensions.y / 2), -pathLength);
+
             setPosition(positionRef.current);
             setLastTime(currentTime);
         };
@@ -72,7 +76,7 @@ export default function PathSection({ openCheckpointModal }: PathSectionProps) {
                 section.removeEventListener("wheel", handleWheel);
             }
         };
-    }, [sectionRef, lastTime]);
+    }, [sectionRef, lastTime, dimensions, pathLength]);
 
     useEffect(() => {
         const section = sectionRef.current;
@@ -91,6 +95,8 @@ export default function PathSection({ openCheckpointModal }: PathSectionProps) {
             velocityRef.current = (deltaY / (currentTime - lastTime)) * 12;
             positionRef.current += deltaY;
 
+            positionRef.current = Math.max(Math.min(positionRef.current, -dimensions.y / 2), -pathLength);
+
             setPosition(positionRef.current);
             setLastY(currentY);
             setLastTime(currentTime);
@@ -102,7 +108,7 @@ export default function PathSection({ openCheckpointModal }: PathSectionProps) {
 
             const applyMomentum = () => {
                 positionRef.current += velocityRef.current;
-
+                positionRef.current = Math.max(Math.min(positionRef.current, -dimensions.y / 2), -pathLength);
                 velocityRef.current *= friction;
 
                 if (Math.abs(velocityRef.current) > threshold) {
@@ -136,7 +142,7 @@ export default function PathSection({ openCheckpointModal }: PathSectionProps) {
                 cancelAnimationFrame(animationFrameId);
             }
         };
-    }, [sectionRef, velocityRef, lastY, lastTime, animationFrameId]);
+    }, [sectionRef, velocityRef, lastY, lastTime, animationFrameId, dimensions, pathLength]);
 
     return (
         <section
