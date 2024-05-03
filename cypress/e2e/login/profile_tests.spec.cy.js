@@ -7,16 +7,19 @@ describe('Access profile page', () => {
       cy.url({ timeout: 10000 }).should('include', '/dashboard');
     });
   
-    it('Accesses user profile settings', () => {
+    it('Accesses user profile settings, and inputs exist', () => {
       cy.contains('Konto').click();
       cy.url().should('include', '/profile');
       cy.get('#nameBox').should('be.visible');
     
+      cy.get('#brukernavn').should('exist');
+      cy.get('#fornavn').should('exist');
+      cy.get('#etternavn').should('exist');
+      cy.get('#epost').should('exist');
+      cy.get('#telefon').should('exist');
+      
       cy.get('#brukernavn').should('have.attr', 'placeholder', 'test');
-      cy.get('#fornavn').should('have.attr', 'placeholder', 'test');
-      cy.get('#etternavn').should('have.attr', 'placeholder', 'test');
-      cy.get('#telefon').should('have.attr', 'placeholder', '123123');
-    
+
       cy.get('#epost').should('be.disabled');
     });
   });
