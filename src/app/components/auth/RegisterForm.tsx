@@ -74,7 +74,7 @@ const RegisterForm = ({
               className="flex flex-col px-8"
             >
               <h1 className="text-md underline font-bold mb-2 text-black">
-                Register
+                Registrer bruker
               </h1>
 
               <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 gap-x-4">
@@ -116,7 +116,7 @@ const RegisterForm = ({
                 />
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="E-Post"
                   name="email"
                   className="border-2 border-primary-light text-black rounded-md py-2 px-4 mb-4"
                   value={userData.email}
