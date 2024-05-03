@@ -213,7 +213,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
   }, []);
 
   return (
-    <div onClick={onClose} className="modal-container">
+    <div onClick={onClose} className="modal-container" data-testid="challengecard-modal">
       <div
         onClick={stopPropagation}
         className="bg-white rounded-lg w-screen md:w-1/2 m-5 overflow-auto"

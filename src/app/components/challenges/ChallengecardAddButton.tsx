@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import ChallengecardAddModal from './ChallengecardAddModal';
+
 interface ChallengecardAddButtonProps {
     reloadFunction: () => void;
-    amount: number
+    amount: number;
 }
 
 const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadFunction, amount }) => {
@@ -10,34 +12,35 @@ const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadF
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        reloadFunction()
+        reloadFunction();
     };
 
     const handleAddClick = () => {
-        if(amount>=6){
-            alert("Du kan ikke ha flere enn 6 utfordringer")
-        } else{
-        setIsModalOpen(true);
+        if (amount >= 6) {
+            alert("Du kan ikke ha flere enn 6 utfordringer");
+        } else {
+            setIsModalOpen(true);
         }
     };
 
     return (
         <>
             <div className="flex h-36 justify-center items-center">
-            <div 
-                className="w-80 m-4 h-36 rounded-lg overflow-hidden relative cursor-pointer" 
-                style={{ 
-                    background: "url('cloudpinkhover.svg')", 
-                    backgroundRepeat: 'no-repeat', 
-                    backgroundSize: '320px 135px'
-                }}
-                onMouseOver={(e) => { 
-                    e.currentTarget.style.backgroundImage = "url('cloudpink.svg')";
-                }}
-                onMouseOut={(e) => { 
-                    e.currentTarget.style.backgroundImage = "url('cloudpinkhover.svg')";
-                }}
-                onClick={handleAddClick}
+                <div
+                    className="w-80 m-4 h-36 rounded-lg overflow-hidden relative cursor-pointer"
+                    style={{
+                        background: "url('cloudpinkhover.svg')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: '320px 135px'
+                    }}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.backgroundImage = "url('cloudpink.svg')";
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.backgroundImage = "url('cloudpinkhover.svg')";
+                    }}
+                    onClick={handleAddClick}
+                    data-testid="add-button" // Add test ID to the button
                 >
                     <div className="h-full flex flex-col justify-center items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-20 h-20 opacity-25">
@@ -47,7 +50,7 @@ const ChallengecardAddButton: React.FC<ChallengecardAddButtonProps> = ({ reloadF
                 </div>
             </div>
 
-            {isModalOpen && <ChallengecardAddModal onClose={handleCloseModal} />}
+            {isModalOpen && <ChallengecardAddModal onClose={handleCloseModal} data-testid="challengecard-add-modal" />} {/* Add test ID to the modal */}
         </>
     );
 };
