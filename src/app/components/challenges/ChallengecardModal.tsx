@@ -9,13 +9,14 @@ type ChallengecardModalProps = {
   challengeEndDate: Date;
   id: string;
   subStatus: boolean[];
+  max: number;
 };
 
 const generateDates = (
   currentMonth: number,
   currentYear: number,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ) => {
   const dates = [];
   const firstDayOfMonth = new Date(currentYear, currentMonth - 1, 1);
@@ -77,12 +78,16 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
   challengeEndDate,
   id,
   subStatus,
+  max
 }) => {
   const [currentMonth, setCurrentMonth] = useState<number>(
     challengeStartDate.getMonth() + 1
   );
   const [currentYear, setCurrentYear] = useState<number>(
     challengeStartDate.getFullYear()
+  );
+  const [saveButtonText, setSaveButtonText] = useState<string>(
+    "Lagre endringer"
   );
 
   const apiHandler = useApiHandler();
@@ -132,8 +137,16 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
     console.log(body);
     apiHandler("challenge", "put", "/updateProgress", body);
     setTimeout(function () {
-      onClose();
+    if(saveButtonText === "Fullfør utfordring" ){
+      apiHandler("challenge", "post", "/finishChallenge",{id:id})
+      alert("Gratulerer! Du fullførte en utfordring!")
+      setTimeout(function () {
+      onClose()
     }, 300);
+    } else{
+    onClose();
+  }
+  }, 300);
   };
 
   const dates = generateDates(
@@ -153,12 +166,24 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
   const [clickedStatus, setClickedStatus] = useState(initialClickedStatus);
 
   const handleClick = (uniqueId: string) => {
-    setClickedStatus((prevState) => ({
-      ...prevState,
-      [uniqueId]: !prevState[uniqueId],
-    }));
-    console.log(clickedStatus);
+    setClickedStatus((prevState) => {
+      const updatedState = {
+        ...prevState,
+        [uniqueId]: !prevState[uniqueId],
+      };
+  
+      const trueCount = Object.values(updatedState).filter((value) => value === true).length;
+  
+      if (trueCount >= max) {
+        setSaveButtonText("Fullfør utfordring");
+      } else {
+        setSaveButtonText("Lagre endringer");
+      }
+  
+      return updatedState;
+    });
   };
+  
 
   const initialStatus = () => {
     const newClickedStatus = { ...clickedStatus };
@@ -336,15 +361,18 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
         <div className="w-full flex justify-center">
           <div
             onClick={deleteChallenge}
-            className="border-2 bg-white border-red-600 text-red-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2"
+            className="border-2 bg-white border-red-600 text-black text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2"
           >
             Slett utfordring
           </div>
           <div
             onClick={saveProgress}
-            className="border-2 bg-white border-green-600 text-green-600 text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2"
+            className={`border-2 border-green-600 text-black text-center p-3 whitespace-nowrap cursor-pointer m-5 md:w-1/3 w-1/2 ${
+              saveButtonText === "Fullfør utfordring" ? "bg-green-600 text-white" : ""
+            }`}
+            
           >
-            Lagre fremgang
+            {saveButtonText}
           </div>
         </div>
       </div>

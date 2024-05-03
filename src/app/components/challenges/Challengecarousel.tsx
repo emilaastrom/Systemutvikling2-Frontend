@@ -37,7 +37,6 @@ const Challengecarousel = () => {
   }, [])
 
   const handleReloadChallenges = () => {
-    // Toggle the forceUpdateFlag to force re-render
     setForceUpdateFlag(prevFlag => !prevFlag);
     fetchChallenges();
   };
