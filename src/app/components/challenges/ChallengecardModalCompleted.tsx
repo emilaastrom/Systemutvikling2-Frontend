@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import CustomIcon from "../icons/CustomIcon";
+import { ActiveChallenge, AssignedChallenge, Challenge } from "@/util/types/Challenge";
 
 type ChallengecardModalProps = {
   onClose: () => void;
-  challengeText: string;
-  challengeStartDate: Date;
-  challengeEndDate: Date;
+  activeChallenge: ActiveChallenge;
 };
 
-const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
-  onClose,
-  challengeText,
-  challengeStartDate,
-  challengeEndDate,
-}) => {
+const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, activeChallenge }) => {
+  const assignedChallenge: AssignedChallenge = activeChallenge.assignedChallenge;
+  const challenge: Challenge = activeChallenge.challenge;
+
+  const challengeText = challenge.description;
+  const challengeStartDate = new Date(assignedChallenge.startDate);
+  const challengeEndDate = new Date(assignedChallenge.endDate);
+
   const [currentMonth, setCurrentMonth] = useState<number>(
     challengeStartDate.getMonth() + 1
   );
@@ -115,18 +116,10 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
             Beskrivelse: <span className="font-normal">{challengeText}</span>
           </h1>
           <p>
-            Startet:{" "}
-            <span className="font-normal">
-              {" "}
-              {challengeStartDate.toLocaleString()}{" "}
-            </span>
+            Startet: <span className="font-normal">{challengeStartDate.toDateString()}</span>
           </p>
-          <p className="flex">
-            Ferdig:{" "}
-            <span className="font-normal">
-              {" "}
-              {challengeEndDate.toLocaleString()}{" "}
-            </span>{" "}
+          <p>
+            Ferdig: <span className="font-normal">{challengeEndDate.toDateString()}</span>
           </p>
         </div>
       </div>
