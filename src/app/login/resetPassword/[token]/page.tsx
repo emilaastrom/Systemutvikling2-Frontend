@@ -27,7 +27,7 @@ function ResetPasswordPage() {
     try {
       await resetPassword(password, token);
       setStatus("success");
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       console.error("Error verifying email:", error);
       setStatus("error");
@@ -43,12 +43,14 @@ function ResetPasswordPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md p-8 space-y-6 bg-gray-100 rounded-xl shadow-lg"
       >
-        <h1 className="text-xl font-bold text-center">Reset Password</h1>
+        <h1 className="text-xl font-bold text-black text-center">
+          Reset Password
+        </h1>
         {error && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-red-500 text-center"
+            className="text-red-500  text-center"
           >
             {error}
           </motion.div>
@@ -57,7 +59,7 @@ function ResetPasswordPage() {
           <input
             type="password"
             placeholder="Skriv inn ditt nye passord"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
+            className="w-full px-4 py-2 border text-black rounded-md focus:outline-none focus:ring-2 focus:ring-green-300"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
