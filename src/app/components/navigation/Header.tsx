@@ -47,8 +47,6 @@ const CustomHeader = () => {
                     setGoalData(goalData);
                     setThemeData(themeData);
                     setCurrentTheme(themeData.data);
-                    console.log("Goal data:", goalData);
-                    console.log("Theme data:", themeData);
 
                     if (goalData.status === 200) {
                         setProgress(goalData.data.progress);
