@@ -10,22 +10,7 @@ import CustomizeExperience from "../../components/settings/CustomizeExperience";
 import AccountSelect from "../../components/settings/AccountSelect";
 import { useApiHandler } from "../../../utils/api";
 import GoalHistory from "./GoalHistory";
-
-const accounts = [
-    {
-        id: 1,
-        number: "123456789",
-        balance: 1000,
-        type: "Sparekonto",
-        ownerName: "Ola Nordmann",
-    },
-    {
-        id: 2,
-        number: "987654321",
-        type: "Brukskonto",
-        ownerName: "Kari Nordmann",
-    },
-];
+import { Account, SelectedAccounts } from "@/util/types/BankTypes";
 
 interface SidebarItemProps {
     title: string;
@@ -83,7 +68,11 @@ const Home: React.FC = () => {
     const [phone, setPhone] = useState<string>("");
     const [difficultyLevel, setDifficultyLevel] = useState<string>("");
     const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
-    const [selectedAccounts, setSelectedAccounts] = useState({});
+    const [accounts, setAccounts] = useState<Account[]>([]);
+    const [selectedAccounts, setSelectedAccounts] = useState<SelectedAccounts>({
+        From: null,
+        To: null,
+      });
 
     // Initial data to compare data before sending update request to API
     const [initialUsername, setInitialUsername] = useState("");
@@ -93,6 +82,8 @@ const Home: React.FC = () => {
     const [initialPhone, setInitialPhone] = useState("");
     const [initialDifficultyLevel, setInitialDifficultyLevel] = useState("");
     const [initialChallenges, setInitialChallenges] = useState<string[]>([]);
+    
+  const [isLoading, setIsLoading] = useState(true);
 
     interface UserData {
         username: string;
@@ -267,7 +258,67 @@ const Home: React.FC = () => {
         if (!email) {
             FetchUser();
         }
-    });
+        
+        const fetchAccounts = async () => {
+            setIsLoading(true); // Start loading
+            try {
+                const response = await apiHandler("bank", "get", "/getAccounts");
+                if (response.data) {
+                    console.log("response.data", response.data);
+                    setAccounts(
+                        response.data.map((account) => ({
+                            id: account.bban,
+                            number: account.bban,
+                            name: account.name,
+                            ownerName: account.ownerName,
+                            type: account.type,
+                        }))
+                    );
+                }
+                console.log("Fetched accounts:", response.data);
+            } catch (error) {
+                console.error("Failed to fetch accounts:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+    
+        if (email) {
+            fetchAccounts();
+        }
+    }, [email]); // Dependency added here
+    
+    const handleSubmission = async () => {
+        console.log("Selected accounts:", selectedAccounts);
+        if (!selectedAccounts.From || !selectedAccounts.To) {
+          console.error("Feilmelding: Du må velge kontoer for både utgifter og sparing");
+          return;
+        }
+    
+        if (selectedAccounts.From.id === selectedAccounts.To.id) {
+          console.error(
+            "Feilmelding: Du må velge ulike kontoer for utgifter og sparing"
+          );
+          return;
+        }
+    
+        try {
+          console.log("Selected accounts:", selectedAccounts.From.number);
+    
+          const response = await apiHandler("bank", "post", "/addAccounts", {
+            from: selectedAccounts.From.number,
+            to: selectedAccounts.To.number,
+          });
+    
+          if (response.status === 200) {
+            console.log("Successfully set accounts");
+          } else {
+            console.error("Failed to set accounts:", response.data);
+          }
+        } catch (error) {
+          console.error("Failed to set accounts:", error);
+        }
+      };
 
     const renderContent = () => {
         switch (content) {
@@ -322,22 +373,44 @@ const Home: React.FC = () => {
                 );
 
             case "Konto":
-                return (
-                    <div className="mx-10 my-6 md:w-fill">
-                        <div className="flex flex-col items-center justify-center">
-                            <h1 className="text-2xl font-semibold mb-6 text-dark dark:text-white">
-                                Velg bankkonto for sparing
-                            </h1>
-                            <h1 className="text-black text-3xl dark:text-white">
-                                ADD ACCOUNT HERE ASWELL!!!
-                            </h1>
+                
+                        if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center bg-white min-h-screen">
+        <h1 className="text-2xl font-semibold mb-6 text-black">
+          Laster inn kontoer...
+        </h1>
+        <div className="w-10 h-10 border-t-4 border-b-4 border-green-500 rounded-full"
+        />
+      </div>
+    );
+  }
+
+        return (
+            <div className="flex flex-col items-center justify-center bg-white min-h-screen">
+            <div className="w-2/3 text-center mt-12">
+                <h1 className="text-3xl font-bold mb-3 text-black py-8">
+                Dine kontoer:
+                </h1>
+                <p className="text-xl text-gray-700 mb-3 ">
+                Velg en konto du vil overføre penger fra, <br /> og en hvor du ønsker
+                å spare pengene.
+                </p>
+            </div>
+            <AccountSelect
+                accounts={accounts}
+                selectedAccounts={selectedAccounts}
+                setSelectedAccounts={setSelectedAccounts}
+            />
+            <div className="mb-24 text-center">
+                <button
+                className="mt-6 bg-primary-light text-white font-semibold px-4 py-2  mb-3 rounded-lg"
+                onClick={handleSubmission}
+                >
+                Velg kontoer
+                </button>
                         </div>
-                        <button
-                            className="bg-primary-light hover:bg-primary-dark dark:bg-primary-dark mt-8 text-white rounded-lg p-2 w-full"
-                            onClick={() => console.log()}
-                        >
-                            Lagre
-                        </button>
+                        
                     </div>
                 );
             case "Maalhistorikk":
