@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import ThemeProvider from "../components/settings/ThemeProvider";
-import CustomIcon from "../components/icons/CustomIcon";
-import { useApiHandler } from "../../utils/api";
+import ThemeProvider from "../../components/settings/ThemeProvider";
+import CustomIcon from "../../components/icons/CustomIcon";
+import { useApiHandler } from "../../../utils/api";
 
 const BadgesPage: React.FC = () => {
   const [goals, setGoals] = useState<number>(0);
@@ -30,11 +30,15 @@ const BadgesPage: React.FC = () => {
       console.error(error);
     }
   };
-  
+
   const fetchChallenges = async () => {
     console.log("Fetching challenge data");
     try {
-      const response = await apiHandler("challenge", "get", "/getNumberOfCompletedChallenges");
+      const response = await apiHandler(
+        "challenge",
+        "get",
+        "/getNumberOfCompletedChallenges"
+      );
       setChallenges(response.data);
     } catch (error) {
       console.error(error);
@@ -49,7 +53,7 @@ const BadgesPage: React.FC = () => {
   let earnedlevelStroke = "";
   fetchEarned();
   fetchGoals();
-  fetchChallenges()
+  fetchChallenges();
 
   switch (true) {
     case goals >= 5:

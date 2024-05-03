@@ -1,186 +1,108 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
-import PathApiProvider from "@/app/hooks/PathApiProvider";
-import PathSection from "@/app/components/path/PathSection";
-import Challengecarousel from "./components/challenges/Challengecarousel";
-import { ThemeProvider } from "./components/settings/ThemeProvider";
-import ThemeManager from "./components/settings/ThemeManager";
-import NewGoalModal from "./components/GoalModal";
-import ChallengecardModalCompleted from "./components/challenges/ChallengecardModalCompleted";
-import ChallengesFinishedPopup from "./components/ChallengesFinishedPopup";
-import { useApiHandler } from "../utils/api";
-import Goalpig from "./components/Goalpig"; // Move the import here
-import { error } from "console";
-import { userInfo } from "os";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import TwinklingStars from "./components/TwinklingStars";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-    const [succeededChallenges, setSucceededChallenges] = useState([]);
-    const [notSucceededChallenges, setNotSucceededChallenges] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [showGoalModal, setShowGoalModal] = useState(false);
-    const [showCompletedPopup, setShowCompletedPopup] = useState(false);
-    const [goal, setGoal] = useState<string>("");
-    const [current, setCurrent] = useState<number>();
-    const [max, setMax] = useState<number>();
-    const [active, setActive] = useState<number>(-1);
+const StartPage = () => {
+  const [circleProps, setCircleProps] = useState([]);
 
-    const apiHandler = useApiHandler();
-    const fetchActiveGoal = async () => {
-        console.log("Fetching active goal data");
-        try {
-            const goal = await apiHandler("goal", "get", "/getActiveGoal");
-            if (
-                goal.data != null &&
-                goal.data.active === true &&
-                goal.status === 200
-            ) {
-                setGoal(goal.data.name);
-                setCurrent(goal.data.progress);
-                setMax(goal.data.amount);
-                setActive(1);
-            } else if (goal.data === null || goal.status === 400) {
-                setActive(0);
-            } else {
-                setActive(-1);
-                console.error(goal.data);
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                setActive(0);
-            } else {
-                setActive(-1);
-                console.error(error);
-            }
-        }
-    };
-    const fetchActiveChallenges = async () => {
-        const challenges = await apiHandler(
-            "challenge",
-            "get",
-            "/getActiveChallenges"
-        );
-        const today = new Date();
-        const completed = [];
+  useEffect(() => {
+    const circles = Array.from({ length: 20 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      scale: [1, 1.5, 1],
+      opacity: [0, 0.5, 0],
+      rotate: [0, 360, 0],
+      width: 20,
+      height: 20,
+      duration: Math.random() * 2 + 4,
+      delay: Math.random(),
+    }));
+    setCircleProps(circles);
+  }, []);
 
-        for (const challenge of challenges.data) {
-            const endDate = new Date(challenge.assignedChallenge.endDate);
-            if (endDate < today) {
-                completed.push(challenge);
-            }
-        }
+  const router = useRouter();
 
-        console.log(completed);
-        let anyCompleted = false;
-        let finished = [];
-        let notFinished = [];
-        for (const challenge of completed) {
-            anyCompleted = true;
-            const response = await apiHandler(
-                "challenge",
-                "post",
-                "/finishChallenge",
-                { id: challenge.assignedChallenge.id }
-            );
-            //TODO: finished array or not finished array
-        }
-        if (anyCompleted) {
-            toggleCompletedPopup();
-        }
-    };
-
-    useEffect(() => {
-        fetchActiveGoal();
-        const savedTheme =
-            (localStorage.getItem("theme") as "light" | "dark" | "auto") ||
-            "light";
-        ThemeManager.setTheme(savedTheme);
-        console.log("Theme set to: ", savedTheme);
-        if (showModal) {
-            document.body.style.overflow = "hidden";
-        }
-    }, [fetchActiveGoal()]);
-
-    // Function to toggle modal visibility
-    const toggleModal = () => {
-        setShowModal(!showModal);
-    };
-    const toggleCompletedPopup = () => {
-        setShowCompletedPopup(!showCompletedPopup);
-    };
-    const toggleGoalModal = () => {
-        setShowGoalModal(!showGoalModal);
-    };
-
-    function openCheckpointModal(
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ): void {
-        toggleModal();
-    }
-
-    if (active !== 1 && active !== 0) {
-        return (
-            <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-gradient-to-r from-background-50 via-background-100 to-background-200 bg-opacity-25 z-50">
-                <div className="animate-spin rounded-full h-64 w-64 border-2 border-t-2 border-t-grass-light border-white">
-                </div>
+  return (
+    <motion.div
+      className="flex flex-col items-center justify-center h-screen bg-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        className="absolute inset-0 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        style={{ zIndex: 0 }}
+      >
+        {circleProps.map((props, index) => (
+          <motion.div
+            key={index}
+            className="absolute bg-primary-light rounded-full"
+            style={{
+              left: props.left,
+              top: props.top,
+              width: props.width,
+              height: props.height,
+            }}
+            animate={{
+              scale: props.scale,
+              opacity: props.opacity,
+              rotate: props.rotate,
+              transition: {
+                duration: props.duration,
+                repeat: Infinity,
+                repeatDelay: props.delay,
+              },
+            }}
+          />
+        ))}
+      </motion.div>
+      <div className="z-10 w-full px-4">
+        <div className="flex flex-col md:flex-row gap-3 justify-center">
+          <div className=" w-full md:w-3/5 bg-green-300  rounded-xl p-12">
+            <Image
+              src="/gris.svg"
+              width={150}
+              height={150}
+              alt="Sparesti logo"
+              className="mx-auto"
+            />
+            <h1 className="text-4xl font-mono mb-3 text-black text-center">
+              Velkommen til Sparesti
+            </h1>
+            <p className="text-lg px-4 text-center mb-6">
+              Sparesti hjelper deg med å oppnå dine sparemål på en enkel og
+              artig måte.
+            </p>
+            <div className="md:space-x-4 text-center mx-auto  bg-gray-800 w-4/5 rounded-xl p-4">
+              <button className="bg-primary-light text-white mb-3 md:mb-0  py-2 px-6 rounded-lg hover:bg-green-300 transition-colors duration-300">
+                Logg Inn
+              </button>
+              <button
+                className="bg-black text-white py-2 px-6 rounded-lg hover:bg-gray-700 transition-colors duration-300"
+                onClick={() => router.push("/register")}
+              >
+                Registrer Deg
+              </button>
             </div>
-        );
-    }
+          </div>
+          <div className="bg-slate-800 rounded-xl w-full md:w-52 p-2  relative overflow-hidden">
+            <Image
+              src="/tmpImg.png"
+              width={200}
+              height={200}
+              objectFit="cover"
+              alt="Sparesti logo"
+              className="mx-auto"
+            />
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
-    return (
-        <ThemeProvider>
-            <main className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] dark:from-sky-600 dark:via-sky-800 dark: dark:to-sky-900 from-sky-light via-sky-medium to-sky-dark w-full overflow-x-hidden h-screen flex">
-              <TwinklingStars />
-                <div className="flex-1 flex flex-col items-center flex-grow mt-10 ">
-                    <div>
-                        <Challengecarousel />
-                        <div className="h-auto">
-                            {/* Render Goalpig only if 'active' is true and 'goal' is set */}
-                            {active === 1 && (
-                                <Goalpig
-                                    current={current}
-                                    max={max}
-                                    goal={goal}
-                                />
-                            )}
-                            {active === 0 && (
-                                <div className="justify-center h-full items-center flex">
-                                    <button
-                                        className="p-4 bg-primary-dark hover:bg-primary-light text-white drop-shadow-md rounded-md mr-2"
-                                        onClick={toggleGoalModal}
-                                    >
-                                        Lag et nytt sparemål
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <PathApiProvider>
-                      <PathSection />
-                    </PathApiProvider>
-                </div>
-            </main>
-            {showGoalModal && <NewGoalModal closeModal={toggleGoalModal} />}
-            {showModal && (
-                <ChallengecardModalCompleted
-                    onClose={toggleModal}
-                    challengeText={
-                        "veldig kult eksempel på en utfordring yippi!"
-                    }
-                    challengeStartDate={new Date()}
-                    challengeEndDate={
-                        new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
-                    }
-                />
-            )}
-            {showCompletedPopup && (
-                <ChallengesFinishedPopup
-                    closePopup={toggleCompletedPopup}
-                    succeeded={succeededChallenges}
-                    failed={notSucceededChallenges}
-                />
-            )}
-        </ThemeProvider>
-    );
-}
+export default StartPage;
