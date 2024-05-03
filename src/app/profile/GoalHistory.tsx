@@ -21,13 +21,11 @@ const GoalHistory = () => {
     useEffect(() => {
         const getAllGoals = async () => {
             try {
-                console.log("HENTER MÅL");
                 const response = await apiHandler(
                     "goal",
                     "get",
                     "/getAllGoals"
                 );
-                console.log("DETTE ER SVARET PÅ MÅL: ", response.data);
                 setGoals(response.data);
             } catch (error) {
                 console.log(error);
