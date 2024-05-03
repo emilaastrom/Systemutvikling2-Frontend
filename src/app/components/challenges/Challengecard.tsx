@@ -10,7 +10,8 @@ const Challengecard = ({
     startDate,
     endDate,
     subStatus,
-    difficulty
+    difficulty,
+    onClose
 }: {
     id: string,
     challenge: string;
@@ -21,11 +22,13 @@ const Challengecard = ({
     endDate: Date;
     subStatus: boolean[];
     difficulty: string;
+    onClose: () => void;
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        onClose()
     };
 
     const handleCardClick = () => {

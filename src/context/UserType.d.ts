@@ -12,6 +12,10 @@ export type AuthContextType = {
   token: Token | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  isTokenValid: () => boolean;
+
+  forgotPassword: (email: string) => Promise<void>;
+  resetPassword: (password: string, token: string) => Promise<void>;
   register: (
     username: string,
     firstName: string,

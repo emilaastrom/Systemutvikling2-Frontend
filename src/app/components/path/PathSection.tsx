@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Vector } from "@/util/types/vector";
 import PathProvider from "@/app/hooks/PathProvider";
 import ProceduralPath from "@/app/components/path/ProceduralPath";
@@ -150,7 +150,6 @@ export default function PathSection() {
                 style={{
                     perspective: "1000px",
                     perspectiveOrigin: "50% 0",
-                    transformStyle: "preserve-3d",
                 }}
             >
                 <div

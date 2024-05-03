@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import VolumeSlider from "../components/settings/VolumeSlider";
-import DarkModeToggle from "../components/settings/DarkModeToggle";
+import VolumeSlider from "../../components/settings/VolumeSlider";
+import DarkModeToggle from "../../components/settings/DarkModeToggle";
 import { useRouter } from "next/navigation";
-import ThemeProvider from "../components/settings/ThemeProvider";
-import InputBox from "../components/settings/InputBox";
-import CustomizeExperience from "../components/settings/CustomizeExperience";
-import AccountSelect from "../components/settings/AccountSelect";
-import { useApiHandler } from "../../utils/api";
-import GoalHistory from "../profile/GoalHistory";
+import ThemeProvider from "../../components/settings/ThemeProvider";
+import InputBox from "../../components/settings/InputBox";
+import CustomizeExperience from "../../components/settings/CustomizeExperience";
+import AccountSelect from "../../components/settings/AccountSelect";
+import { useApiHandler } from "../../../utils/api";
+import GoalHistory from "./GoalHistory";
 
 const accounts = [
     {
