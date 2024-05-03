@@ -7,7 +7,6 @@ import React, {
   useEffect,
 } from "react";
 import { AuthContextType, AuthState, Token, User } from "../context/UserType";
-import { useRouter } from "next/router";
 const AuthContext = createContext<AuthContextType | null>(null);
 import { jwtDecode } from "jwt-decode";
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -15,8 +14,17 @@ const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthState>({ token: null });
 
+  useEffect(() => {
+    const tokenString = localStorage.getItem("token");
+    const userString = localStorage.getItem("user");
+    if (tokenString) {
+      const token: Token = tokenString;
+      setAuth({ token });
+    }
+  }, []);
+
   const login = async (username: string, password: string) => {
-    const response = await fetch(baseURL + "/auth/login", {
+    const response = await fetch(baseURL + "auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -38,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const isTokenValid = () => {
     try {
-      const token = auth.token;
+      const token = localStorage.getItem("token");
       if (!token) return false;
 
       const { exp } = jwtDecode(token);
@@ -46,10 +54,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const buffer = 300;
 
       if (exp < currentTime) {
+        console.log("Token expired");
         return false;
       } else if (exp - currentTime < buffer) {
+        console.log("refreshing token");
+
         refreshToken();
       }
+      console.log("Token is valid");
       return true;
     } catch (error) {
       console.error("Error decoding token:", error);
@@ -59,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const refreshToken = async () => {
     try {
-      const response = await fetch(`${baseURL}/auth/refresh`, {
+      const response = await fetch(`${baseURL}auth/refresh`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,6 +98,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuth({ token: null });
   };
 
+  const forgotPassword = async (email: string) => {
+    const response = await fetch(baseURL + "auth/forgotPassword", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    if (response.ok) {
+      console.log("Password reset email sent");
+    } else {
+      throw new Error("Failed to reset password");
+    }
+  };
+
+  const resetPassword = async (password: string, token: string) => {
+    const response = await fetch(baseURL + "auth/resetPassword", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password, token }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      setAuth({ token: data.token });
+    } else {
+      throw new Error("Failed to reset password");
+    }
+  };
+
   const register = async (
     username: string,
     firstName: string,
@@ -94,7 +136,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string,
     phone: string
   ) => {
-    const response = await fetch(baseURL + "/auth/register", {
+    const response = await fetch(baseURL + "auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -118,12 +160,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const verifyEmail = async (code: string) => {
-    const response = await fetch(
-      baseURL + `/auth/verify?token=${code}`,
-      {
-        method: "GET",
-      }
-    );
+    const response = await fetch(baseURL + `auth/verify?token=${code}`, {
+      method: "GET",
+    });
+    console.log(code);
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem("token", data.token);
@@ -134,18 +174,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Load the user and token from local storage
-  useEffect(() => {
-    const tokenString = localStorage.getItem("token");
-    const userString = localStorage.getItem("user");
-    if (tokenString) {
-      const token: Token = tokenString;
-      setAuth({ token });
-    }
-  }, []);
 
   return (
     <AuthContext.Provider
-      value={{ ...auth, login, logout, register, verifyEmail, isTokenValid }}
+      value={{
+        ...auth,
+        login,
+        resetPassword,
+        logout,
+        forgotPassword,
+        register,
+        verifyEmail,
+        isTokenValid,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -159,5 +200,4 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-
 export default AuthProvider;
