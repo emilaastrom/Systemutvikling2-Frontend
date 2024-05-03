@@ -90,7 +90,7 @@ export default function PathElements({ openCheckpointModal }: PathElementsProps)
   }, [pathFunction, goals, activeChallenges]);
 
   const getCheckpoint = (index: number, id: string, worldPos: Vector) => {
-    if (worldPos.y + size > bounds.x && worldPos.y - size < bounds.y) {
+    if (worldPos.y + 40 > bounds.x && worldPos.y < bounds.y) {
       const activeChallenge = activeChallenges.find((activeChallenge) => activeChallenge.assignedChallenge.id === id);
       return (
         <Checkpoint
@@ -107,7 +107,7 @@ export default function PathElements({ openCheckpointModal }: PathElementsProps)
   }
 
   const getMilestone = (index: number, id: string, worldPos: Vector) => {
-    if (worldPos.y > bounds.x && worldPos.y < bounds.y) {
+    if (worldPos.y + 25 > bounds.x && worldPos.y < bounds.y) {
       const goal = goals.find((goal) => goal.id === id);
       return (
         <Milestone

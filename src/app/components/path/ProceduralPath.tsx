@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { colors } from "../../../../tailwind.config";
 import { Vector } from "@/util/types/vector";
 import { PathContext } from "@/app/hooks/PathProvider";
+import { PathApiContext } from "@/app/hooks/PathApiProvider";
 
 interface ProceduralPathProps {
     dimensions: Vector;
@@ -12,17 +13,19 @@ interface ProceduralPathProps {
 
 export default function ProceduralPath({ dimensions, stepLength, width }: ProceduralPathProps) {
     const { scale, bounds, pathFunction, worldToScreen } = useContext(PathContext);
+    const { pathLength } = useContext(PathApiContext);
 
     const getPathPoints = useCallback(() => {
         const halfWidth = width / 2;
         const points = [];
-        for (let t = bounds.x - halfWidth; t < bounds.y + halfWidth; t += stepLength) {
+        for (let t = Math.max(bounds.x - halfWidth, 0); t < Math.min(bounds.y + halfWidth, pathLength); t += stepLength) {
             points.push({ x: pathFunction(t), y: t });
         }
         return points;
-    }, [bounds, stepLength, width, pathFunction]);
+    }, [bounds, stepLength, width, pathFunction, pathLength]);
 
     const getPathData = useCallback((pathPoints: Vector[]) => {
+        if (pathPoints.length === 0) return "";
         const p0 = worldToScreen(pathPoints[0]);
         let pathData = `M ${p0.x},${p0.y} `;
         for (let i = 0; i < pathPoints.length; i++) {
