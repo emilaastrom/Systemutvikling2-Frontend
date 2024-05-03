@@ -103,3 +103,7 @@ body {
 .child {
   pointer-events: auto;
 }
+.backdrop-all-browsers {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
