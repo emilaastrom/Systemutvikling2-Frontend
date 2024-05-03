@@ -27,7 +27,7 @@ const GoalHistoryModule: React.FC<GoalHistoryModuleProps> = ({
       <div className="dark:text-white dark:bg-slate-600">{goalDescription}</div>
       <div className="font-semibold">{name && <div>Mål: {name}</div>}</div>
       <div>{active !== null && <div>Status: {active ? 'Aktiv' : 'Inaktiv'}</div>}</div>
-      <div>{progress !== null && <div>{progress} kr spart av {amount} kr</div>}</div>
+      <div>{progress !== null && <div>{Math.floor(progress ?? 0)}  kr spart av {Math.floor(amount ?? 0)} kr</div>}</div>
       <div className="pt-6">Påbegynt: {startedAt && startedAt.toLocaleDateString()}</div>
       <div>Fullført: {completedAt && completedAt.toLocaleDateString()}</div>
     </div>
