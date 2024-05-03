@@ -318,7 +318,7 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({
                         className={`w-14 h-14 border-2 border-gray-300 rounded-lg shadow-lg cursor-pointer flex justify-center items-center ${
                           clickedStatus[day.uniqueId]
                             ? "bg-green-200"
-                            : "bg-white hover:bg-green-100"
+                            : "bg-white"
                         }`}
                         onClick={() => handleClick(day.uniqueId)}
                       >
