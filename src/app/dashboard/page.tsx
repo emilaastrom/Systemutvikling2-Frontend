@@ -23,6 +23,7 @@ export default function Home() {
   const [unfinishedChallenges, setUnFinishedChallenges] = useState<
     ActiveChallenge[]
   >([]);
+  const [activeChallenge, setActiveChallenge] = useState<ActiveChallenge | null>();
   const [showModal, setShowModal] = useState(false);
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [showCompletedPopup, setShowCompletedPopup] = useState(false);
@@ -45,14 +46,14 @@ export default function Home() {
         setCurrent(goal.data.progress);
         setMax(goal.data.amount);
         setActive(1);
-      } else if (goal.data === null || goal.status === 400) {
+      } else if (goal.data === null || goal.status === 204) {
         setActive(0);
       } else {
         setActive(-1);
         console.error(goal.data);
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
+      if (error.response && error.response.status === 204) {
         setActive(0);
       } else {
         setActive(-1);
@@ -122,9 +123,8 @@ export default function Home() {
     setShowGoalModal(!showGoalModal);
   };
 
-  function openCheckpointModal(
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void {
+  const openCheckpointModal = (activeChallenge: ActiveChallenge) => {
+    setActiveChallenge(activeChallenge);
     toggleModal();
   }
 
@@ -161,7 +161,7 @@ export default function Home() {
             </div>
           </div>
           <PathApiProvider>
-            <PathSection />
+            <PathSection openCheckpointModal={openCheckpointModal} />
           </PathApiProvider>
         </div>
       </main>
@@ -169,9 +169,7 @@ export default function Home() {
       {showModal && (
         <ChallengecardModalCompleted
           onClose={toggleModal}
-          challengeText={"veldig kult eksempel på en utfordring yippi!"}
-          challengeStartDate={new Date()}
-          challengeEndDate={new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)}
+          activeChallenge={activeChallenge}
         />
       )}
       {(finishedChallenges.length > 0 || unfinishedChallenges.length > 0) &&

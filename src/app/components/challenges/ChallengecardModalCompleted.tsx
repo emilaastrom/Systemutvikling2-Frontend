@@ -116,18 +116,10 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, active
             Beskrivelse: <span className="font-normal">{challengeText}</span>
           </h1>
           <p>
-            Startet:{" "}
-            <span className="font-normal">
-              {" "}
-              {challengeStartDate.toLocaleString()}{" "}
-            </span>
+            Startet: <span className="font-normal">{challengeStartDate.toDateString()}</span>
           </p>
-          <p className="flex">
-            Ferdig:{" "}
-            <span className="font-normal">
-              {" "}
-              {challengeEndDate.toLocaleString()}{" "}
-            </span>{" "}
+          <p>
+            Ferdig: <span className="font-normal">{challengeEndDate.toDateString()}</span>
           </p>
         </div>
       </div>
