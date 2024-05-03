@@ -3,7 +3,7 @@ describe('Login Page Tests', () => {
     cy.visit('/login');
   });
 
-  it('Successfully logs in a user', () => {
+  it('Successfully inputs user details and submits form', () => {
     cy.get('input[type="username"]').type('test1');
     cy.get('input[type="password"]').type('test');
     cy.get('form').submit();
