@@ -110,7 +110,6 @@ const ChallengecardModal: React.FC<ChallengecardModalProps> = ({ onClose, challe
             onClose()
         }, 300); 
     };
-
 const dates = generateDates(currentMonth, currentYear, challengeStartDate, challengeEndDate);
 
 const initialClickedStatus = {};
@@ -133,9 +132,14 @@ const handleClick = (uniqueId: string) => {
 const initialStatus = () => {
     const newClickedStatus = { ...clickedStatus };
     let n = 0
+    let daysToFirstEnabled = 0
     for (let i = 0; i < enabledDates.length; i++) {
+        if(daysToFirstEnabled===0 && enabledDates[i].enabled){
+            daysToFirstEnabled=n
+            }
         if (subStatus[n]) {
-            const uniqueId = enabledDates[i+1].uniqueId;
+            console.log(daysToFirstEnabled)
+            const uniqueId = enabledDates[i+daysToFirstEnabled].uniqueId;
             newClickedStatus[uniqueId] = true;
         }
         n++
